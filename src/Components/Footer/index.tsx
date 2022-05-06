@@ -9,7 +9,7 @@ import Container from '@mui/material/Container';
 
 const Footer = () => {
   return (
-    <Box component="footer">
+    <Box component="footer" sx={{ bgcolor: '#0281ed' }}>
       <Container maxWidth="xl">
         <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
           <Button
@@ -17,6 +17,11 @@ const Footer = () => {
             href="https://rs.school/react/"
             rel="noreferrer"
             target="_blank"
+            sx={{
+              bgcolor: 'white',
+              color: 'black',
+              ':hover': { bgcolor: 'purple', color: 'white' },
+            }}
           >
             <img
               src="https://rs.school/images/rs_school_js.svg"
@@ -33,6 +38,11 @@ const Footer = () => {
               rel="noreferrer"
               target="_blank"
               variant="outlined"
+              sx={{
+                bgcolor: 'white',
+                color: 'black',
+                ':hover': { bgcolor: 'purple', color: 'white' },
+              }}
             >
               Elena Shustova
             </Button>
@@ -42,6 +52,11 @@ const Footer = () => {
               rel="noreferrer"
               target="_blank"
               variant="outlined"
+              sx={{
+                bgcolor: 'white',
+                color: 'black',
+                ':hover': { bgcolor: 'purple', color: 'white' },
+              }}
             >
               Ruslan Vildanov
             </Button>
@@ -51,13 +66,20 @@ const Footer = () => {
               rel="noreferrer"
               target="_blank"
               variant="outlined"
+              sx={{
+                bgcolor: 'white',
+                color: 'black',
+                ':hover': { bgcolor: 'purple', color: 'white' },
+              }}
             >
               Evgeniy Zhukov
             </Button>
           </ButtonGroup>
           <Stack direction="row" spacing={3} justifyContent="center" alignItems="center">
-            <Typography variant="body1">2022</Typography>
-            <CopyrightIcon />
+            <Typography variant="body1" color="white">
+              2022
+            </Typography>
+            <CopyrightIcon sx={{ color: 'white' }} />
           </Stack>
         </Stack>
       </Container>
