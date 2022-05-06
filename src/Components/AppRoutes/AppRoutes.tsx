@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
-function AppRouts() {
+function AppRoutes() {
   return <Routes></Routes>;
 }
 
-export default AppRouts;
+export default AppRoutes;
