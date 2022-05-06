@@ -7,7 +7,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-export const Footer = () => {
+const Footer = () => {
   return (
     <Box component="footer">
       <Container maxWidth="xl">
@@ -64,3 +64,5 @@ export const Footer = () => {
     </Box>
   );
 };
+
+export default Footer;
