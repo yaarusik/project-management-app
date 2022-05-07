@@ -10,7 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import { purple } from '@mui/material/colors';
-import LangSwitcher from '../AppRoutes/LangSwitcher';
+import LangSwitcher from '../LangSwitcher';
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
