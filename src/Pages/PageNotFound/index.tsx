@@ -9,9 +9,10 @@ function PageNotFound() {
         sx={{
           backgroundImage: 'url(images/404.jpg)',
           width: '100%',
-          height: '100vh',
+          height: '84.6vh',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'contain',
+          backgroundPosition: 'bottom',
         }}
       ></Box>
     </Container>
