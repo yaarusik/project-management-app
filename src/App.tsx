@@ -2,9 +2,9 @@ import AppRoutes from './Components/AppRoutes/AppRoutes';
 import Footer from './Components/Footer';
 import Header from './Components/Header';
 
-function App() {
+function App({ className }: { className: string }) {
   return (
-    <div className="App">
+    <div className={className}>
       <Header />
       <AppRoutes />
       <Footer />
