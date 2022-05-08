@@ -10,6 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import { purple } from '@mui/material/colors';
+import LangSwitcher from '../LangSwitcher';
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -42,6 +43,7 @@ const Header = () => {
             </Stack>
             <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
               <ColorButton variant="contained">Create new board</ColorButton>
+              <LangSwitcher />
               <IconButton aria-label="edit-profile">
                 <PersonIcon />
               </IconButton>
