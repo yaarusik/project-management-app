@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 
 function PageNotFound() {
   return (
-    <Container maxWidth="xl">
+    <Container sx={{ flex: '1 0 auto' }} maxWidth="xl">
       <Box
         component="div"
         sx={{
