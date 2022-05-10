@@ -8,12 +8,11 @@ export const FormBlock = styled.form`
   row-gap: 20px;
   text-align: center;
   padding: 30px;
-  letter-spacing: 1.2px;
   border: 2px solid rgba(2, 129, 237, 0.5);
   box-shadow: 2px 3px 3px rgba(2, 129, 237, 0.2);
   color: rgba(2, 129, 237, 1);
   border-radius: 24px;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 `;
 
 export const Title = styled(Box)`

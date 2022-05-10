@@ -29,7 +29,7 @@ const PageSignUp = () => {
   return (
     <FormWrapper>
       <FormBlock onSubmit={handleSubmit(onSubmit)}>
-        <Title>РЕГИСТРАЦИЯ</Title>
+        <Title>Registration</Title>
 
         <InputField
           InputProps={{
@@ -78,9 +78,9 @@ const PageSignUp = () => {
         </Submit>
 
         <Helper>
-          Если вы уже зарегистрированы - нажмите{' '}
+          If you are already registered - click{' '}
           <Link component={RouterLink} to="/login" color="inherit">
-            сюда
+            here
           </Link>
         </Helper>
       </FormBlock>
