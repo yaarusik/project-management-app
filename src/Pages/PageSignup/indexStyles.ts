@@ -7,7 +7,6 @@ export const FormBlock = styled.form`
   align-items: center;
   row-gap: 20px;
   text-align: center;
-  margin-top: 50px;
   padding: 30px;
   letter-spacing: 1.2px;
   border: 2px solid rgba(2, 129, 237, 0.5);
@@ -39,4 +38,5 @@ export const Helper = styled.div`
 export const FormWrapper = styled(Stack)`
   flex: 1 0 auto;
   align-items: center;
+  justify-content: center;
 `;
