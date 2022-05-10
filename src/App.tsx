@@ -1,14 +1,22 @@
 import AppRoutes from './Components/AppRoutes/AppRoutes';
 import Footer from './Components/Footer';
 import Header from './Components/Header';
+import { Box } from '@mui/material';
+import styled from 'styled-components';
 
-function App({ className }: { className: string }) {
+const AppBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+`;
+
+function App() {
   return (
-    <div className={className}>
+    <AppBox>
       <Header />
       <AppRoutes />
       <Footer />
-    </div>
+    </AppBox>
   );
 }
 
