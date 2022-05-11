@@ -11,6 +11,7 @@ import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import { purple } from '@mui/material/colors';
 import LangSwitcher from '../LangSwitcher';
+import { Link } from 'react-router-dom';
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -42,6 +43,12 @@ const Header = () => {
               </Typography>
             </Stack>
             <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
+              <Button component={Link} to="/login" color="success" variant="contained">
+                Log in
+              </Button>
+              <Button component={Link} to="/signup" color="success" variant="contained">
+                Sign up
+              </Button>
               <ColorButton variant="contained">Create new board</ColorButton>
               <LangSwitcher />
               <IconButton aria-label="edit-profile">
