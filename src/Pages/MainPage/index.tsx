@@ -1,9 +1,13 @@
+import { useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import BoardCard from '../../Components/BoardCard';
+import CreateNewBoard from '../../Components/CreateNewBoard';
+import { RootState } from '../../store/store';
 
 function MainPage() {
+  const isCreateNewBoard = useSelector((state: RootState) => state.root.isCreateNewBoard);
   return (
     <Container maxWidth="xl">
       <Box
@@ -35,6 +39,7 @@ function MainPage() {
             flexWrap: 'wrap',
           }}
         >
+          {isCreateNewBoard && <CreateNewBoard />}
           <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
           <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
           <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />

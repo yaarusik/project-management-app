@@ -1,13 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {};
+const initialState = {
+  isCreateNewBoard: false,
+};
 
 export const rootSlice = createSlice({
   name: 'root',
   initialState,
-  reducers: {},
+  reducers: {
+    setIsCreateNewBoard: (state, action) => {
+      state.isCreateNewBoard = action.payload;
+    },
+  },
 });
 
-export const {} = rootSlice.actions;
+export const { setIsCreateNewBoard } = rootSlice.actions;
 
 export default rootSlice.reducer;
