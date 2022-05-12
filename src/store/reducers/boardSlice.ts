@@ -1,16 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addNewBoard, getBoards } from '../Components/Api';
-
-const initialState = {
-  isCreateNewBoard: false,
-  boards: [
-    {
-      id: '',
-      title: '',
-    },
-  ],
-  title: '',
-};
+import { addNewBoard, getBoards } from '../../Components/Api';
+import initialState from '../initialState';
 
 export const rootSlice = createSlice({
   name: 'root',

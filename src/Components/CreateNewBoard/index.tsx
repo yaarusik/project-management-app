@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
-import { setIsCreateNewBoard } from '../../store/rootSlice';
+import { setIsCreateNewBoard } from '../../store/reducers/boardSlice';
 import { useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { IconButton } from '@mui/material';
