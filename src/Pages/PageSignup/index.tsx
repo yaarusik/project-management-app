@@ -7,7 +7,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import { IconButton, InputAdornment, Link } from '@mui/material';
 
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
-import EmailSharpIcon from '@mui/icons-material/EmailSharp';
 import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 
@@ -15,10 +14,13 @@ import { ISubmit } from './indexTypes';
 
 import { FormBlock, InputField, Submit, Title, Helper, FormWrapper } from './indexStyles';
 import { schema } from './indexValidation';
-import { api } from '../../utils/api/api';
+
+import { authorization, registration } from './../../utils/api/api';
+import { useAppDispatch } from './../../Components/BoardCard/index';
 
 const PageSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -38,21 +40,10 @@ const PageSignUp = () => {
   const onSubmit: SubmitHandler<ISubmit> = async (data) => {
     console.log('submit data >', JSON.stringify(data));
     try {
-      // preloader start
-      const registrationResponse = await api.registration(data);
-      if (registrationResponse.status === 409) {
-        console.log('Пользователь с таким адресом уже существует');
-      } else {
-        const { login, password } = data;
-
-        const authorizationResponse = await api.authorization(login, password);
-
-        const loginData = await authorizationResponse.json();
-
-        console.log('loginData >', loginData);
-
-        reset();
-      }
+      await dispatch(registration(data));
+      console.log('регистрация прошла успешно');
+      await dispatch(authorization(data));
+      reset();
     } catch (e) {
       console.log('error >', e);
     } finally {
