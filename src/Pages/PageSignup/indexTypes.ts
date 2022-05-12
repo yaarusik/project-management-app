@@ -1,5 +1,5 @@
 export interface ISubmit {
   name: string;
-  email: string;
+  login: string;
   password: string;
 }

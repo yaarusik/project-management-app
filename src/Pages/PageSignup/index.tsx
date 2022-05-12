@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -14,28 +14,8 @@ import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 import { ISubmit } from './indexTypes';
 
 import { FormBlock, InputField, Submit, Title, Helper, FormWrapper } from './indexStyles';
-
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .matches(
-      /^([а-яё\s]+|[a-z\s]+)$/gim,
-      'Имя может содержать только русские или английские буквы, без цифр'
-    )
-    .min(2, 'Минимальная длина имени 2 буквы')
-    .max(15, 'Максимальная длина имени 15 букв')
-    .required('Введите корректное имя'),
-  email: yup
-    .string()
-    .email('Введите корректную почту c содержанием @ и .')
-    .max(25, 'Максимальная длина почты 25 букв')
-    .required('Введите почту'),
-  password: yup
-    .string()
-    .min(8, 'Пароль должен быть больше чем 8 символов')
-    .max(15, 'Максимальная длина пароль 15 символов')
-    .required('Введите пароль'),
-});
+import { schema } from './indexValidation';
+import { api } from '../../utils/api/api';
 
 const PageSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,26 +29,31 @@ const PageSignUp = () => {
     reValidateMode: 'onSubmit',
   });
 
-  const { name, email, password } = errors;
+  const { name, login, password } = errors;
 
   const hundlerShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
   const onSubmit: SubmitHandler<ISubmit> = async (data) => {
+    console.log('submit data >', JSON.stringify(data));
     try {
-      console.log('submit data >', JSON.stringify(data));
-      const response = await fetch('https://deploy-kanban-manager.herokuapp.com/signup', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        const userRegistration = await response.json();
-        console.log('userRegistration >', userRegistration);
-        reset();
-      }
+      // preloader start
+
+      await api.registration(data);
+
+      const { login, password } = data;
+
+      const authorizationResponse = await api.authorization(login, password);
+      const loginData = await authorizationResponse.json();
+
+      console.log('loginData >', loginData);
+
+      reset();
     } catch (e) {
-      console.log((e as TypeError).message);
+      console.log('error >', e);
+    } finally {
+      // preloader stop
     }
   };
 
@@ -98,11 +83,11 @@ const PageSignUp = () => {
                 <EmailSharpIcon />
               </InputAdornment>
             ),
-            ...register('email'),
+            ...register('login'),
           }}
-          error={!!email}
-          label="Email"
-          helperText={!!email ? email.message : 'Please enter your name'}
+          error={!!login}
+          label="Login"
+          helperText={!!login ? login.message : 'Please enter your name'}
         />
 
         <InputField
