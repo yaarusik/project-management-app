@@ -6,12 +6,12 @@ import { CardActionArea } from '@mui/material';
 import { IBoardCard } from '../../types';
 import Button from '@mui/material/Button';
 
-function BoardCard({ imgSrc, title, description }: IBoardCard) {
+function BoardCard({ imgSrc, title }: IBoardCard) {
   return (
     <Card
       sx={{
-        minWidth: 610,
-        height: 140,
+        minWidth: 510,
+        height: 120,
         padding: '10px',
         margin: '10px',
         border: '2px solid rgba(2,129,237,0.2)',
@@ -25,12 +25,9 @@ function BoardCard({ imgSrc, title, description }: IBoardCard) {
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {description}
-          </Typography>
         </CardContent>
       </CardActionArea>
-      <Button variant="text" sx={{ left: '470px', color: 'rgba(255, 0, 0, 0.5)' }}>
+      <Button variant="text" sx={{ left: '370px', color: 'rgba(255, 0, 0, 0.5)' }}>
         Delete board
       </Button>
     </Card>

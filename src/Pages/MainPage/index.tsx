@@ -1,20 +1,31 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import BoardCard from '../../Components/BoardCard';
 import CreateNewBoard from '../../Components/CreateNewBoard';
-import { RootState } from '../../store/store';
+import { RootState, AppDispatch } from '../../store/store';
+import { getBoards } from '../../Components/Api';
+import { IFetchBoard } from '../../types';
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 function MainPage() {
-  const isCreateNewBoard = useSelector((state: RootState) => state.root.isCreateNewBoard);
+  const { title, boards, isCreateNewBoard } = useSelector((state: RootState) => state.root);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getBoards());
+    console.log(boards);
+  }, [title]);
+
   return (
-    <Container maxWidth="xl">
+    <Container sx={{ maxWidth: 'xl', minHeight: 'calc(100vh - 100px)' }}>
       <Box
         component="div"
         sx={{
           width: '100%',
-          height: 'calc(100vh - 100px)',
           padding: '20px',
         }}
       >
@@ -39,12 +50,12 @@ function MainPage() {
             flexWrap: 'wrap',
           }}
         >
-          {isCreateNewBoard && <CreateNewBoard />}
-          <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
-          <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
-          <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
-          <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
-          <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
+          <>
+            {boards.map((item: IFetchBoard) => (
+              <BoardCard imgSrc={'images/logo.png'} title={item.title} key={item.id} />
+            ))}
+            {isCreateNewBoard && <CreateNewBoard />}
+          </>
         </Box>
       </Box>
     </Container>

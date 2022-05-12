@@ -1,7 +1,15 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { addNewBoard, getBoards } from '../Components/Api';
 
 const initialState = {
   isCreateNewBoard: false,
+  boards: [
+    {
+      id: '',
+      title: '',
+    },
+  ],
+  title: '',
 };
 
 export const rootSlice = createSlice({
@@ -11,6 +19,14 @@ export const rootSlice = createSlice({
     setIsCreateNewBoard: (state, action) => {
       state.isCreateNewBoard = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getBoards.fulfilled, (state, action) => {
+      state.boards = action.payload;
+    });
+    builder.addCase(addNewBoard.fulfilled, (state, action) => {
+      state.title = action.payload;
+    });
   },
 });
 

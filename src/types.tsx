@@ -1,5 +1,9 @@
 export type IBoardCard = {
   imgSrc: string;
   title: string;
-  description: string;
+};
+
+export type IFetchBoard = {
+  id: string;
+  title: string;
 };
