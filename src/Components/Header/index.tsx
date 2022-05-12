@@ -39,12 +39,15 @@ const Header = () => {
             <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
               <img src="images/logo.png" alt="logo" width={50} height={50} />
               <Typography
+                component={Link}
+                to="/"
                 variant="h5"
                 sx={{
                   color: '#ffffff',
                   textTransform: 'uppercase',
                   fontFamily: '"Roboto","Helvetica","Arial",sans-serif;',
                   fontWeight: 500,
+                  textDecoration: 'none',
                 }}
               >
                 Task manager

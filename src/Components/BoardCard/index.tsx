@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { IBoardCard } from '../../types';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
 function BoardCard({ imgSrc, title }: IBoardCard) {
   return (
@@ -18,6 +19,8 @@ function BoardCard({ imgSrc, title }: IBoardCard) {
       }}
     >
       <CardActionArea
+        component={Link}
+        to="*"
         sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', gap: '20px' }}
       >
         <CardMedia sx={{ width: 70 }} component="img" height="70" image={imgSrc} alt="board img" />

@@ -17,7 +17,6 @@ function MainPage() {
 
   useEffect(() => {
     dispatch(getBoards());
-    console.log(boards);
   }, [title]);
 
   return (

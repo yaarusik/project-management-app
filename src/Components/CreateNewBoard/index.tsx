@@ -1,9 +1,8 @@
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import { setIsCreateNewBoard } from '../../store/rootSlice';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -15,7 +14,7 @@ import { IFetchBoard } from '../../types';
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 const CreateNewBoard = () => {
-  const { register, handleSubmit, reset } = useForm<IFetchBoard>();
+  const { register, handleSubmit } = useForm<IFetchBoard>();
   const dispatch = useAppDispatch();
 
   const onClicWin = (e: React.FormEvent) => {
