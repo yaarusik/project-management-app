@@ -13,7 +13,7 @@ import { iconArray } from '../../constants';
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 function MainPage() {
-  const { title, boards, isCreateNewBoard } = useSelector((state: RootState) => state.root);
+  const { title, boards, isCreateNewBoard } = useSelector((state: RootState) => state.boardSlice);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

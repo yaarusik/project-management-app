@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import { purple } from '@mui/material/colors';
 import LangSwitcher from '../LangSwitcher';
 import { Link } from 'react-router-dom';
-import { setIsCreateNewBoard } from '../../store/rootSlice';
+import { setIsCreateNewBoard } from '../../store/reducers/boardSlice';
 
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
