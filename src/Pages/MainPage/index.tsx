@@ -7,7 +7,7 @@ import BoardCard from '../../Components/BoardCard';
 import CreateNewBoard from '../../Components/CreateNewBoard';
 import { RootState, AppDispatch } from '../../store/store';
 import { getBoards } from '../../Components/Api';
-import { IFetchBoard } from '../../types';
+import { IFetchBoard } from './indexTypes';
 import { iconArray } from '../../constants';
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();

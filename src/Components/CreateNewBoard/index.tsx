@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Title, Submit } from '../../Pages/PageSignup/indexStyles';
 import { Overlay, ModalWin } from './indexStyles';
 import { addNewBoard } from '../Api';
-import { IFetchBoard } from '../../types';
+import { IFetchBoard } from '../../Pages/MainPage/indexTypes';
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 

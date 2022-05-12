@@ -3,8 +3,3 @@ export type IBoardCard = {
   title: string;
   id: string;
 };
-
-export type IFetchBoard = {
-  id: string;
-  title: string;
-};
