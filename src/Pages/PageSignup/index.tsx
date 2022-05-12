@@ -1,4 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -12,18 +14,50 @@ import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 import { ISubmit } from './indexTypes';
 
 import { FormBlock, InputField, Submit, Title, Helper, FormWrapper } from './indexStyles';
+import { schema } from './indexValidation';
+import { api } from '../../utils/api/api';
 
 const PageSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit, reset } = useForm<ISubmit>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ISubmit>({
+    resolver: yupResolver(schema),
+    reValidateMode: 'onSubmit',
+  });
+
+  const { name, login, password } = errors;
 
   const hundlerShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const onSubmit: SubmitHandler<ISubmit> = (data) => {
-    console.log(JSON.stringify(data));
-    reset();
+  const onSubmit: SubmitHandler<ISubmit> = async (data) => {
+    console.log('submit data >', JSON.stringify(data));
+    try {
+      // preloader start
+      const registrationResponse = await api.registration(data);
+      if (registrationResponse.status === 409) {
+        console.log('Пользователь с таким адресом уже существует');
+      } else {
+        const { login, password } = data;
+
+        const authorizationResponse = await api.authorization(login, password);
+
+        const loginData = await authorizationResponse.json();
+
+        console.log('loginData >', loginData);
+
+        reset();
+      }
+    } catch (e) {
+      console.log('error >', e);
+    } finally {
+      // preloader stop
+    }
   };
 
   return (
@@ -40,21 +74,18 @@ const PageSignUp = () => {
             ),
             ...register('name'),
           }}
+          error={!!name}
           label="Name"
-          helperText="Please enter your name"
+          helperText={!!name ? name.message : 'Please enter your name'}
         />
 
         <InputField
           InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailSharpIcon />
-              </InputAdornment>
-            ),
-            ...register('email'),
+            ...register('login'),
           }}
-          label="Email"
-          helperText="Please enter your email"
+          error={!!login}
+          label="Login"
+          helperText={!!login ? login.message : 'Please enter your name'}
         />
 
         <InputField
@@ -69,8 +100,9 @@ const PageSignUp = () => {
             type: showPassword ? 'text' : 'password',
             ...register('password'),
           }}
+          error={!!password}
           label="Password"
-          helperText="Please enter your password"
+          helperText={!!password ? password.message : 'Please enter your password'}
         />
 
         <Submit type="submit" color="success" variant="contained">
