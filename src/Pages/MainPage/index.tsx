@@ -17,7 +17,7 @@ function MainPage() {
 
   useEffect(() => {
     dispatch(getBoards());
-  }, [title]);
+  }, [title, boards]);
 
   return (
     <Container sx={{ maxWidth: 'xl', minHeight: 'calc(100vh - 100px)' }}>
@@ -51,7 +51,7 @@ function MainPage() {
         >
           <>
             {boards.map((item: IFetchBoard) => (
-              <BoardCard imgSrc={'images/logo.png'} title={item.title} key={item.id} />
+              <BoardCard imgSrc={'images/logo.png'} title={item.title} key={item.id} id={item.id} />
             ))}
             {isCreateNewBoard && <CreateNewBoard />}
           </>

@@ -1,3 +1,5 @@
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -6,8 +8,17 @@ import { CardActionArea } from '@mui/material';
 import { IBoardCard } from '../../types';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import { deleteBoard } from '../Api';
 
-function BoardCard({ imgSrc, title }: IBoardCard) {
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+function BoardCard({ imgSrc, title, id }: IBoardCard) {
+  const dispatch = useAppDispatch();
+
+  const onClickDelete = () => {
+    dispatch(deleteBoard(id));
+  };
+
   return (
     <Card
       sx={{
@@ -30,7 +41,11 @@ function BoardCard({ imgSrc, title }: IBoardCard) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <Button variant="text" sx={{ left: '370px', color: 'rgba(255, 0, 0, 0.5)' }}>
+      <Button
+        onClick={onClickDelete}
+        variant="text"
+        sx={{ left: '370px', color: 'rgba(255, 0, 0, 0.5)' }}
+      >
         Delete board
       </Button>
     </Card>
