@@ -8,6 +8,7 @@ import CreateNewBoard from '../../Components/CreateNewBoard';
 import { RootState, AppDispatch } from '../../store/store';
 import { getBoards } from '../../Components/Api';
 import { IFetchBoard } from '../../types';
+import { iconArray } from '../../constants';
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 
@@ -50,9 +51,16 @@ function MainPage() {
           }}
         >
           <>
-            {boards.map((item: IFetchBoard) => (
-              <BoardCard imgSrc={'images/logo.png'} title={item.title} key={item.id} id={item.id} />
-            ))}
+            {boards.map((item: IFetchBoard, i: number) => {
+              return (
+                <BoardCard
+                  imgSrc={iconArray[i % iconArray.length]}
+                  title={item.title}
+                  key={item.id}
+                  id={item.id}
+                />
+              );
+            })}
             {isCreateNewBoard && <CreateNewBoard />}
           </>
         </Box>

@@ -23,9 +23,9 @@ function BoardCard({ imgSrc, title, id }: IBoardCard) {
     <Card
       sx={{
         minWidth: 510,
-        height: 120,
+        height: 100,
         padding: '10px',
-        margin: '10px',
+        margin: '15px 20px',
         border: '2px solid rgba(2,129,237,0.2)',
       }}
     >
@@ -44,7 +44,7 @@ function BoardCard({ imgSrc, title, id }: IBoardCard) {
       <Button
         onClick={onClickDelete}
         variant="text"
-        sx={{ left: '370px', color: 'rgba(255, 0, 0, 0.5)' }}
+        sx={{ top: '-30px', left: '370px', color: 'rgba(255, 0, 0, 0.5)' }}
       >
         Delete board
       </Button>
