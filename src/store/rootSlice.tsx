@@ -1,13 +1,35 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { addNewBoard, getBoards } from '../Components/Api';
 
-const initialState = {};
+const initialState = {
+  isCreateNewBoard: false,
+  boards: [
+    {
+      id: '',
+      title: '',
+    },
+  ],
+  title: '',
+};
 
 export const rootSlice = createSlice({
   name: 'root',
   initialState,
-  reducers: {},
+  reducers: {
+    setIsCreateNewBoard: (state, action) => {
+      state.isCreateNewBoard = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getBoards.fulfilled, (state, action) => {
+      state.boards = action.payload;
+    });
+    builder.addCase(addNewBoard.fulfilled, (state, action) => {
+      state.title = action.payload;
+    });
+  },
 });
 
-export const {} = rootSlice.actions;
+export const { setIsCreateNewBoard } = rootSlice.actions;
 
 export default rootSlice.reducer;
