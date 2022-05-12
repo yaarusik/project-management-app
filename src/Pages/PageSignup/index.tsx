@@ -39,17 +39,20 @@ const PageSignUp = () => {
     console.log('submit data >', JSON.stringify(data));
     try {
       // preloader start
+      const registrationResponse = await api.registration(data);
+      if (registrationResponse.status === 409) {
+        console.log('Пользователь с таким адресом уже существует');
+      } else {
+        const { login, password } = data;
 
-      await api.registration(data);
+        const authorizationResponse = await api.authorization(login, password);
 
-      const { login, password } = data;
+        const loginData = await authorizationResponse.json();
 
-      const authorizationResponse = await api.authorization(login, password);
-      const loginData = await authorizationResponse.json();
+        console.log('loginData >', loginData);
 
-      console.log('loginData >', loginData);
-
-      reset();
+        reset();
+      }
     } catch (e) {
       console.log('error >', e);
     } finally {
@@ -78,11 +81,6 @@ const PageSignUp = () => {
 
         <InputField
           InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailSharpIcon />
-              </InputAdornment>
-            ),
             ...register('login'),
           }}
           error={!!login}
