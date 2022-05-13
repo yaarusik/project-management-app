@@ -1,3 +1,5 @@
+import { useLocation } from 'react-router-dom';
+
 import Button, { ButtonProps } from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Stack from '@mui/material/Stack';
@@ -22,6 +24,9 @@ const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 const Header = () => {
+  const location = useLocation();
+  const isWelcomePage = location.pathname === '/welcome';
+
   return (
     <AppBar position="sticky">
       <Box component="header" sx={{ bgcolor: '#0281ed', height: '60px', paddingTop: '5px' }}>
@@ -49,14 +54,18 @@ const Header = () => {
               <Button component={Link} to="/signup" color="success" variant="contained">
                 Sign up
               </Button>
-              <ColorButton variant="contained">Create new board</ColorButton>
-              <LangSwitcher />
-              <IconButton aria-label="edit-profile">
-                <PersonIcon />
-              </IconButton>
-              <IconButton aria-label="logout">
-                <LogoutIcon />
-              </IconButton>
+              {isWelcomePage ? null : (
+                <>
+                  <ColorButton variant="contained">Create new board</ColorButton>
+                  <LangSwitcher />
+                  <IconButton aria-label="edit-profile">
+                    <PersonIcon />
+                  </IconButton>
+                  <IconButton aria-label="logout">
+                    <LogoutIcon />
+                  </IconButton>
+                </>
+              )}
             </Stack>
           </Stack>
         </Container>
