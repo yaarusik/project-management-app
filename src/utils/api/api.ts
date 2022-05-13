@@ -1,6 +1,7 @@
 import { ISubmit } from '../../Pages/PageSignup/indexTypes';
 import { BASE_URL } from '../../constants';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { IAuthorization } from '../../Pages/PageLogin/indexTypes';
 
 const fetchOptions = {
   method: 'POST',
@@ -31,7 +32,7 @@ export const registration = createAsyncThunk(
 
 export const authorization = createAsyncThunk(
   'root/authorization',
-  async (data: ISubmit, { rejectWithValue }) => {
+  async (data: ISubmit | IAuthorization, { rejectWithValue }) => {
     try {
       const { login, password } = data;
       const res = await fetch(`${BASE_URL}/signin`, {
