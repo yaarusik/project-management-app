@@ -8,14 +8,12 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { Title, Submit } from '../../Pages/PageSignup/indexStyles';
 import { Overlay, ModalWin } from './indexStyles';
-import { addNewBoard } from '../Api';
+import { addNewBoard } from '../Api/boards';
 import { IFetchBoard } from '../../Pages/MainPage/indexTypes';
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 const CreateNewBoard = () => {
   const { register, handleSubmit } = useForm<IFetchBoard>();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const onClicWin = (e: React.FormEvent) => {
     e.stopPropagation();

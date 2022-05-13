@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addNewBoard, getBoards } from '../../Components/Api';
+import { addNewBoard, getBoards } from '../../Components/Api/boards';
 import initialState from '../initialState';
 
 export const rootSlice = createSlice({
@@ -15,7 +15,7 @@ export const rootSlice = createSlice({
       state.boards = action.payload;
     });
     builder.addCase(addNewBoard.fulfilled, (state, action) => {
-      state.title = action.payload;
+      state.currentBoardTitle = action.payload;
     });
   },
 });

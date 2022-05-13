@@ -6,15 +6,17 @@ import Container from '@mui/material/Container';
 import BoardCard from '../../Components/BoardCard';
 import CreateNewBoard from '../../Components/CreateNewBoard';
 import { RootState, AppDispatch } from '../../store/store';
-import { getBoards } from '../../Components/Api';
+import { getBoards } from '../../Components/Api/boards';
 import { IFetchBoard } from './indexTypes';
 import { iconArray } from '../../constants';
 
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-
 function MainPage() {
-  const { title, boards, isCreateNewBoard } = useSelector((state: RootState) => state.boardSlice);
-  const dispatch = useAppDispatch();
+  const {
+    currentBoardTitle: title,
+    boards,
+    isCreateNewBoard,
+  } = useSelector((state: RootState) => state.boardSlice);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(getBoards());

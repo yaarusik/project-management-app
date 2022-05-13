@@ -1,9 +1,11 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import boardSlice from './reducers/boardSlice';
 import authSlice from './reducers/authSlice';
+import columnSlice from './reducers/columnSlice';
 
 const rootReducer = combineReducers({
   boardSlice,
+  columnSlice,
   authSlice,
 });
 

@@ -8,15 +8,18 @@ import { CardActionArea } from '@mui/material';
 import { IBoardCard } from './indexTypes';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { deleteBoard } from '../Api';
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
+import { deleteBoard } from '../Api/boards';
+import { getColumns } from '../Api/columns';
 
 function BoardCard({ imgSrc, title, id }: IBoardCard) {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const onClickDelete = () => {
     dispatch(deleteBoard(id));
+  };
+
+  const selectBoardHandler = () => {
+    dispatch(getColumns(id));
   };
 
   return (
@@ -30,8 +33,9 @@ function BoardCard({ imgSrc, title, id }: IBoardCard) {
       }}
     >
       <CardActionArea
+        onClick={selectBoardHandler}
         component={Link}
-        to="*"
+        to="/board"
         sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', gap: '20px' }}
       >
         <CardMedia sx={{ width: 70 }} component="img" height="70" image={imgSrc} alt="board img" />
