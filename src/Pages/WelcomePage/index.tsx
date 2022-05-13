@@ -104,7 +104,7 @@ const WelcomePage = () => {
             href="https://rs.school/react/"
             target="_blank"
           >
-            RSS REACT 2022 Q2
+            RSS REACT 2022 Q1
           </Button>
         </Container>
       </Container>
