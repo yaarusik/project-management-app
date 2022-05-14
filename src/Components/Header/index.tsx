@@ -1,4 +1,5 @@
-import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+
 import Button, { ButtonProps } from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Stack from '@mui/material/Stack';
@@ -14,6 +15,7 @@ import { purple } from '@mui/material/colors';
 import LangSwitcher from '../LangSwitcher';
 import { Link } from 'react-router-dom';
 import { setIsCreateNewBoard } from '../../store/reducers/boardSlice';
+import { useDispatch } from 'react-redux';
 
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -24,6 +26,9 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 const Header = () => {
+  const location = useLocation();
+  const isWelcomePage = location.pathname === '/welcome';
+
   const dispatch = useDispatch();
 
   const createNewBoardHandler = () => {
@@ -60,16 +65,20 @@ const Header = () => {
               <Button component={Link} to="/signup" color="success" variant="contained">
                 Sign up
               </Button>
-              <ColorButton onClick={createNewBoardHandler} variant="contained">
-                Create new board
-              </ColorButton>
-              <LangSwitcher />
-              <IconButton aria-label="edit-profile">
-                <PersonIcon />
-              </IconButton>
-              <IconButton aria-label="logout">
-                <LogoutIcon />
-              </IconButton>
+              {!isWelcomePage && (
+                <>
+                  <ColorButton onClick={createNewBoardHandler} variant="contained">
+                    Create new board
+                  </ColorButton>
+                  <LangSwitcher />
+                  <IconButton aria-label="edit-profile">
+                    <PersonIcon />
+                  </IconButton>
+                  <IconButton aria-label="logout">
+                    <LogoutIcon />
+                  </IconButton>
+                </>
+              )}
             </Stack>
           </Stack>
         </Container>
