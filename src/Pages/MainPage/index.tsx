@@ -1,16 +1,31 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import BoardCard from '../../Components/BoardCard';
+import CreateNewBoard from '../../Components/CreateNewBoard';
+import { RootState, AppDispatch } from '../../store/store';
+import { getBoards } from '../../Components/Api';
+import { IFetchBoard } from './indexTypes';
+import { iconArray } from '../../constants';
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 function MainPage() {
+  const { title, boards, isCreateNewBoard } = useSelector((state: RootState) => state.boardSlice);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getBoards());
+  }, [title, boards]);
+
   return (
-    <Container maxWidth="xl">
+    <Container sx={{ maxWidth: 'xl', minHeight: 'calc(100vh - 100px)' }}>
       <Box
         component="div"
         sx={{
           width: '100%',
-          height: 'calc(100vh - 100px)',
           padding: '20px',
         }}
       >
@@ -35,11 +50,19 @@ function MainPage() {
             flexWrap: 'wrap',
           }}
         >
-          <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
-          <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
-          <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
-          <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
-          <BoardCard imgSrc={'images/logo.png'} title={'Board-1'} description={'Here is Board-1'} />
+          <>
+            {boards.map((item: IFetchBoard, i: number) => {
+              return (
+                <BoardCard
+                  imgSrc={iconArray[i % iconArray.length]}
+                  title={item.title}
+                  key={item.id}
+                  id={item.id}
+                />
+              );
+            })}
+            {isCreateNewBoard && <CreateNewBoard />}
+          </>
         </Box>
       </Box>
     </Container>

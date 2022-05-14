@@ -1,23 +1,37 @@
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import { IBoardCard } from '../../types';
+import { IBoardCard } from './indexTypes';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
+import { deleteBoard } from '../Api';
 
-function BoardCard({ imgSrc, title, description }: IBoardCard) {
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+function BoardCard({ imgSrc, title, id }: IBoardCard) {
+  const dispatch = useAppDispatch();
+
+  const onClickDelete = () => {
+    dispatch(deleteBoard(id));
+  };
+
   return (
     <Card
       sx={{
-        minWidth: 610,
-        height: 140,
+        minWidth: 510,
+        height: 100,
         padding: '10px',
-        margin: '10px',
+        margin: '15px 20px',
         border: '2px solid rgba(2,129,237,0.2)',
       }}
     >
       <CardActionArea
+        component={Link}
+        to="*"
         sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', gap: '20px' }}
       >
         <CardMedia sx={{ width: 70 }} component="img" height="70" image={imgSrc} alt="board img" />
@@ -25,12 +39,13 @@ function BoardCard({ imgSrc, title, description }: IBoardCard) {
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {description}
-          </Typography>
         </CardContent>
       </CardActionArea>
-      <Button variant="text" sx={{ left: '470px', color: 'rgba(255, 0, 0, 0.5)' }}>
+      <Button
+        onClick={onClickDelete}
+        variant="text"
+        sx={{ top: '-30px', left: '370px', color: 'rgba(255, 0, 0, 0.5)' }}
+      >
         Delete board
       </Button>
     </Card>
