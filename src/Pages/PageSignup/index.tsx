@@ -38,7 +38,7 @@ const PageSignUp = () => {
   };
 
   const onSubmit: SubmitHandler<ISubmit> = async (data) => {
-    console.log('submit data >', JSON.stringify(data));
+    // console.log('submit data >', JSON.stringify(data));
     try {
       const { meta } = await dispatch(registration(data));
 
