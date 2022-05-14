@@ -11,14 +11,19 @@ import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 
 import { authorization } from '../../utils/api/api';
 import { useAppDispatch } from '../../store/redux/redux';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const PageLogin = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<IAuthorization>({
     reValidateMode: 'onSubmit',
@@ -29,12 +34,15 @@ const PageLogin = () => {
   const onSubmit: SubmitHandler<IAuthorization> = async (data) => {
     console.log('submit data >', JSON.stringify(data));
     try {
-      await dispatch(authorization(data));
-      reset();
+      const { payload } = await dispatch(authorization(data));
+      if (payload.token) {
+        // если успешно все
+        Cookies.set('user', payload.token);
+        console.log(payload.token);
+        navigate('/mainPage');
+      }
     } catch (e) {
       console.log('error >', e);
-    } finally {
-      // preloader stop
     }
   };
 

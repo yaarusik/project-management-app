@@ -3,12 +3,12 @@ import { BASE_URL } from '../../constants';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IAuthorization } from '../../Pages/PageLogin/indexTypes';
 
+const requestHeaders = new Headers();
+requestHeaders.set('Content-Type', 'application/json');
+
 const fetchOptions = {
   method: 'POST',
-  headers: {
-    accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
+  headers: requestHeaders,
 };
 
 export const registration = createAsyncThunk(
@@ -21,10 +21,9 @@ export const registration = createAsyncThunk(
       });
 
       if (res.status === 409) {
-        console.log('Пользователь с таким логином уже существует');
+        throw new Error('Пользователь с таким логином уже существует');
       }
     } catch (err) {
-      console.log(err);
       return rejectWithValue((err as TypeError).message);
     }
   }
@@ -41,12 +40,13 @@ export const authorization = createAsyncThunk(
       });
 
       if (res.status === 403) {
-        console.log('Что-то пошло не так');
+        console.log('Проверьте логин или пароль');
       }
 
       const loginData = await res.json();
 
       console.log('loginData >', loginData);
+      return loginData;
     } catch (err) {
       console.log(err);
       return rejectWithValue((err as TypeError).message);

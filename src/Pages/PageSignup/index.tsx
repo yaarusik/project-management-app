@@ -2,7 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { IconButton, InputAdornment, Link } from '@mui/material';
 
@@ -15,16 +15,20 @@ import { ISubmit } from './indexTypes';
 import { FormBlock, InputField, Submit, Title, Helper, FormWrapper } from './indexStyles';
 import { schema } from './indexValidation';
 
-import { authorization, registration } from './../../utils/api/api';
+import { registration } from './../../utils/api/api';
 import { useAppDispatch } from './../../Components/BoardCard/index';
+import { useAppSelector } from '../../store/redux/redux';
+import { authSlice } from './../../store/reducers/authSlice';
 
 const PageSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { status } = useAppSelector((state) => state.authSlice);
+  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<ISubmit>({
     resolver: yupResolver(schema),
@@ -40,14 +44,14 @@ const PageSignUp = () => {
   const onSubmit: SubmitHandler<ISubmit> = async (data) => {
     console.log('submit data >', JSON.stringify(data));
     try {
-      await dispatch(registration(data));
-      console.log('регистрация прошла успешно');
-      await dispatch(authorization(data));
-      reset();
+      const { meta } = await dispatch(registration(data));
+      console.log('userData >', meta.requestStatus);
+
+      if (meta.requestStatus === 'fulfilled') {
+        navigate('/login');
+      }
     } catch (e) {
       console.log('error >', e);
-    } finally {
-      // preloader stop
     }
   };
 
