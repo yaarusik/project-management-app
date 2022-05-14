@@ -65,9 +65,11 @@ const Header = () => {
               <Button component={Link} to="/signup" color="success" variant="contained">
                 Sign up
               </Button>
-              {isWelcomePage ? null : (
+              {!isWelcomePage && (
                 <>
-                  <ColorButton variant="contained">Create new board</ColorButton>
+                  <ColorButton onClick={createNewBoardHandler} variant="contained">
+                    Create new board
+                  </ColorButton>
                   <LangSwitcher />
                   <IconButton aria-label="edit-profile">
                     <PersonIcon />
@@ -77,16 +79,6 @@ const Header = () => {
                   </IconButton>
                 </>
               )}
-              <ColorButton onClick={createNewBoardHandler} variant="contained">
-                Create new board
-              </ColorButton>
-              <LangSwitcher />
-              <IconButton aria-label="edit-profile">
-                <PersonIcon />
-              </IconButton>
-              <IconButton aria-label="logout">
-                <LogoutIcon />
-              </IconButton>
             </Stack>
           </Stack>
         </Container>
