@@ -17,12 +17,9 @@ import { schema } from './indexValidation';
 
 import { registration } from './../../utils/api/api';
 import { useAppDispatch } from './../../Components/BoardCard/index';
-import { useAppSelector } from '../../store/redux/redux';
-import { authSlice } from './../../store/reducers/authSlice';
 
 const PageSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { status } = useAppSelector((state) => state.authSlice);
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
@@ -32,7 +29,6 @@ const PageSignUp = () => {
     formState: { errors },
   } = useForm<ISubmit>({
     resolver: yupResolver(schema),
-    reValidateMode: 'onSubmit',
   });
 
   const { name, login, password } = errors;
@@ -45,7 +41,6 @@ const PageSignUp = () => {
     console.log('submit data >', JSON.stringify(data));
     try {
       const { meta } = await dispatch(registration(data));
-      console.log('userData >', meta.requestStatus);
 
       if (meta.requestStatus === 'fulfilled') {
         navigate('/login');
@@ -80,7 +75,7 @@ const PageSignUp = () => {
           }}
           error={!!login}
           label="Login"
-          helperText={!!login ? login.message : 'Please enter your name'}
+          helperText={!!login ? login.message : 'Please enter your login'}
         />
 
         <InputField

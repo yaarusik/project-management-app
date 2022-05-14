@@ -6,7 +6,7 @@ import { IAuthorization } from '../../Pages/PageLogin/indexTypes';
 const requestHeaders = new Headers();
 requestHeaders.set('Content-Type', 'application/json');
 
-const fetchOptions = {
+export const fetchOptions = {
   method: 'POST',
   headers: requestHeaders,
 };
@@ -40,7 +40,7 @@ export const authorization = createAsyncThunk(
       });
 
       if (res.status === 403) {
-        console.log('Проверьте логин или пароль');
+        throw new Error('Проверьте логин или пароль');
       }
 
       const loginData = await res.json();
@@ -48,7 +48,6 @@ export const authorization = createAsyncThunk(
       console.log('loginData >', loginData);
       return loginData;
     } catch (err) {
-      console.log(err);
       return rejectWithValue((err as TypeError).message);
     }
   }

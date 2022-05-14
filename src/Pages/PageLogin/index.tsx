@@ -38,8 +38,8 @@ const PageLogin = () => {
       if (payload.token) {
         // если успешно все
         Cookies.set('user', payload.token);
-        console.log(payload.token);
         navigate('/mainPage');
+      } else {
       }
     } catch (e) {
       console.log('error >', e);

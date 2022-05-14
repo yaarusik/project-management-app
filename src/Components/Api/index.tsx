@@ -3,7 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
 const userToken = Cookies.get('user');
-console.log(userToken);
 
 export const getBoards = createAsyncThunk('root/getBoards', async () => {
   const res = await fetch(`${BASE_URL}/boards`, {
@@ -18,7 +17,6 @@ export const getBoards = createAsyncThunk('root/getBoards', async () => {
   // }
 
   const data = await res.json();
-  console.log(userToken);
   return data;
 });
 

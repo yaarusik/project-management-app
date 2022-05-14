@@ -1,4 +1,6 @@
 import * as yup from 'yup';
+import { BASE_URL } from '../../constants';
+import { fetchOptions } from '../../utils/api/api';
 
 export const schema = yup.object().shape({
   name: yup
@@ -15,7 +17,17 @@ export const schema = yup.object().shape({
     .matches(/^[a-z][a-z0-9]*$/i, 'Логин содержить только английские буквы и цифры')
     .min(3, 'Минимальная длина логина 3 буквы')
     .max(15, 'Максимальная длина логина 15 букв')
-    .required('Введите логин'),
+    .required('Введите логин')
+    .test('проверка логина', 'Данный логин уже существует', function () {
+      return new Promise((resolve) => {
+        fetch(`${BASE_URL}/signin`, {
+          ...fetchOptions,
+          body: JSON.stringify({ login: this.parent.login, password: this.parent.password }),
+        })
+          .then(() => resolve(true))
+          .catch(() => resolve(false));
+      });
+    }),
   password: yup
     .string()
     .min(8, 'Пароль должен быть больше чем 8 символов')
