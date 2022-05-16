@@ -5,12 +5,12 @@ export const columnSlice = createSlice({
   name: 'column',
   initialState,
   reducers: {
-    setIsCreateNewColumn: (state, action) => {
-      state.isCreateNewColumn = action.payload;
+    setIsModalNewColumn: (state, action) => {
+      state.isModalNewColumn = action.payload;
     },
   },
 });
 
-export const { setIsCreateNewColumn } = columnSlice.actions;
+export const { setIsModalNewColumn } = columnSlice.actions;
 
 export default columnSlice.reducer;

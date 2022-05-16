@@ -9,7 +9,7 @@ import WelcomePage from '../../Pages/WelcomePage';
 
 import RequireAuth from '../../hoc/RequireAuth';
 
-function AppRoutes() {
+const AppRoutes = () => {
   return (
     <Routes>
       <Route
@@ -27,6 +27,6 @@ function AppRoutes() {
       <Route path="/welcome" element={<WelcomePage />} />
     </Routes>
   );
-}
+};
 
 export default AppRoutes;

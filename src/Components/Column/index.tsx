@@ -1,5 +1,5 @@
 import { Box, IconButton } from '@mui/material';
-import { ColumnWrapper, Title, TitleWrapper } from './indexStyles';
+import { ColumnWrapper, Title, TitleWrapper } from './styles';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 

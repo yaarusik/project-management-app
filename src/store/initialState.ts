@@ -1,7 +1,6 @@
 const initialState: InitialState = {
-  isCreateNewBoard: false,
-  isCreateNewColumn: false,
-  isDeleteBoard: '',
+  isModalNewBoard: false,
+  isModalNewColumn: false,
   boards: [
     {
       id: '',
@@ -11,7 +10,6 @@ const initialState: InitialState = {
   isAuth: false,
   status: null,
   error: null,
-  currentBoardTitle: '',
   selectedBoardTitle: '',
   columns: [
     {
@@ -36,12 +34,10 @@ interface IColumn {
 }
 
 interface InitialState {
-  isCreateNewBoard: boolean;
-  isCreateNewColumn: boolean;
-  isDeleteBoard: string;
+  isModalNewBoard: boolean;
+  isModalNewColumn: boolean;
   boards: IBoards[];
   columns: IColumn[];
-  currentBoardTitle: string;
   selectedBoardTitle: string;
   isAuth: boolean;
   status: null | string;

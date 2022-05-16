@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import { purple } from '@mui/material/colors';
 import LangSwitcher from '../LangSwitcher';
 import { Link } from 'react-router-dom';
-import { setIsCreateNewBoard } from '../../store/reducers/boardSlice';
+import { setIsModalNewBoard } from '../../store/reducers/boardSlice';
 import { useDispatch } from 'react-redux';
 
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
@@ -32,7 +32,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const createNewBoardHandler = () => {
-    dispatch(setIsCreateNewBoard(true));
+    dispatch(setIsModalNewBoard(true));
   };
 
   return (

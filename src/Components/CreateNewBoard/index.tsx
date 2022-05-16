@@ -1,32 +1,27 @@
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store/store';
-import { setIsCreateNewBoard } from '../../store/reducers/boardSlice';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { setIsModalNewBoard } from '../../store/reducers/boardSlice';
+import { useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { Title, Submit } from '../../Pages/PageSignup/indexStyles';
-import { Overlay, ModalWin } from './indexStyles';
+import { Overlay, ModalWin } from './styles';
 import { IFetchBoard } from '../../Pages/MainPage/indexTypes';
-import { setIsCreateNewColumn } from '../../store/reducers/columnSlice';
-
-type ITitle = {
-  titleName: string;
-  submitFunc: SubmitHandler<IFetchBoard>;
-};
+import { setIsModalNewColumn } from '../../store/reducers/columnSlice';
+import { useAppDispatch } from '../../store/redux/redux';
+import { ITitle } from './types';
 
 const CreateNewBoard = ({ titleName, submitFunc }: ITitle) => {
   const { register, handleSubmit } = useForm<IFetchBoard>();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const onClicWin = (e: React.FormEvent) => {
     e.stopPropagation();
   };
 
   const onClickClose = () => {
-    dispatch(setIsCreateNewBoard(false));
-    dispatch(setIsCreateNewColumn(false));
+    dispatch(setIsModalNewBoard(false));
+    dispatch(setIsModalNewColumn(false));
   };
 
   return (
