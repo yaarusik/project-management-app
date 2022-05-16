@@ -10,7 +10,7 @@ export const Column = () => {
         <TitleWrapper>
           <Title>Column Name</Title>
           <Box>
-            <IconButton aria-label="delete">
+            <IconButton aria-label="add">
               <AddIcon color="secondary" />
             </IconButton>
             <IconButton aria-label="delete">

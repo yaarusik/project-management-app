@@ -9,18 +9,27 @@ import { RootState, AppDispatch } from '../../store/store';
 import { getBoards } from '../../Components/Api/boards';
 import { IFetchBoard } from './indexTypes';
 import { iconArray } from '../../constants';
+import { addNewBoard } from '../../Components/Api/boards';
+import { setIsCreateNewBoard } from '../../store/reducers/boardSlice';
 
 function MainPage() {
   const {
     currentBoardTitle: title,
     boards,
     isCreateNewBoard,
+    isDeleteBoard,
   } = useSelector((state: RootState) => state.boardSlice);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
+    console.log('boards');
     dispatch(getBoards());
-  }, [title, boards]);
+  }, [title, isDeleteBoard]);
+
+  const createBoard = (data: IFetchBoard) => {
+    dispatch(addNewBoard(data.title));
+    dispatch(setIsCreateNewBoard(false));
+  };
 
   return (
     <Container sx={{ maxWidth: 'xl', minHeight: 'calc(100vh - 100px)' }}>
@@ -63,7 +72,7 @@ function MainPage() {
                 />
               );
             })}
-            {isCreateNewBoard && <CreateNewBoard />}
+            {isCreateNewBoard && <CreateNewBoard titleName={'board'} submitFunc={createBoard} />}
           </>
         </Box>
       </Box>

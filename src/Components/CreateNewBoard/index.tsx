@@ -1,17 +1,22 @@
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import { setIsCreateNewBoard } from '../../store/reducers/boardSlice';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { Title, Submit } from '../../Pages/PageSignup/indexStyles';
 import { Overlay, ModalWin } from './indexStyles';
-import { addNewBoard } from '../Api/boards';
 import { IFetchBoard } from '../../Pages/MainPage/indexTypes';
+import { setIsCreateNewColumn } from '../../store/reducers/columnSlice';
 
-const CreateNewBoard = () => {
+type ITitle = {
+  titleName: string;
+  submitFunc: SubmitHandler<IFetchBoard>;
+};
+
+const CreateNewBoard = ({ titleName, submitFunc }: ITitle) => {
   const { register, handleSubmit } = useForm<IFetchBoard>();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -21,16 +26,12 @@ const CreateNewBoard = () => {
 
   const onClickClose = () => {
     dispatch(setIsCreateNewBoard(false));
-  };
-
-  const createBoard = (data: IFetchBoard) => {
-    dispatch(addNewBoard(data.title));
-    dispatch(setIsCreateNewBoard(false));
+    dispatch(setIsCreateNewColumn(false));
   };
 
   return (
     <Overlay>
-      <ModalWin onClick={onClicWin} onSubmit={handleSubmit(createBoard)}>
+      <ModalWin onClick={onClicWin} onSubmit={handleSubmit(submitFunc)}>
         <IconButton
           onClick={onClickClose}
           sx={{ position: 'absolute', left: '88%', bottom: '85%' }}
@@ -38,7 +39,7 @@ const CreateNewBoard = () => {
         >
           <CloseIcon />
         </IconButton>
-        <Title>Create new board</Title>
+        <Title>Create new {titleName}</Title>
         <TextField
           InputProps={{
             ...register('title'),
@@ -50,7 +51,7 @@ const CreateNewBoard = () => {
           helperText="Please enter your title board"
         />
         <Submit type="submit" variant="outlined" color="secondary">
-          Create new board
+          Create new {titleName}
         </Submit>
       </ModalWin>
     </Overlay>

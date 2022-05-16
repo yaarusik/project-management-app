@@ -9,6 +9,12 @@ export const rootSlice = createSlice({
     setIsCreateNewBoard: (state, action) => {
       state.isCreateNewBoard = action.payload;
     },
+    setIsDeleteBoard: (state, action) => {
+      state.isDeleteBoard = action.payload;
+    },
+    setSelectedBoardTitle: (state, action) => {
+      state.selectedBoardTitle = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getBoards.fulfilled, (state, action) => {
@@ -20,6 +26,6 @@ export const rootSlice = createSlice({
   },
 });
 
-export const { setIsCreateNewBoard } = rootSlice.actions;
+export const { setIsCreateNewBoard, setIsDeleteBoard, setSelectedBoardTitle } = rootSlice.actions;
 
 export default rootSlice.reducer;

@@ -9,17 +9,18 @@ import { IBoardCard } from './indexTypes';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { deleteBoard } from '../Api/boards';
-import { getColumns } from '../Api/columns';
+import { setIsDeleteBoard, setSelectedBoardTitle } from '../../store/reducers/boardSlice';
 
 function BoardCard({ imgSrc, title, id }: IBoardCard) {
   const dispatch = useDispatch<AppDispatch>();
 
   const onClickDelete = () => {
     dispatch(deleteBoard(id));
+    dispatch(setIsDeleteBoard(id));
   };
 
-  const selectBoardHandler = () => {
-    dispatch(getColumns(id));
+  const onClickSelect = () => {
+    dispatch(setSelectedBoardTitle(title));
   };
 
   return (
@@ -33,7 +34,7 @@ function BoardCard({ imgSrc, title, id }: IBoardCard) {
       }}
     >
       <CardActionArea
-        onClick={selectBoardHandler}
+        onClick={onClickSelect}
         component={Link}
         to="/board"
         sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', gap: '20px' }}
