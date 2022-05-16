@@ -1,23 +1,25 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-import { FormBlock, FormWrapper, InputField, Submit, Title } from '../PageSignup/indexStyles';
+import { FormBlock, FormWrapper, Helper, InputField, Submit, Title } from '../PageSignup/styles';
 
-import { IAuthorization } from './indexTypes';
+import { IAuthorization } from './types';
 
-import { IconButton, InputAdornment } from '@mui/material';
+import { IconButton, InputAdornment, Link } from '@mui/material';
 import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 
 import { authorization } from '../../utils/api/api';
 import { useAppDispatch } from '../../store/redux/redux';
-import { useNavigate } from 'react-router-dom';
 
 import Cookies from 'js-cookie';
+import { authSlice } from './../../store/reducers/authSlice';
+import SimpleSnackbar from './../../Components/Snackbar/index';
 
 const PageLogin = () => {
   const dispatch = useAppDispatch();
-
+  const { setSnackBar } = authSlice.actions;
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -35,12 +37,13 @@ const PageLogin = () => {
   const onSubmit: SubmitHandler<IAuthorization> = async (data) => {
     console.log('submit data >', JSON.stringify(data));
     try {
-      const { payload } = await dispatch(authorization(data));
-      if (payload.token) {
-        // если успешно все
+      const { meta, payload } = await dispatch(authorization(data));
+
+      if (meta.requestStatus === 'fulfilled') {
         Cookies.set('user', payload.token);
         navigate('/mainPage');
       } else {
+        dispatch(setSnackBar(true));
       }
     } catch (e) {
       console.log('error >', e);
@@ -50,10 +53,11 @@ const PageLogin = () => {
   const hundlerShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
   return (
     <FormWrapper>
       <FormBlock onSubmit={handleSubmit(onSubmit)}>
-        <Title>Authorization</Title>
+        <Title>Log in</Title>
 
         <InputField
           InputProps={{
@@ -84,6 +88,13 @@ const PageLogin = () => {
         <Submit type="submit" color="success" variant="contained">
           Submit
         </Submit>
+        <Helper>
+          Have no aacount yet?{' '}
+          <Link component={RouterLink} to="/signup" color="inherit">
+            Sign up
+          </Link>
+        </Helper>
+        <SimpleSnackbar />
       </FormBlock>
     </FormWrapper>
   );

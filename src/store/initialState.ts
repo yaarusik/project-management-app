@@ -8,8 +8,7 @@ const initialState: InitialState = {
     },
   ],
   isAuth: false,
-  status: null,
-  error: null,
+  isSnackbar: false,
   selectedBoardTitle: '',
   columns: [
     {
@@ -40,6 +39,5 @@ interface InitialState {
   columns: IColumn[];
   selectedBoardTitle: string;
   isAuth: boolean;
-  status: null | string;
-  error: null | string;
+  isSnackbar: boolean;
 }

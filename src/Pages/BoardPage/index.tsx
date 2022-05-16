@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { BoardWrapper, TitleBox, Title } from './indexStyles';
+import { BoardWrapper, TitleBox, Title } from './styles';
 import { setIsModalNewColumn } from '../../store/reducers/columnSlice';
 import { RootState } from '../../store/store';
 import { Link } from 'react-router-dom';

@@ -7,7 +7,7 @@ import BoardCard from '../../Components/BoardCard';
 import CreateNewBoard from '../../Components/CreateNewBoard';
 import { RootState } from '../../store/store';
 import { getBoards } from '../../utils/api/boards';
-import { IFetchBoard } from './indexTypes';
+import { IFetchBoard } from './types';
 import { iconArray } from '../../constants';
 import { addNewBoard } from '../../utils/api/boards';
 import { setIsModalNewBoard } from '../../store/reducers/boardSlice';

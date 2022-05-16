@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FormBlock } from '../../Pages/PageSignup/indexStyles';
+import { FormBlock } from '../../Pages/PageSignup/styles';
 
 export const Overlay = styled.div`
   position: fixed;

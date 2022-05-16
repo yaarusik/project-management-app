@@ -1,7 +1,7 @@
-import { ISubmit } from '../../Pages/PageSignup/indexTypes';
+import { ISubmit } from '../../Pages/PageSignup/types';
 import { BASE_URL } from '../../constants';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IAuthorization } from '../../Pages/PageLogin/indexTypes';
+import { IAuthorization } from '../../Pages/PageLogin/types';
 
 const requestHeaders = new Headers();
 requestHeaders.set('Content-Type', 'application/json');

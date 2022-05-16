@@ -4,9 +4,9 @@ import TextField from '@mui/material/TextField';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { Title, Submit } from '../../Pages/PageSignup/indexStyles';
+import { Title, Submit } from '../../Pages/PageSignup/styles';
 import { Overlay, ModalWin } from './styles';
-import { IFetchBoard } from '../../Pages/MainPage/indexTypes';
+import { IFetchBoard } from '../../Pages/MainPage/types';
 import { setIsModalNewColumn } from '../../store/reducers/columnSlice';
 import { useAppDispatch } from '../../store/redux/redux';
 import { ITitle } from './types';
