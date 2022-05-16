@@ -25,7 +25,11 @@ const BoardPage = () => {
   return (
     <BoardWrapper>
       <TitleBox component="div">
-        <IconButton sx={{ position: 'absolute', left: '3%', top: '11%' }} component={Link} to="/">
+        <IconButton
+          sx={{ position: 'absolute', left: '3%', top: '11%' }}
+          component={Link}
+          to="/mainPage"
+        >
           <ArrowBackIcon fontSize="large" color="primary" />
         </IconButton>
         <Title variant="h4">{selectedBoardTitle}</Title>

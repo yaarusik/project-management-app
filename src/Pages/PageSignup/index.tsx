@@ -16,7 +16,7 @@ import { FormBlock, InputField, Submit, Title, Helper, FormWrapper } from './ind
 import { schema } from './indexValidation';
 
 import { registration } from './../../utils/api/api';
-import { useAppDispatch } from './../../Components/BoardCard/index';
+import { useAppDispatch } from '../../store/redux/redux';
 
 const PageSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
