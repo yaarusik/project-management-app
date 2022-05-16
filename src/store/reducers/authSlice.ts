@@ -9,6 +9,9 @@ export const authSlice = createSlice({
     setAuthUser(state, action: PayloadAction<boolean>) {
       state.isAuth = action.payload;
     },
+    setSnackBar(state, action: PayloadAction<boolean>) {
+      state.isSnackbar = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registration.pending, () => {
@@ -17,8 +20,7 @@ export const authSlice = createSlice({
     builder.addCase(registration.fulfilled, () => {
       console.log('registration fulfilled');
     });
-    builder.addCase(registration.rejected, (state) => {
-      state.status = 'rejected';
+    builder.addCase(registration.rejected, () => {
       console.log('registration rejected');
     });
     builder.addCase(authorization.pending, () => {

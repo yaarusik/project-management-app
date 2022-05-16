@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { Title, Submit } from '../../Pages/PageSignup/indexStyles';
+import { Title, Submit } from '../../Pages/PageSignup/styles';
 import { Overlay, ModalWin } from './indexStyles';
 import { addNewBoard } from '../Api';
 import { IFetchBoard } from '../../Pages/MainPage/indexTypes';

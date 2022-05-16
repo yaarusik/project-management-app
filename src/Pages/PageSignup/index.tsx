@@ -10,10 +10,10 @@ import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 
-import { ISubmit } from './indexTypes';
+import { ISubmit } from './types';
 
-import { FormBlock, InputField, Submit, Title, Helper, FormWrapper } from './indexStyles';
-import { schema } from './indexValidation';
+import { FormBlock, InputField, Submit, Title, Helper, FormWrapper } from './styles';
+import { schema } from './validation';
 
 import { registration } from './../../utils/api/api';
 import { useAppDispatch } from './../../Components/BoardCard/index';

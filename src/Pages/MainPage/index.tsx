@@ -19,7 +19,7 @@ function MainPage() {
   // вот из-за этого почему-то постоянно запросы идут после авторизации
   useEffect(() => {
     dispatch(getBoards());
-  }, [title, boards]);
+  }, []);
 
   return (
     <Container sx={{ maxWidth: 'xl', minHeight: 'calc(100vh - 100px)' }}>

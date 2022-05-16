@@ -8,8 +8,7 @@ const initialState: InitialState = {
   ],
   title: '',
   isAuth: false,
-  status: null,
-  error: null,
+  isSnackbar: false,
 };
 
 export default initialState;
@@ -24,6 +23,5 @@ interface InitialState {
   boards: IBoards[];
   title: string;
   isAuth: boolean;
-  status: null | string;
-  error: null | string;
+  isSnackbar: boolean;
 }
