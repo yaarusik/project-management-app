@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Button, { ButtonProps } from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
@@ -16,6 +16,7 @@ import LangSwitcher from '../LangSwitcher';
 import { Link } from 'react-router-dom';
 import { setIsCreateNewBoard } from '../../store/reducers/boardSlice';
 import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
 
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -28,11 +29,17 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 const Header = () => {
   const location = useLocation();
   const isWelcomePage = location.pathname === '/welcome';
+  const navigation = useNavigate();
 
   const dispatch = useDispatch();
 
   const createNewBoardHandler = () => {
     dispatch(setIsCreateNewBoard(true));
+  };
+
+  const signOutHundler = () => {
+    Cookies.remove('user');
+    navigation('/');
   };
 
   return (
@@ -75,7 +82,7 @@ const Header = () => {
                     <PersonIcon />
                   </IconButton>
                   <IconButton aria-label="logout">
-                    <LogoutIcon />
+                    <LogoutIcon onClick={signOutHundler} />
                   </IconButton>
                 </>
               )}

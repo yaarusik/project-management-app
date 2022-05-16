@@ -15,7 +15,7 @@ import { ISubmit } from './types';
 import { FormBlock, InputField, Submit, Title, Helper, FormWrapper } from './styles';
 import { schema } from './validation';
 
-import { registration } from './../../utils/api/api';
+import { registration } from '../../utils/api/auth';
 import { useAppDispatch } from './../../Components/BoardCard/index';
 
 const PageSignUp = () => {

@@ -9,6 +9,7 @@ import { RootState, AppDispatch } from '../../store/store';
 import { getBoards } from '../../Components/Api';
 import { IFetchBoard } from './indexTypes';
 import { iconArray } from '../../constants';
+import Cookies from 'js-cookie';
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 
@@ -16,9 +17,13 @@ function MainPage() {
   const { title, boards, isCreateNewBoard } = useSelector((state: RootState) => state.boardSlice);
   const dispatch = useAppDispatch();
 
-  // вот из-за этого почему-то постоянно запросы идут после авторизации
   useEffect(() => {
-    dispatch(getBoards());
+    const userToken = Cookies.get('user');
+    if (userToken) {
+      dispatch(getBoards(userToken));
+    } else {
+      //  здесь можно будет выводить контент в случае, если пользователь не авторизован
+    }
   }, []);
 
   return (

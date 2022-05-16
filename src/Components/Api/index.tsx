@@ -4,12 +4,12 @@ import Cookies from 'js-cookie';
 
 const userToken = Cookies.get('user');
 
-export const getBoards = createAsyncThunk('root/getBoards', async () => {
+export const getBoards = createAsyncThunk('root/getBoards', async (token: string) => {
   const res = await fetch(`${BASE_URL}/boards`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${userToken}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
