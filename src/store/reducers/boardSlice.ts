@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { addNewBoard, getBoards } from '../../Components/Api/boards';
 import initialState from '../initialState';
 
-export const rootSlice = createSlice({
-  name: 'root',
+export const boardSlice = createSlice({
+  name: 'boards',
   initialState,
   reducers: {
     setIsCreateNewBoard: (state, action) => {
@@ -26,6 +26,6 @@ export const rootSlice = createSlice({
   },
 });
 
-export const { setIsCreateNewBoard, setIsDeleteBoard, setSelectedBoardTitle } = rootSlice.actions;
+export const { setIsCreateNewBoard, setIsDeleteBoard, setSelectedBoardTitle } = boardSlice.actions;
 
-export default rootSlice.reducer;
+export default boardSlice.reducer;

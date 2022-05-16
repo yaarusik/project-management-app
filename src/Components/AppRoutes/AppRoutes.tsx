@@ -5,14 +5,26 @@ import PageNotFound from '../../Pages/PageNotFound';
 import PageSignUp from './../../Pages/PageSignup/index';
 import BoardPage from '../../Pages/BoardPage';
 
+import WelcomePage from '../../Pages/WelcomePage';
+
+import RequireAuth from '../../hoc/RequireAuth';
+
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
+      <Route
+        path="/mainPage"
+        element={
+          <RequireAuth>
+            <MainPage />
+          </RequireAuth>
+        }
+      />
       <Route path="/board" element={<BoardPage />} />
       <Route path="*" element={<PageNotFound />} />
       <Route path="/login" element={<PageLogin />} />
       <Route path="/signup" element={<PageSignUp />} />
+      <Route path="/welcome" element={<WelcomePage />} />
     </Routes>
   );
 }

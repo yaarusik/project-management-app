@@ -21,6 +21,7 @@ function MainPage() {
   } = useSelector((state: RootState) => state.boardSlice);
   const dispatch = useDispatch<AppDispatch>();
 
+  // вот из-за этого почему-то постоянно запросы идут после авторизации
   useEffect(() => {
     console.log('boards');
     dispatch(getBoards());
