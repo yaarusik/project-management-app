@@ -20,21 +20,21 @@ const MainPage = () => {
   const { boards, isModalNewBoard } = useSelector((state: RootState) => state.boardSlice);
   const dispatch = useAppDispatch();
 
-  const userToken = Cookies.get('user');
+  const token = Cookies.get('user');
 
   useEffect(() => {
-    if (userToken) {
-      dispatch(getBoards(userToken));
+    if (token) {
+      dispatch(getBoards(token));
     } else {
       //  здесь можно будет выводить контент в случае, если пользователь не авторизован
     }
   }, []);
 
-  const createBoard = async (data: IFetchBoard) => {
-    if (userToken) {
-      await dispatch(addNewBoard(data.title));
+  const createBoard = async ({ title }: IFetchBoard) => {
+    if (token) {
+      await dispatch(addNewBoard({ title, token }));
       dispatch(setIsModalNewBoard(false));
-      dispatch(getBoards(userToken));
+      dispatch(getBoards(token));
     }
   };
 

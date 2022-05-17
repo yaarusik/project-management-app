@@ -14,12 +14,12 @@ import Cookies from 'js-cookie';
 const BoardCard = ({ imgSrc, title, id }: IBoardCard) => {
   const dispatch = useAppDispatch();
 
-  const userToken = Cookies.get('user');
+  const token = Cookies.get('user');
 
   const onClickDelete = async () => {
-    if (userToken) {
-      await dispatch(deleteBoard(id));
-      dispatch(getBoards(userToken));
+    if (token) {
+      await dispatch(deleteBoard({ id, token }));
+      dispatch(getBoards(token));
     }
   };
 

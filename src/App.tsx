@@ -10,8 +10,8 @@ function App() {
   const { setAuthUser } = authSlice.actions;
   const dispatch = useAppDispatch();
 
-  const user = Cookies.get('user');
-  if (user) {
+  const token = Cookies.get('user');
+  if (token) {
     dispatch(setAuthUser(true));
   }
 
