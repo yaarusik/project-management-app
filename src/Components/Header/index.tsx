@@ -31,12 +31,10 @@ const Header = () => {
   const { isAuth } = useAppSelector((state) => state.authSlice);
 
   const location = useLocation();
-<<<<<<< HEAD
+
   const isWelcomePage = location.pathname === '/';
-=======
-  const isWelcomePage = location.pathname === '/welcome';
+
   const navigation = useNavigate();
->>>>>>> develop
 
   const dispatch = useDispatch();
 
