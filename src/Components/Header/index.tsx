@@ -81,8 +81,8 @@ const Header = () => {
                   <IconButton aria-label="edit-profile">
                     <PersonIcon />
                   </IconButton>
-                  <IconButton aria-label="logout">
-                    <LogoutIcon onClick={signOutHundler} />
+                  <IconButton onClick={signOutHundler} aria-label="logout">
+                    <LogoutIcon />
                   </IconButton>
                 </>
               )}
