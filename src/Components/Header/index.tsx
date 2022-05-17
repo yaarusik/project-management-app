@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import { purple } from '@mui/material/colors';
 import LangSwitcher from '../LangSwitcher';
 import { Link } from 'react-router-dom';
-import { setIsCreateNewBoard } from '../../store/reducers/boardSlice';
+import { setIsModalNewBoard } from '../../store/reducers/boardSlice';
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 
@@ -34,7 +34,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const createNewBoardHandler = () => {
-    dispatch(setIsCreateNewBoard(true));
+    dispatch(setIsModalNewBoard(true));
   };
 
   const signOutHundler = () => {
@@ -52,7 +52,7 @@ const Header = () => {
               <img src="images/logo.png" alt="logo" width={50} height={50} />
               <Typography
                 component={Link}
-                to="/"
+                to="/mainPage"
                 variant="h5"
                 sx={{
                   color: '#ffffff',

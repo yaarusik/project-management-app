@@ -1,22 +1,30 @@
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store/store';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import { IBoardCard } from './indexTypes';
+import { IBoardCard } from './types';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { deleteBoard } from '../Api';
+import { useAppDispatch } from '../../store/redux/redux';
+import { deleteBoard, getBoards } from '../../utils/api/boards';
+import { setSelectedBoardTitle } from '../../store/reducers/boardSlice';
+import Cookies from 'js-cookie';
 
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-
-function BoardCard({ imgSrc, title, id }: IBoardCard) {
+const BoardCard = ({ imgSrc, title, id }: IBoardCard) => {
   const dispatch = useAppDispatch();
 
-  const onClickDelete = () => {
-    dispatch(deleteBoard(id));
+  const userToken = Cookies.get('user');
+
+  const onClickDelete = async () => {
+    if (userToken) {
+      await dispatch(deleteBoard(id));
+      dispatch(getBoards(userToken));
+    }
+  };
+
+  const onClickSelect = () => {
+    dispatch(setSelectedBoardTitle(title));
   };
 
   return (
@@ -30,8 +38,9 @@ function BoardCard({ imgSrc, title, id }: IBoardCard) {
       }}
     >
       <CardActionArea
+        onClick={onClickSelect}
         component={Link}
-        to="*"
+        to="/board"
         sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', gap: '20px' }}
       >
         <CardMedia sx={{ width: 70 }} component="img" height="70" image={imgSrc} alt="board img" />
@@ -50,6 +59,6 @@ function BoardCard({ imgSrc, title, id }: IBoardCard) {
       </Button>
     </Card>
   );
-}
+};
 
 export default BoardCard;
