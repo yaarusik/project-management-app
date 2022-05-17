@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getBoards } from '../../utils/api/boards';
+import { addNewBoard, getBoards } from '../../utils/api/boards';
 import initialState from '../initialState';
 
 export const boardSlice = createSlice({
@@ -12,14 +12,20 @@ export const boardSlice = createSlice({
     setSelectedBoardTitle: (state, action) => {
       state.selectedBoardTitle = action.payload;
     },
+    setSelectedBoardId: (state, action) => {
+      state.selectedBoardId = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getBoards.fulfilled, (state, action) => {
       state.boards = action.payload;
     });
+    builder.addCase(addNewBoard.fulfilled, (state, action) => {
+      state.boards = [action.payload, ...state.boards];
+    });
   },
 });
 
-export const { setIsModalNewBoard, setSelectedBoardTitle } = boardSlice.actions;
+export const { setIsModalNewBoard, setSelectedBoardTitle, setSelectedBoardId } = boardSlice.actions;
 
 export default boardSlice.reducer;

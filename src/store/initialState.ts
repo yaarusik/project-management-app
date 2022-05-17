@@ -10,6 +10,7 @@ const initialState: InitialState = {
   isAuth: false,
   isSnackbar: false,
   selectedBoardTitle: '',
+  selectedBoardId: '',
   columns: [
     {
       id: '',
@@ -26,7 +27,7 @@ interface IBoards {
   title: string;
 }
 
-interface IColumn {
+export interface IColumn {
   id: string;
   title: string;
   order: number;
@@ -38,6 +39,7 @@ interface InitialState {
   boards: IBoards[];
   columns: IColumn[];
   selectedBoardTitle: string;
+  selectedBoardId: string;
   isAuth: boolean;
   isSnackbar: boolean;
 }

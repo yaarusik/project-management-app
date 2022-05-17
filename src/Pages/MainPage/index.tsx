@@ -25,7 +25,6 @@ const MainPage = () => {
   const createBoard = async (data: IFetchBoard) => {
     await dispatch(addNewBoard(data.title));
     dispatch(setIsModalNewBoard(false));
-    dispatch(getBoards());
   };
 
   return (

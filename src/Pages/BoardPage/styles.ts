@@ -14,6 +14,10 @@ export const TitleBox = styled(Box)`
   padding: 20px;
 `;
 
+export const ColumnWrapper = styled(TitleBox)`
+  justify-content: space-around;
+`;
+
 export const Title = styled(Typography)`
   text-transform: uppercase;
   text-align: left;
