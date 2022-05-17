@@ -1,3 +1,5 @@
+import Preloader from '../../Components/Preloader';
+
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -10,8 +12,11 @@ import Button from '@mui/material/Button';
 import ParallelTasksIcon from '../../assets/welcomePageIcons/parallel-tasks.svg';
 import TasksIcon from '../../assets/welcomePageIcons/tasks.svg';
 import TasksStatusIcon from '../../assets/welcomePageIcons/task-status.svg';
+import { useAppSelector } from '../../store/redux/redux';
 
 const WelcomePage = () => {
+  // const { isAuth } = useAppSelector((state) => state.authSlice);
+
   return (
     <Box component="section" sx={{ minHeight: '100vh' }}>
       <Container maxWidth="md">
@@ -106,6 +111,7 @@ const WelcomePage = () => {
           >
             RSS REACT 2022 Q1
           </Button>
+          {/* <Preloader /> */}
         </Container>
       </Container>
     </Box>
