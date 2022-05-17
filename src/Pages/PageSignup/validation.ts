@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import { BASE_URL } from '../../constants';
-import { fetchOptions } from '../../utils/api/api';
+import { fetchOptions } from '../../utils/api/auth';
 
 export const schema = yup.object().shape({
   name: yup

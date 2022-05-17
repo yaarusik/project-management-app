@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { authorization, registration } from '../../utils/api/api';
+import { authorization, registration } from '../../utils/api/auth';
 import initialState from './../initialState';
 
 export const authSlice = createSlice({
