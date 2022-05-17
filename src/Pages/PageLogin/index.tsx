@@ -10,12 +10,12 @@ import { IconButton, InputAdornment, Link } from '@mui/material';
 import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 
-import { authorization } from '../../utils/api/api';
+import { authorization } from '../../utils/api/auth';
 import { useAppDispatch } from '../../store/redux/redux';
 
 import Cookies from 'js-cookie';
 import { authSlice } from './../../store/reducers/authSlice';
-import SimpleSnackbar from './../../Components/Snackbar/index';
+import SimpleSnackbar from './../../Components/Snackbar';
 
 const PageLogin = () => {
   const dispatch = useAppDispatch();

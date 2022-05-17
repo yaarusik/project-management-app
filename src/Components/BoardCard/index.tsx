@@ -9,13 +9,18 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../store/redux/redux';
 import { deleteBoard, getBoards } from '../../utils/api/boards';
 import { setSelectedBoardTitle } from '../../store/reducers/boardSlice';
+import Cookies from 'js-cookie';
 
 const BoardCard = ({ imgSrc, title, id }: IBoardCard) => {
   const dispatch = useAppDispatch();
 
+  const token = Cookies.get('user');
+
   const onClickDelete = async () => {
-    await dispatch(deleteBoard(id));
-    dispatch(getBoards());
+    if (token) {
+      await dispatch(deleteBoard({ id, token }));
+      dispatch(getBoards(token));
+    }
   };
 
   const onClickSelect = () => {
