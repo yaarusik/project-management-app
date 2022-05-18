@@ -11,15 +11,19 @@ import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 
 import { authorization } from '../../utils/api/auth';
-import { useAppDispatch } from '../../store/redux/redux';
+import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 
 import Cookies from 'js-cookie';
 import { authSlice } from './../../store/reducers/authSlice';
 import SimpleSnackbar from './../../Components/Snackbar';
+import Preloader from '../../Components/Preloader';
 
 const PageLogin = () => {
   const dispatch = useAppDispatch();
   const { setSnackBar } = authSlice.actions;
+  const { isPendingAuth } = useAppSelector((state) => state.authSlice);
+  const { isAuth } = useAppSelector((state) => state.authSlice);
+
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -57,44 +61,50 @@ const PageLogin = () => {
   return (
     <FormWrapper>
       <FormBlock onSubmit={handleSubmit(onSubmit)}>
-        <Title>Log in</Title>
+        {isPendingAuth && !isAuth ? (
+          <Preloader />
+        ) : (
+          <>
+            <Title>Log in</Title>
 
-        <InputField
-          InputProps={{
-            ...register('login'),
-          }}
-          error={!!login}
-          label="Login"
-          helperText={!!login ? login.message : 'Please enter your login'}
-        />
+            <InputField
+              InputProps={{
+                ...register('login'),
+              }}
+              error={!!login}
+              label="Login"
+              helperText={!!login ? login.message : 'Please enter your login'}
+            />
 
-        <InputField
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={hundlerShowPassword}>
-                  {showPassword ? <VisibilityOffSharpIcon /> : <VisibilitySharpIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-            type: showPassword ? 'text' : 'password',
-            ...register('password'),
-          }}
-          error={!!password}
-          label="Password"
-          helperText={!!password ? password.message : 'Please enter your password'}
-        />
+            <InputField
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={hundlerShowPassword}>
+                      {showPassword ? <VisibilityOffSharpIcon /> : <VisibilitySharpIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+                type: showPassword ? 'text' : 'password',
+                ...register('password'),
+              }}
+              error={!!password}
+              label="Password"
+              helperText={!!password ? password.message : 'Please enter your password'}
+            />
 
-        <Submit type="submit" color="success" variant="contained">
-          Submit
-        </Submit>
-        <Helper>
-          Have no aacount yet?{' '}
-          <Link component={RouterLink} to="/signup" color="inherit">
-            Sign up
-          </Link>
-        </Helper>
-        <SimpleSnackbar />
+            <Submit type="submit" color="success" variant="contained">
+              Submit
+            </Submit>
+            <Helper>
+              Have no aacount yet?{' '}
+              <Link component={RouterLink} to="/signup" color="inherit">
+                Sign up
+              </Link>
+            </Helper>
+            <SimpleSnackbar />
+          </>
+        )}
       </FormBlock>
     </FormWrapper>
   );
