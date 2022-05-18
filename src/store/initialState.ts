@@ -14,6 +14,7 @@ const initialState: InitialState = {
   selectedBoardTitle: '',
   selectedBoardId: '',
   columns: [],
+  token: null,
 };
 
 export default initialState;
@@ -40,4 +41,5 @@ interface InitialState {
   isPendingAuth: boolean;
   isPendingRegistration: boolean;
   isSnackbar: boolean;
+  token: null | string;
 }
