@@ -25,7 +25,6 @@ const PageSignUp = () => {
   const navigate = useNavigate();
 
   const { isPendingRegistration } = useAppSelector((state) => state.authSlice);
-  console.log(isPendingRegistration);
 
   const dispatch = useAppDispatch();
   const {

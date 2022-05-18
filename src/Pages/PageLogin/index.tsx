@@ -21,8 +21,7 @@ import Preloader from '../../Components/Preloader';
 const PageLogin = () => {
   const dispatch = useAppDispatch();
   const { setSnackBar } = authSlice.actions;
-  const { isPendingAuth } = useAppSelector((state) => state.authSlice);
-  const { isAuth } = useAppSelector((state) => state.authSlice);
+  const { isPendingAuth, isAuth } = useAppSelector((state) => state.authSlice);
 
   const navigate = useNavigate();
 
