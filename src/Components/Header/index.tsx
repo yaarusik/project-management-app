@@ -16,6 +16,7 @@ import LangSwitcher from '../LangSwitcher';
 import { Link } from 'react-router-dom';
 import { setIsModalNewBoard } from '../../store/reducers/boardSlice';
 import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../store/redux/redux';
 import Cookies from 'js-cookie';
 
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
@@ -27,8 +28,12 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 const Header = () => {
+  const { isAuth } = useAppSelector((state) => state.authSlice);
+
   const location = useLocation();
-  const isWelcomePage = location.pathname === '/welcome';
+
+  const isWelcomePage = location.pathname === '/';
+
   const navigation = useNavigate();
 
   const dispatch = useDispatch();
@@ -66,13 +71,44 @@ const Header = () => {
               </Typography>
             </Stack>
             <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
-              <Button component={Link} to="/login" color="success" variant="contained">
-                Log in
-              </Button>
-              <Button component={Link} to="/signup" color="success" variant="contained">
-                Sign up
-              </Button>
-              {!isWelcomePage && (
+              {!isAuth && isWelcomePage && (
+                <>
+                  <Button component={Link} to="/login" color="success" variant="contained">
+                    Log in
+                  </Button>
+                  <Button component={Link} to="/signup" color="success" variant="contained">
+                    Sign up
+                  </Button>
+                </>
+              )}
+
+              {isAuth && isWelcomePage && (
+                <>
+                  <Button
+                    component={Link}
+                    to="/mainPage"
+                    variant="contained"
+                    sx={{
+                      backgroundColor: purple[500],
+                      '&:hover': { backgroundColor: purple[700] },
+                    }}
+                  >
+                    Go to Main Page
+                  </Button>
+                  {/* <ColorButton onClick={createNewBoardHandler} variant="contained">
+                    Create new board
+                  </ColorButton> */}
+                  <LangSwitcher />
+                  <IconButton aria-label="edit-profile">
+                    <PersonIcon />
+                  </IconButton>
+                  <IconButton aria-label="logout">
+                    <LogoutIcon />
+                  </IconButton>
+                </>
+              )}
+
+              {isAuth && !isWelcomePage && (
                 <>
                   <ColorButton onClick={createNewBoardHandler} variant="contained">
                     Create new board
