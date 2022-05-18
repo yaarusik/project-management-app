@@ -34,7 +34,6 @@ const MainPage = () => {
     if (token) {
       await dispatch(addNewBoard({ title, token }));
       dispatch(setIsModalNewBoard(false));
-      dispatch(getBoards(token));
     }
   };
 

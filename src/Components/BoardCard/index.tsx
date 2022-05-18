@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../store/redux/redux';
 import { deleteBoard, getBoards } from '../../utils/api/boards';
-import { setSelectedBoardTitle } from '../../store/reducers/boardSlice';
+import { setSelectedBoardTitle, setSelectedBoardId } from '../../store/reducers/boardSlice';
 import Cookies from 'js-cookie';
 
 const BoardCard = ({ imgSrc, title, id }: IBoardCard) => {
@@ -25,6 +25,7 @@ const BoardCard = ({ imgSrc, title, id }: IBoardCard) => {
 
   const onClickSelect = () => {
     dispatch(setSelectedBoardTitle(title));
+    dispatch(setSelectedBoardId(id));
   };
 
   return (

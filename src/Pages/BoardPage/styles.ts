@@ -1,4 +1,4 @@
-import { Typography, Box, Container, Button } from '@mui/material';
+import { Typography, Box, Container } from '@mui/material';
 import styled from 'styled-components';
 
 export const BoardWrapper = styled(Container)`
@@ -12,6 +12,12 @@ export const TitleBox = styled(Box)`
   justify-content: space-between;
   width: 100%;
   padding: 20px;
+`;
+
+export const ColumnWrapper = styled(TitleBox)`
+  overflow-x: auto;
+  justify-content: start;
+  gap: 20px;
 `;
 
 export const Title = styled(Typography)`
