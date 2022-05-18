@@ -15,14 +15,10 @@ export const registration = createAsyncThunk(
   'root/registration',
   async (data: ISubmit, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${BASE_URL}/signup`, {
+      await fetch(`${BASE_URL}/signup`, {
         ...fetchOptions,
         body: JSON.stringify(data),
       });
-
-      if (res.status === 409) {
-        throw new Error('Пользователь с таким логином уже существует');
-      }
     } catch (err) {
       return rejectWithValue((err as TypeError).message);
     }
@@ -45,7 +41,6 @@ export const authorization = createAsyncThunk(
 
       const loginData = await res.json();
 
-      console.log('loginData >', loginData);
       return loginData;
     } catch (err) {
       return rejectWithValue((err as TypeError).message);

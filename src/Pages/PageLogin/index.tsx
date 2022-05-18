@@ -38,7 +38,6 @@ const PageLogin = () => {
   const { login, password } = errors;
 
   const onSubmit: SubmitHandler<IAuthorization> = async (data) => {
-    console.log('submit data >', JSON.stringify(data));
     try {
       const { meta, payload } = await dispatch(authorization(data));
 
