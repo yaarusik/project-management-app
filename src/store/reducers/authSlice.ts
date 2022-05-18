@@ -15,28 +15,22 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(registration.pending, (state) => {
-      console.log('registration pending');
       state.isPendingRegistration = true;
     });
     builder.addCase(registration.fulfilled, (state) => {
-      console.log('registration fulfilled');
       state.isPendingRegistration = false;
     });
     builder.addCase(registration.rejected, (state) => {
-      console.log('registration rejected');
       state.isPendingRegistration = false;
     });
     builder.addCase(authorization.pending, (state) => {
-      console.log('authorization pending');
       state.isPendingAuth = true;
     });
     builder.addCase(authorization.fulfilled, (state) => {
-      console.log('authorization fullfilled');
       state.isAuth = true;
       state.isPendingAuth = false;
     });
     builder.addCase(authorization.rejected, (state) => {
-      console.log('authorization rejected');
       state.isPendingAuth = false;
     });
   },
