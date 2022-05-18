@@ -1,41 +1,33 @@
 import { BASE_URL } from '../../constants';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
+import { IAddColumn, IGetColumns } from './types';
 
-const userToken = Cookies.get('user');
+export const getColumns = createAsyncThunk(
+  'columns/getColumns',
+  async ({ selectedBoardId, token }: IGetColumns) => {
+    debugger;
+    const res = await fetch(`${BASE_URL}/boards/${selectedBoardId}/columns`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-export const getColumns = createAsyncThunk('columns/getColumns', async (boardId: string) => {
-  const res = await fetch(`${BASE_URL}/boards/${boardId}/columns`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${userToken}`,
-    },
-  });
-
-  const data = await res.json();
-  return data;
-});
-
-type IColumnData = {
-  title: string;
-  order: number | undefined;
-};
-
-export type IAddColumn = {
-  boardId: string;
-  columnData: IColumnData;
-};
+    const data = await res.json();
+    return data;
+  }
+);
 
 export const addNewColumn = createAsyncThunk(
   'columns/addNewColumn',
-  async (columnData: IAddColumn) => {
-    const response = await fetch(`${BASE_URL}/boards/${columnData.boardId}/columns`, {
+  async ({ boardId, columnData, token }: IAddColumn) => {
+    const response = await fetch(`${BASE_URL}/boards/${boardId}/columns`, {
       method: 'POST',
-      body: JSON.stringify(columnData.columnData),
+      body: JSON.stringify(columnData),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     const data = await response.json();

@@ -12,6 +12,9 @@ export const authSlice = createSlice({
     setSnackBar(state, action: PayloadAction<boolean>) {
       state.isSnackbar = action.payload;
     },
+    setToken(state, action: PayloadAction<string | null>) {
+      state.token = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registration.pending, (state) => {

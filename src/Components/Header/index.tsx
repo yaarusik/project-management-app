@@ -33,7 +33,7 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 const Header = () => {
   const { isAuth } = useAppSelector((state) => state.authSlice);
-  const { setAuthUser } = authSlice.actions;
+  const { setAuthUser, setToken } = authSlice.actions;
 
   const location = useLocation();
 
@@ -50,6 +50,7 @@ const Header = () => {
   const signOutHundler = () => {
     Cookies.remove('user');
     dispatch(setAuthUser(false));
+    dispatch(setToken(null));
     navigation('/');
     console.log(isAuth);
   };
