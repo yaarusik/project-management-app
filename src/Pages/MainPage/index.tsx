@@ -9,6 +9,9 @@ import { RootState } from '../../store/store';
 import { getBoards } from '../../utils/api/boards';
 import { IFetchBoard } from './types';
 import { iconArray } from '../../constants';
+
+import Cookies from 'js-cookie';
+
 import { addNewBoard } from '../../utils/api/boards';
 import { setIsModalNewBoard } from '../../store/reducers/boardSlice';
 import { useAppDispatch } from '../../store/redux/redux';
@@ -17,14 +20,21 @@ const MainPage = () => {
   const { boards, isModalNewBoard } = useSelector((state: RootState) => state.boardSlice);
   const dispatch = useAppDispatch();
 
+  const token = Cookies.get('user');
+
   useEffect(() => {
-    console.log('boards');
-    dispatch(getBoards());
+    if (token) {
+      dispatch(getBoards(token));
+    } else {
+      //  здесь можно будет выводить контент в случае, если пользователь не авторизован
+    }
   }, []);
 
-  const createBoard = async (data: IFetchBoard) => {
-    await dispatch(addNewBoard(data.title));
-    dispatch(setIsModalNewBoard(false));
+  const createBoard = async ({ title }: IFetchBoard) => {
+    if (token) {
+      await dispatch(addNewBoard({ title, token }));
+      dispatch(setIsModalNewBoard(false));
+    }
   };
 
   return (

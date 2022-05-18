@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const ColumnWrapper = styled.div`
   width: 300px;
-  height: calc(100vh - 225px);
+  height: calc(100vh - 250px);
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(156, 39, 176, 0.5);
 `;

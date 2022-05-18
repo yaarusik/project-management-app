@@ -106,6 +106,7 @@ const WelcomePage = () => {
           >
             RSS REACT 2022 Q1
           </Button>
+          {/* <Preloader /> */}
         </Container>
       </Container>
     </Box>

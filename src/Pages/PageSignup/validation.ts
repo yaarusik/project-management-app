@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import { BASE_URL } from '../../constants';
-import { fetchOptions } from '../../utils/api/api';
+import { fetchOptions } from '../../utils/api/auth';
 
 export const schema = yup.object().shape({
   name: yup
@@ -20,11 +20,20 @@ export const schema = yup.object().shape({
     .required('Введите логин')
     .test('проверка логина', 'Данный логин уже существует', function () {
       return new Promise((resolve) => {
-        fetch(`${BASE_URL}/signin`, {
+        fetch(`${BASE_URL}/signup`, {
           ...fetchOptions,
-          body: JSON.stringify({ login: this.parent.login, password: this.parent.password }),
+          body: JSON.stringify({
+            login: this.parent.login,
+            password: this.parent.password,
+            name: this.parent.name,
+          }),
         })
-          .then(() => resolve(true))
+          .then((res) => {
+            if (res.status === 409) {
+              throw new Error('Пользователь с таким логином уже существует');
+            }
+            resolve(true);
+          })
           .catch(() => resolve(false));
       });
     }),

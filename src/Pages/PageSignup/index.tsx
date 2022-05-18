@@ -15,12 +15,16 @@ import { ISubmit } from './types';
 import { FormBlock, InputField, Submit, Title, Helper, FormWrapper } from './styles';
 import { schema } from './validation';
 
-import { registration } from './../../utils/api/api';
-import { useAppDispatch } from '../../store/redux/redux';
+import { registration } from '../../utils/api/auth';
+
+import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
+import Preloader from '../../Components/Preloader';
 
 const PageSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const { isPendingRegistration } = useAppSelector((state) => state.authSlice);
 
   const dispatch = useAppDispatch();
   const {
@@ -53,58 +57,64 @@ const PageSignUp = () => {
   return (
     <FormWrapper>
       <FormBlock onSubmit={handleSubmit(onSubmit)}>
-        <Title>Registration</Title>
+        {isPendingRegistration ? (
+          <Preloader />
+        ) : (
+          <>
+            <Title>Registration</Title>
 
-        <InputField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircleSharpIcon />
-              </InputAdornment>
-            ),
-            ...register('name'),
-          }}
-          error={!!name}
-          label="Name"
-          helperText={!!name ? name.message : 'Please enter your name'}
-        />
+            <InputField
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircleSharpIcon />
+                  </InputAdornment>
+                ),
+                ...register('name'),
+              }}
+              error={!!name}
+              label="Name"
+              helperText={!!name ? name.message : 'Please enter your name'}
+            />
 
-        <InputField
-          InputProps={{
-            ...register('login'),
-          }}
-          error={!!login}
-          label="Login"
-          helperText={!!login ? login.message : 'Please enter your login'}
-        />
+            <InputField
+              InputProps={{
+                ...register('login'),
+              }}
+              error={!!login}
+              label="Login"
+              helperText={!!login ? login.message : 'Please enter your login'}
+            />
 
-        <InputField
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={hundlerShowPassword}>
-                  {showPassword ? <VisibilityOffSharpIcon /> : <VisibilitySharpIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-            type: showPassword ? 'text' : 'password',
-            ...register('password'),
-          }}
-          error={!!password}
-          label="Password"
-          helperText={!!password ? password.message : 'Please enter your password'}
-        />
+            <InputField
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={hundlerShowPassword}>
+                      {showPassword ? <VisibilityOffSharpIcon /> : <VisibilitySharpIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+                type: showPassword ? 'text' : 'password',
+                ...register('password'),
+              }}
+              error={!!password}
+              label="Password"
+              helperText={!!password ? password.message : 'Please enter your password'}
+            />
 
-        <Submit type="submit" color="success" variant="contained">
-          Submit
-        </Submit>
+            <Submit type="submit" color="success" variant="contained">
+              Submit
+            </Submit>
 
-        <Helper>
-          If you are already registered - click{' '}
-          <Link component={RouterLink} to="/login" color="inherit">
-            here
-          </Link>
-        </Helper>
+            <Helper>
+              If you are already registered - click{' '}
+              <Link component={RouterLink} to="/login" color="inherit">
+                here
+              </Link>
+            </Helper>
+          </>
+        )}
       </FormBlock>
     </FormWrapper>
   );

@@ -8,6 +8,8 @@ const initialState: InitialState = {
     },
   ],
   isAuth: false,
+  isPendingAuth: false,
+  isPendingRegistration: false,
   isSnackbar: false,
   selectedBoardTitle: '',
   selectedBoardId: '',
@@ -35,5 +37,7 @@ interface InitialState {
   selectedBoardTitle: string;
   selectedBoardId: string;
   isAuth: boolean;
+  isPendingAuth: boolean;
+  isPendingRegistration: boolean;
   isSnackbar: boolean;
 }

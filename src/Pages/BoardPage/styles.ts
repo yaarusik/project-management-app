@@ -15,6 +15,7 @@ export const TitleBox = styled(Box)`
 `;
 
 export const ColumnWrapper = styled(TitleBox)`
+  overflow-x: auto;
   justify-content: start;
   gap: 20px;
 `;
