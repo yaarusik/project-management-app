@@ -1,4 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import Button, { ButtonProps } from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
@@ -12,11 +14,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import { purple } from '@mui/material/colors';
-import LangSwitcher from '../LangSwitcher';
-import { Link } from 'react-router-dom';
+
 import { setIsModalNewBoard } from '../../store/reducers/boardSlice';
-import { useDispatch } from 'react-redux';
+import { authSlice } from './../../store/reducers/authSlice';
 import { useAppSelector } from '../../store/redux/redux';
+
+import LangSwitcher from '../LangSwitcher';
+
 import Cookies from 'js-cookie';
 
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
@@ -29,6 +33,7 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 const Header = () => {
   const { isAuth } = useAppSelector((state) => state.authSlice);
+  const { setAuthUser } = authSlice.actions;
 
   const location = useLocation();
 
@@ -44,7 +49,9 @@ const Header = () => {
 
   const signOutHundler = () => {
     Cookies.remove('user');
+    dispatch(setAuthUser(false));
     navigation('/');
+    console.log(isAuth);
   };
 
   return (
