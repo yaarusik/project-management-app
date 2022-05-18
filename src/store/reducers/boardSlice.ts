@@ -21,7 +21,7 @@ export const boardSlice = createSlice({
       state.boards = action.payload;
     });
     builder.addCase(addNewBoard.fulfilled, (state, action) => {
-      state.boards = [action.payload, ...state.boards];
+      state.boards = [...state.boards, action.payload];
     });
   },
 });

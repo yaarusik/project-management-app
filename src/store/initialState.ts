@@ -11,13 +11,7 @@ const initialState: InitialState = {
   isSnackbar: false,
   selectedBoardTitle: '',
   selectedBoardId: '',
-  columns: [
-    {
-      id: '',
-      title: '',
-      order: 0,
-    },
-  ],
+  columns: [],
 };
 
 export default initialState;

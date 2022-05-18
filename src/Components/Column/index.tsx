@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IColumn } from '../../store/initialState';
 
-export const Column = ({ title, id, order }: IColumn) => {
+export const Column = ({ title }: IColumn) => {
   return (
     <ColumnWrapper>
       <Box>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const ColumnWrapper = styled.div`
   width: 300px;
-  height: calc(100vh - 210px);
+  height: calc(100vh - 225px);
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(156, 39, 176, 0.5);
 `;
@@ -21,4 +21,6 @@ export const TitleWrapper = styled(Box)`
   flex-direction: row;
   justify-content: space-between;
   padding: 15px;
+  width: 250px;
+  margin: 0 auto;
 `;

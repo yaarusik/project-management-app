@@ -15,7 +15,7 @@ export const columnSlice = createSlice({
       state.columns = action.payload;
     });
     builder.addCase(addNewColumn.fulfilled, (state, action) => {
-      state.columns = [action.payload, ...state.columns];
+      state.columns = [...state.columns, action.payload];
     });
   },
 });

@@ -25,13 +25,25 @@ const BoardPage = () => {
   }, []);
 
   const newColumnHandler = () => {
+    // setOrder(defineOrderColumn());
     dispatch(setIsModalNewColumn(true));
   };
 
+  const defineOrderColumn = () => {
+    if (columns === []) {
+      return 1;
+    } else {
+      if (columns.length - 1 < 0) return 1;
+      return columns[columns.length - 1].order + 1;
+    }
+  };
+
   const createColumn = (data: IFetchColumn) => {
+    console.log(columns);
+    console.log(defineOrderColumn());
     const addColumnData = {
       boardId: selectedBoardId,
-      columnData: { title: data.title, order: 2 },
+      columnData: { title: data.title, order: defineOrderColumn() },
     };
 
     dispatch(addNewColumn(addColumnData));
@@ -54,7 +66,7 @@ const BoardPage = () => {
         </Button>
       </TitleBox>
       {isModalNewColumn && <CreateNewBoard titleName={'column'} submitFunc={createColumn} />}
-      <ColumnWrapper>
+      <ColumnWrapper sx={{ overflow: 'scroll' }}>
         {columns.map((item: IColumn) => {
           return <Column key={item.id} title={item.title} id={item.id} order={item.order} />;
         })}

@@ -19,10 +19,10 @@ export const getColumns = createAsyncThunk('columns/getColumns', async (boardId:
 
 type IColumnData = {
   title: string;
-  order: number;
+  order: number | undefined;
 };
 
-type IAddColumn = {
+export type IAddColumn = {
   boardId: string;
   columnData: IColumnData;
 };
