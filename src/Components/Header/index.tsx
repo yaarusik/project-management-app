@@ -36,11 +36,10 @@ const Header = () => {
   const { setAuthUser, setToken } = authSlice.actions;
 
   const location = useLocation();
-
   const isWelcomePage = location.pathname === '/';
+  const isBoardPage = location.pathname === '/board';
 
   const navigation = useNavigate();
-
   const dispatch = useDispatch();
 
   const createNewBoardHandler = () => {
@@ -103,9 +102,6 @@ const Header = () => {
                   >
                     Go to Main Page
                   </Button>
-                  {/* <ColorButton onClick={createNewBoardHandler} variant="contained">
-                    Create new board
-                  </ColorButton> */}
                   <LangSwitcher />
                   <IconButton aria-label="edit-profile">
                     <PersonIcon />
@@ -116,11 +112,23 @@ const Header = () => {
                 </>
               )}
 
-              {isAuth && !isWelcomePage && (
+              {isAuth && !isWelcomePage && !isBoardPage && (
                 <>
                   <ColorButton onClick={createNewBoardHandler} variant="contained">
                     Create new board
                   </ColorButton>
+                  <LangSwitcher />
+                  <IconButton aria-label="edit-profile">
+                    <PersonIcon />
+                  </IconButton>
+                  <IconButton onClick={signOutHundler} aria-label="logout">
+                    <LogoutIcon />
+                  </IconButton>
+                </>
+              )}
+
+              {isAuth && isBoardPage && (
+                <>
                   <LangSwitcher />
                   <IconButton aria-label="edit-profile">
                     <PersonIcon />
