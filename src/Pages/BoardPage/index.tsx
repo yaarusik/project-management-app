@@ -19,7 +19,6 @@ const BoardPage = () => {
 
   useEffect(() => {
     if (token) {
-      console.log('sfsdf');
       dispatch(getColumns({ selectedBoardId, token }));
     } else {
       // ошибку выбрасывать или не пускать на этот роут если не авторизован

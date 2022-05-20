@@ -11,11 +11,15 @@ const initialState: InitialState = {
   isPendingAuth: false,
   isPendingRegistration: false,
   isSnackbar: false,
-  isTaskModal: false,
   selectedBoardTitle: '',
   selectedBoardId: '',
   columns: [],
   token: null,
+  userData: {
+    id: '',
+    name: '',
+    login: '',
+  },
 };
 
 export default initialState;
@@ -42,6 +46,10 @@ interface InitialState {
   isPendingAuth: boolean;
   isPendingRegistration: boolean;
   isSnackbar: boolean;
-  isTaskModal: boolean;
   token: null | string;
+  userData: {
+    id: string;
+    name: string;
+    login: string;
+  };
 }

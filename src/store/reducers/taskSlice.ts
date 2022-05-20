@@ -4,11 +4,7 @@ import initialState from '../initialState';
 export const taskSlice = createSlice({
   name: 'task',
   initialState,
-  reducers: {
-    setTaskModal: (state, action: PayloadAction<boolean>) => {
-      state.isTaskModal = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: {},
 });
 

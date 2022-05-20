@@ -20,8 +20,10 @@ export const authSlice = createSlice({
     builder.addCase(registration.pending, (state) => {
       state.isPendingRegistration = true;
     });
-    builder.addCase(registration.fulfilled, (state) => {
+    builder.addCase(registration.fulfilled, (state, action) => {
       state.isPendingRegistration = false;
+
+      state.userData = action.payload;
     });
     builder.addCase(registration.rejected, (state) => {
       state.isPendingRegistration = false;
@@ -29,7 +31,7 @@ export const authSlice = createSlice({
     builder.addCase(authorization.pending, (state) => {
       state.isPendingAuth = true;
     });
-    builder.addCase(authorization.fulfilled, (state) => {
+    builder.addCase(authorization.fulfilled, (state, action) => {
       state.isAuth = true;
       state.isPendingAuth = false;
     });

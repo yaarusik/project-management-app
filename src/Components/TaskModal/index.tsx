@@ -1,75 +1,60 @@
-import * as React from 'react';
 import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 
 import Typography from '@mui/material/Typography';
-import { useAppDispatch, useAppSelector } from './../../store/redux/redux';
-import { taskSlice } from './../../store/reducers/taskSlice';
-import { Button, Stack, TextareaAutosize } from '@mui/material';
-import styled from 'styled-components';
+import { useAppSelector } from './../../store/redux/redux';
+
+import { Button, Input, Stack } from '@mui/material';
+
 import { Submit } from '../../Pages/PageSignup/styles';
 import { useState } from 'react';
+import { ModalBody, DescriptionArea } from './styles';
+import { ITaskOptions } from './types';
 
-const ModalBody = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 500px;
-  border: 2px solid rgba(2, 129, 237, 1);
-  border-radius: 5px;
-  background-color: #fff;
-  padding: 10px;
-`;
+const TaskModal = ({ id, order, isModal, closeModal }: ITaskOptions) => {
+  const { selectedBoardId, userData } = useAppSelector((state) => state.boardSlice);
 
-const DescriptionArea = styled(TextareaAutosize)`
-  width: 400px;
-`;
-
-const TaskModal = () => {
-  const { isTaskModal } = useAppSelector((state) => state.taskSlice);
   const [description, setDescription] = useState('');
-  const { setTaskModal } = taskSlice.actions;
-  const dispatch = useAppDispatch();
+  const [title, setTitle] = useState('');
 
-  const handleClose = () => dispatch(setTaskModal(false));
   const addTask = () => {
-    handleClose();
-    console.log(description);
+    closeModal();
+    console.log('columnId >', id);
+    console.log('columnOrder >', order);
+    console.log('selectedBoardId >', selectedBoardId);
+    console.log('description >', description);
+    console.log('title >', title);
+    console.log('user data >', userData.id);
   };
 
   return (
     <div>
-      {isTaskModal && (
+      {isModal && (
         <Modal
           sx={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
-          open={isTaskModal}
-          onClose={handleClose}
+          open={isModal}
+          onClose={closeModal}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
             timeout: 500,
           }}
         >
-          <Fade in={isTaskModal}>
+          <Fade in={isModal}>
             <ModalBody>
               <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
                 <Typography id="transition-modal-title" variant="h5" component="h2">
-                  Create new task
+                  Create new task {order}
                 </Typography>
-                <Button onClick={handleClose}>
+                <Button onClick={closeModal}>
                   <CloseIcon />
                 </Button>
               </Stack>
+              <Input onChange={(e) => setTitle(e.target.value)} />
               <DescriptionArea
                 maxRows={4}
                 minRows={3}
