@@ -20,7 +20,7 @@ import Preloader from '../../Components/Preloader';
 
 const PageLogin = () => {
   const dispatch = useAppDispatch();
-  const { setSnackBar } = authSlice.actions;
+  const { setSnackBar, setToken } = authSlice.actions;
   const { isPendingAuth, isAuth } = useAppSelector((state) => state.authSlice);
 
   const navigate = useNavigate();
@@ -43,6 +43,7 @@ const PageLogin = () => {
 
       if (meta.requestStatus === 'fulfilled') {
         Cookies.set('user', payload.token);
+        dispatch(setToken(payload.token));
         navigate('/mainPage');
       } else {
         dispatch(setSnackBar(true));

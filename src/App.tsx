@@ -7,11 +7,12 @@ import { AppBox } from './AppStyle';
 import { useAppDispatch } from './store/redux/redux';
 
 function App() {
-  const { setAuthUser } = authSlice.actions;
+  const { setAuthUser, setToken } = authSlice.actions;
   const dispatch = useAppDispatch();
 
   const token = Cookies.get('user');
   if (token) {
+    dispatch(setToken(token));
     dispatch(setAuthUser(true));
   }
 

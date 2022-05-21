@@ -10,17 +10,14 @@ import { getBoards } from '../../utils/api/boards';
 import { IFetchBoard } from './types';
 import { iconArray } from '../../constants';
 
-import Cookies from 'js-cookie';
-
 import { addNewBoard } from '../../utils/api/boards';
 import { setIsModalNewBoard } from '../../store/reducers/boardSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 
 const MainPage = () => {
+  const { token } = useSelector((state: RootState) => state.authSlice);
   const { boards, isModalNewBoard } = useAppSelector((state) => state.boardSlice);
   const dispatch = useAppDispatch();
-
-  const token = Cookies.get('user');
 
   useEffect(() => {
     if (token) {

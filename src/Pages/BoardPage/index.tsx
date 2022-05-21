@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { BoardWrapper, TitleBox, Title, ColumnWrapper } from './styles';
 import { setIsModalNewColumn } from '../../store/reducers/columnSlice';
-import { RootState } from '../../store/store';
 import { Link } from 'react-router-dom';
 import CreateNewBoard from '../../Components/CreateNewBoard';
 import { Column } from '../../Components/Column';
@@ -15,39 +13,38 @@ import { IColumn } from '../../store/initialState';
 
 const BoardPage = () => {
   const { isModalNewColumn, columns } = useAppSelector((state) => state.columnSlice);
-  const { selectedBoardTitle, selectedBoardId } = useSelector(
-    (state: RootState) => state.boardSlice
-  );
+  const { token } = useAppSelector((state) => state.authSlice);
+  const { selectedBoardTitle, selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!selectedBoardId) {
-      dispatch(getColumns(JSON.parse(window.localStorage.getItem('boardId') as string)));
-    } else dispatch(getColumns(selectedBoardId));
+    if (token) {
+      console.log('sfsdf');
+      if (!selectedBoardId) {
+        const selectedBoardId = JSON.parse(window.localStorage.getItem('boardId') as string);
+        dispatch(getColumns({ selectedBoardId, token }));
+      } else dispatch(getColumns({ selectedBoardId, token }));
+    } else {
+      // ошибку выбрасывать или не пускать на этот роут если не авторизован
+    }
   }, []);
 
   const newColumnHandler = () => {
     dispatch(setIsModalNewColumn(true));
   };
 
-  // const defineOrderColumn = () => {
-  //   if (columns === []) {
-  //     return 1;
-  //   } else {
-  //     if (columns.length - 1 < 0) return 1;
-  //     return columns[columns.length - 1].order + 1;
-  //   }
-  // };
-
   const createColumn = (data: IFetchColumn) => {
-    const addColumnData = {
-      boardId: selectedBoardId,
-      title: data.title,
-    };
+    if (token) {
+      const addColumnData = {
+        boardId: selectedBoardId,
+        title: data.title,
+        token: token,
+      };
 
-    dispatch(addNewColumn(addColumnData));
-    dispatch(setIsModalNewColumn(false));
-    console.log(selectedBoardId);
+      dispatch(addNewColumn(addColumnData));
+      dispatch(setIsModalNewColumn(false));
+      console.log(selectedBoardId);
+    }
   };
 
   return (

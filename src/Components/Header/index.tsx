@@ -33,14 +33,13 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 const Header = () => {
   const { isAuth } = useAppSelector((state) => state.authSlice);
-  const { setAuthUser } = authSlice.actions;
+  const { setAuthUser, setToken } = authSlice.actions;
 
   const location = useLocation();
-
   const isWelcomePage = location.pathname === '/';
+  const isBoardPage = location.pathname === '/board';
 
   const navigation = useNavigate();
-
   const dispatch = useDispatch();
 
   const createNewBoardHandler = () => {
@@ -50,6 +49,7 @@ const Header = () => {
   const signOutHundler = () => {
     Cookies.remove('user');
     dispatch(setAuthUser(false));
+    dispatch(setToken(null));
     navigation('/');
     console.log(isAuth);
   };
@@ -102,9 +102,6 @@ const Header = () => {
                   >
                     Go to Main Page
                   </Button>
-                  {/* <ColorButton onClick={createNewBoardHandler} variant="contained">
-                    Create new board
-                  </ColorButton> */}
                   <LangSwitcher />
                   <IconButton aria-label="edit-profile">
                     <PersonIcon />
@@ -115,11 +112,23 @@ const Header = () => {
                 </>
               )}
 
-              {isAuth && !isWelcomePage && (
+              {isAuth && !isWelcomePage && !isBoardPage && (
                 <>
                   <ColorButton onClick={createNewBoardHandler} variant="contained">
                     Create new board
                   </ColorButton>
+                  <LangSwitcher />
+                  <IconButton aria-label="edit-profile">
+                    <PersonIcon />
+                  </IconButton>
+                  <IconButton onClick={signOutHundler} aria-label="logout">
+                    <LogoutIcon />
+                  </IconButton>
+                </>
+              )}
+
+              {isAuth && isBoardPage && (
+                <>
                   <LangSwitcher />
                   <IconButton aria-label="edit-profile">
                     <PersonIcon />

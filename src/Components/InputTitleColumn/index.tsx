@@ -8,9 +8,8 @@ type IInputTitleColumn = {
 };
 
 const InputTitleColumn = ({ setFlagChangeTitle }: IInputTitleColumn) => {
-  const { currentColumnOrder, currentColumnId, columns } = useAppSelector(
-    (state) => state.columnSlice
-  );
+  const { currentColumnOrder, currentColumnId } = useAppSelector((state) => state.columnSlice);
+  const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const [newTitle, setNewTitle] = useState<string>();
   const dispatch = useAppDispatch();
@@ -31,10 +30,11 @@ const InputTitleColumn = ({ setFlagChangeTitle }: IInputTitleColumn) => {
       boardId: selectedBoardId,
       columnId: currentColumnId,
       columnData: updateColumnData,
+      token: token,
     };
 
     await dispatch(updateColumn(columnData));
-    dispatch(getColumns(selectedBoardId));
+    dispatch(getColumns({ selectedBoardId, token }));
   };
 
   const onCancel = () => {

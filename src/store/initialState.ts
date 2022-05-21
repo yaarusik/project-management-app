@@ -12,9 +12,11 @@ const initialState: InitialState = {
   isPendingAuth: false,
   isPendingRegistration: false,
   isSnackbar: false,
+  isTaskModal: false,
   selectedBoardTitle: '',
   selectedBoardId: '',
   columns: [],
+  token: null,
   currentColumnId: '',
   currentColumnOrder: 0,
   updateColumn: [],
@@ -45,6 +47,8 @@ interface InitialState {
   isPendingAuth: boolean;
   isPendingRegistration: boolean;
   isSnackbar: boolean;
+  isTaskModal: boolean;
+  token: null | string;
   currentColumnId: string;
   currentColumnOrder: number;
   updateColumn: IColumn[];

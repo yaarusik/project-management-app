@@ -31,8 +31,9 @@ export const schema = yup.object().shape({
           .then((res) => {
             if (res.status === 409) {
               throw new Error('Пользователь с таким логином уже существует');
+            } else {
+              resolve(true);
             }
-            resolve(true);
           })
           .catch(() => resolve(false));
       });

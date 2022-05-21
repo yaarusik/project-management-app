@@ -6,15 +6,13 @@ import { CardActionArea } from '@mui/material';
 import { IBoardCard } from './types';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../store/redux/redux';
+import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { deleteBoard, getBoards } from '../../utils/api/boards';
 import { setSelectedBoardTitle, setSelectedBoardId } from '../../store/reducers/boardSlice';
-import Cookies from 'js-cookie';
 
 const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
   const dispatch = useAppDispatch();
-
-  const token = Cookies.get('user');
+  const { token } = useAppSelector((state) => state.authSlice);
 
   const onClickDelete = async () => {
     if (token) {

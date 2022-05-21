@@ -17,10 +17,17 @@ export type IColumnData = {
 export type IAddColumn = {
   boardId: string;
   title: string;
+  token: string;
 };
 
 export type IUpdateColumn = {
   boardId: string;
   columnId: string;
   columnData: IColumnData;
+  token: string | null;
 };
+
+export interface IGetColumns {
+  selectedBoardId: string;
+  token: string | null;
+}
