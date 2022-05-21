@@ -12,11 +12,11 @@ import { iconArray } from '../../constants';
 
 import { addNewBoard } from '../../utils/api/boards';
 import { setIsModalNewBoard } from '../../store/reducers/boardSlice';
-import { useAppDispatch } from '../../store/redux/redux';
+import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 
 const MainPage = () => {
-  const { boards, isModalNewBoard } = useSelector((state: RootState) => state.boardSlice);
   const { token } = useSelector((state: RootState) => state.authSlice);
+  const { boards, isModalNewBoard } = useAppSelector((state) => state.boardSlice);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -27,9 +27,9 @@ const MainPage = () => {
     }
   }, []);
 
-  const createBoard = async ({ title }: IFetchBoard) => {
+  const createBoard = async ({ title, description }: IFetchBoard) => {
     if (token) {
-      await dispatch(addNewBoard({ title, token }));
+      await dispatch(addNewBoard({ title, description, token }));
       dispatch(setIsModalNewBoard(false));
     }
   };
@@ -72,6 +72,7 @@ const MainPage = () => {
                   title={item.title}
                   key={item.id}
                   id={item.id}
+                  description={item.description}
                 />
               );
             })}
