@@ -2,10 +2,7 @@ import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../store/redux/redux';
 import { updateColumn, getColumns } from '../../utils/api/columns';
-
-type IInputTitleColumn = {
-  setFlagChangeTitle: (param: boolean) => void;
-};
+import { IInputTitleColumn } from './types';
 
 const InputTitleColumn = ({ setFlagChangeTitle }: IInputTitleColumn) => {
   const { currentColumnOrder, currentColumnId } = useAppSelector((state) => state.columnSlice);
