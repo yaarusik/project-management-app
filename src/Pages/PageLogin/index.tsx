@@ -17,10 +17,11 @@ import Cookies from 'js-cookie';
 import { authSlice } from './../../store/reducers/authSlice';
 import SimpleSnackbar from './../../Components/Snackbar';
 import Preloader from '../../Components/Preloader';
+import jwtDecode from 'jwt-decode';
 
 const PageLogin = () => {
   const dispatch = useAppDispatch();
-  const { setSnackBar, setToken } = authSlice.actions;
+  const { setSnackBar, setToken, setUserData } = authSlice.actions;
   const { isPendingAuth, isAuth } = useAppSelector((state) => state.authSlice);
 
   const navigate = useNavigate();
@@ -42,8 +43,13 @@ const PageLogin = () => {
       const { meta, payload } = await dispatch(authorization(data));
 
       if (meta.requestStatus === 'fulfilled') {
-        Cookies.set('user', payload.token);
-        dispatch(setToken(payload.token));
+        const { token } = payload;
+        Cookies.set('user', token);
+        dispatch(setToken(token));
+
+        const parseToken = jwtDecode(token);
+        dispatch(setUserData(parseToken));
+
         navigate('/mainPage');
       } else {
         dispatch(setSnackBar(true));

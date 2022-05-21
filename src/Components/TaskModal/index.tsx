@@ -4,7 +4,7 @@ import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 
 import Typography from '@mui/material/Typography';
-import { useAppSelector } from './../../store/redux/redux';
+import { useAppSelector, useAppDispatch } from './../../store/redux/redux';
 
 import { Button, Input, Stack } from '@mui/material';
 
@@ -12,21 +12,39 @@ import { Submit } from '../../Pages/PageSignup/styles';
 import { useState } from 'react';
 import { ModalBody, DescriptionArea } from './styles';
 import { ITaskOptions } from './types';
+import { createTask } from './../../utils/api/tasks';
 
-const TaskModal = ({ id, order, isModal, closeModal }: ITaskOptions) => {
-  const { selectedBoardId, userData } = useAppSelector((state) => state.boardSlice);
+const TaskModal = ({ id, isModal, closeModal }: ITaskOptions) => {
+  const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
+  const { userData } = useAppSelector((state) => state.authSlice);
+  const dispatch = useAppDispatch();
 
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
 
-  const addTask = () => {
+  const addTask = async () => {
     closeModal();
-    console.log('columnId >', id);
-    console.log('columnOrder >', order);
-    console.log('selectedBoardId >', selectedBoardId);
-    console.log('description >', description);
-    console.log('title >', title);
-    console.log('user data >', userData.id);
+    const taskOptions = {
+      url: {
+        boardId: selectedBoardId,
+        columnId: id,
+      },
+      body: {
+        title: title,
+        description: description,
+        userId: userData.userId,
+      },
+    };
+    const result = await dispatch(createTask(taskOptions));
+
+    console.log('result', result);
+
+    // console.log('columnId >', id);
+    // console.log('columnOrder >', order);
+    // console.log('selectedBoardId >', selectedBoardId);
+    // console.log('description >', description);
+    // console.log('title >', title);
+    // console.log('user data >', userData.userId);
   };
 
   return (
@@ -46,15 +64,20 @@ const TaskModal = ({ id, order, isModal, closeModal }: ITaskOptions) => {
         >
           <Fade in={isModal}>
             <ModalBody>
-              <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography id="transition-modal-title" variant="h5" component="h2">
-                  Create new task {order}
+                  Create new task
                 </Typography>
                 <Button onClick={closeModal}>
                   <CloseIcon />
                 </Button>
               </Stack>
-              <Input onChange={(e) => setTitle(e.target.value)} />
+              <Stack direction="row" spacing={2} justifyContent="space-between">
+                <Typography variant="h6" component="h2">
+                  Task title
+                </Typography>
+                <Input onChange={(e) => setTitle(e.target.value)} />
+              </Stack>
               <DescriptionArea
                 maxRows={4}
                 minRows={3}

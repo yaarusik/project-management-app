@@ -10,7 +10,7 @@ export interface IDeleteBoard {
 
 export type IColumnData = {
   title: string;
-  order: number | undefined;
+  order?: number | undefined;
 };
 
 export type IAddColumn = {

@@ -19,7 +19,6 @@ export const Column = ({ title, id, order }: IColumn) => {
 
   const modalOptions = {
     id,
-    order,
     isModal,
     closeModal: closeModal,
   };

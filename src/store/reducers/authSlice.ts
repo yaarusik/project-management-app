@@ -15,15 +15,16 @@ export const authSlice = createSlice({
     setToken(state, action: PayloadAction<string | null>) {
       state.token = action.payload;
     },
+    setUserData(state, action) {
+      state.userData = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registration.pending, (state) => {
       state.isPendingRegistration = true;
     });
-    builder.addCase(registration.fulfilled, (state, action) => {
+    builder.addCase(registration.fulfilled, (state) => {
       state.isPendingRegistration = false;
-
-      state.userData = action.payload;
     });
     builder.addCase(registration.rejected, (state) => {
       state.isPendingRegistration = false;
@@ -31,7 +32,7 @@ export const authSlice = createSlice({
     builder.addCase(authorization.pending, (state) => {
       state.isPendingAuth = true;
     });
-    builder.addCase(authorization.fulfilled, (state, action) => {
+    builder.addCase(authorization.fulfilled, (state) => {
       state.isAuth = true;
       state.isPendingAuth = false;
     });

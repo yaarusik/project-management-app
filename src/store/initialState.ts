@@ -16,8 +16,7 @@ const initialState: InitialState = {
   columns: [],
   token: null,
   userData: {
-    id: '',
-    name: '',
+    userId: '',
     login: '',
   },
 };
@@ -32,7 +31,7 @@ interface IBoards {
 export interface IColumn {
   id: string;
   title: string;
-  order: number;
+  order?: number;
 }
 
 interface InitialState {
@@ -48,8 +47,8 @@ interface InitialState {
   isSnackbar: boolean;
   token: null | string;
   userData: {
-    id: string;
-    name: string;
+    userId: string;
     login: string;
+    iat?: null | number;
   };
 }
