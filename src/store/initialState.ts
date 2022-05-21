@@ -5,6 +5,7 @@ const initialState: InitialState = {
     {
       id: '',
       title: '',
+      description: '',
     },
   ],
   isAuth: false,
@@ -14,6 +15,9 @@ const initialState: InitialState = {
   selectedBoardTitle: '',
   selectedBoardId: '',
   columns: [],
+  currentColumnId: '',
+  currentColumnOrder: 0,
+  updateColumn: [],
 };
 
 export default initialState;
@@ -21,6 +25,7 @@ export default initialState;
 interface IBoards {
   id: string;
   title: string;
+  description: string;
 }
 
 export interface IColumn {
@@ -40,4 +45,7 @@ interface InitialState {
   isPendingAuth: boolean;
   isPendingRegistration: boolean;
   isSnackbar: boolean;
+  currentColumnId: string;
+  currentColumnOrder: number;
+  updateColumn: IColumn[];
 }

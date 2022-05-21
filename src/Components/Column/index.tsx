@@ -3,22 +3,43 @@ import { ColumnWrapper, Title, TitleWrapper } from './styles';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IColumn } from '../../store/initialState';
+import InputTitleColumn from '../InputTitleColumn';
+import { useAppDispatch } from '../../store/redux/redux';
+import { setCurrentColumnId, setCurrentColumnOrder } from '../../store/reducers/columnSlice';
+import { useState } from 'react';
 
-export const Column = ({ title }: IColumn) => {
+export const Column = ({ title, id, order }: IColumn) => {
+  const dispatch = useAppDispatch();
+  const [isChangeTitle, setIsChangeTitle] = useState(false);
+
+  const onClickTitle = () => {
+    setIsChangeTitle(true);
+    dispatch(setCurrentColumnId(id));
+    dispatch(setCurrentColumnOrder(order));
+  };
+
+  const setFlagChangeTitle = (param: boolean) => {
+    setIsChangeTitle(param);
+  };
+
   return (
     <ColumnWrapper>
       <Box>
-        <TitleWrapper>
-          <Title>{title}</Title>
-          <Box>
-            <IconButton aria-label="add">
-              <AddIcon color="secondary" />
-            </IconButton>
-            <IconButton aria-label="delete">
-              <DeleteIcon color="secondary" />
-            </IconButton>
-          </Box>
-        </TitleWrapper>
+        {isChangeTitle ? (
+          <InputTitleColumn setFlagChangeTitle={setFlagChangeTitle} />
+        ) : (
+          <TitleWrapper>
+            <Title onClick={onClickTitle}>{title}</Title>
+            <Box>
+              <IconButton aria-label="add">
+                <AddIcon color="secondary" />
+              </IconButton>
+              <IconButton aria-label="delete">
+                <DeleteIcon color="secondary" />
+              </IconButton>
+            </Box>
+          </TitleWrapper>
+        )}
       </Box>
     </ColumnWrapper>
   );

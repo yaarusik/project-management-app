@@ -45,6 +45,18 @@ const CreateNewBoard = ({ titleName, submitFunc }: ITitle) => {
           fullWidth
           helperText="Please enter your title board"
         />
+        {titleName === 'board' && (
+          <TextField
+            InputProps={{
+              ...register('description'),
+            }}
+            label="Description"
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            helperText="Please enter your description board"
+          />
+        )}
         <Submit type="submit" variant="outlined" color="secondary">
           Create new {titleName}
         </Submit>

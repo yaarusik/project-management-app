@@ -9,42 +9,45 @@ import { Link } from 'react-router-dom';
 import CreateNewBoard from '../../Components/CreateNewBoard';
 import { Column } from '../../Components/Column';
 import { getColumns, addNewColumn } from '../../utils/api/columns';
-import { useAppDispatch } from '../../store/redux/redux';
+import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { IFetchColumn } from './types';
 import { IColumn } from '../../store/initialState';
 
 const BoardPage = () => {
-  const { isModalNewColumn, columns } = useSelector((state: RootState) => state.columnSlice);
+  const { isModalNewColumn, columns } = useAppSelector((state) => state.columnSlice);
   const { selectedBoardTitle, selectedBoardId } = useSelector(
     (state: RootState) => state.boardSlice
   );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getColumns(selectedBoardId));
+    if (!selectedBoardId) {
+      dispatch(getColumns(JSON.parse(window.localStorage.getItem('boardId') as string)));
+    } else dispatch(getColumns(selectedBoardId));
   }, []);
 
   const newColumnHandler = () => {
     dispatch(setIsModalNewColumn(true));
   };
 
-  const defineOrderColumn = () => {
-    if (columns === []) {
-      return 1;
-    } else {
-      if (columns.length - 1 < 0) return 1;
-      return columns[columns.length - 1].order + 1;
-    }
-  };
+  // const defineOrderColumn = () => {
+  //   if (columns === []) {
+  //     return 1;
+  //   } else {
+  //     if (columns.length - 1 < 0) return 1;
+  //     return columns[columns.length - 1].order + 1;
+  //   }
+  // };
 
   const createColumn = (data: IFetchColumn) => {
     const addColumnData = {
       boardId: selectedBoardId,
-      columnData: { title: data.title, order: defineOrderColumn() },
+      title: data.title,
     };
 
     dispatch(addNewColumn(addColumnData));
     dispatch(setIsModalNewColumn(false));
+    console.log(selectedBoardId);
   };
 
   return (
@@ -64,9 +67,9 @@ const BoardPage = () => {
       </TitleBox>
       {isModalNewColumn && <CreateNewBoard titleName={'column'} submitFunc={createColumn} />}
       <ColumnWrapper>
-        {columns.map((item: IColumn) => {
-          return <Column key={item.id} title={item.title} id={item.id} order={item.order} />;
-        })}
+        {columns.map((item: IColumn) => (
+          <Column key={item.id} title={item.title} id={item.id} order={item.order} />
+        ))}
       </ColumnWrapper>
     </BoardWrapper>
   );

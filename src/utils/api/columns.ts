@@ -1,6 +1,7 @@
 import { BASE_URL } from '../../constants';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
+import { IAddColumn, IUpdateColumn } from './types';
 
 const userToken = Cookies.get('user');
 
@@ -17,22 +18,30 @@ export const getColumns = createAsyncThunk('columns/getColumns', async (boardId:
   return data;
 });
 
-type IColumnData = {
-  title: string;
-  order: number | undefined;
-};
-
-export type IAddColumn = {
-  boardId: string;
-  columnData: IColumnData;
-};
-
 export const addNewColumn = createAsyncThunk(
   'columns/addNewColumn',
-  async (columnData: IAddColumn) => {
-    const response = await fetch(`${BASE_URL}/boards/${columnData.boardId}/columns`, {
+  async ({ boardId, title }: IAddColumn) => {
+    console.log(title, boardId);
+    const response = await fetch(`${BASE_URL}/boards/${boardId}/columns`, {
       method: 'POST',
-      body: JSON.stringify(columnData.columnData),
+      body: JSON.stringify({ title: title }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
+);
+
+export const updateColumn = createAsyncThunk(
+  'columns/updateColumn',
+  async ({ columnData, boardId, columnId }: IUpdateColumn) => {
+    const response = await fetch(`${BASE_URL}/boards/${boardId}/columns/${columnId}`, {
+      method: 'PUT',
+      body: JSON.stringify(columnData),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${userToken}`,
