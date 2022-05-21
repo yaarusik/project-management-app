@@ -5,6 +5,7 @@ const initialState: InitialState = {
     {
       id: '',
       title: '',
+      description: '',
     },
   ],
   isAuth: false,
@@ -19,6 +20,9 @@ const initialState: InitialState = {
     userId: '',
     login: '',
   },
+  currentColumnId: '',
+  currentColumnOrder: 0,
+  updateColumn: [],
 };
 
 export default initialState;
@@ -26,6 +30,7 @@ export default initialState;
 interface IBoards {
   id: string;
   title: string;
+  description: string;
 }
 
 export interface IColumn {
@@ -51,4 +56,7 @@ interface InitialState {
     login: string;
     iat?: null | number;
   };
+  currentColumnId: string;
+  currentColumnOrder: number;
+  updateColumn: IColumn[];
 }

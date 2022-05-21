@@ -19,7 +19,10 @@ const BoardPage = () => {
 
   useEffect(() => {
     if (token) {
-      dispatch(getColumns({ selectedBoardId, token }));
+      if (!selectedBoardId) {
+        const selectedBoardId = JSON.parse(window.localStorage.getItem('boardId') as string);
+        dispatch(getColumns({ selectedBoardId, token }));
+      } else dispatch(getColumns({ selectedBoardId, token }));
     } else {
       // ошибку выбрасывать или не пускать на этот роут если не авторизован
     }
@@ -29,25 +32,17 @@ const BoardPage = () => {
     dispatch(setIsModalNewColumn(true));
   };
 
-  // const defineOrderColumn = () => {
-  //   if (columns === []) {
-  //     return 1;
-  //   } else {
-  //     if (columns.length - 1 < 0) return 1;
-  //     return columns[columns.length - 1].order + 1;
-  //   }
-  // };
-
   const createColumn = (data: IFetchColumn) => {
     if (token) {
       const addColumnData = {
         boardId: selectedBoardId,
-        columnData: { title: data.title },
+        title: data.title,
         token: token,
       };
 
       dispatch(addNewColumn(addColumnData));
       dispatch(setIsModalNewColumn(false));
+      console.log(selectedBoardId);
     }
   };
 
@@ -68,9 +63,9 @@ const BoardPage = () => {
       </TitleBox>
       {isModalNewColumn && <CreateNewBoard titleName={'column'} submitFunc={createColumn} />}
       <ColumnWrapper>
-        {columns.map((item: IColumn) => {
-          return <Column key={item.id} title={item.title} id={item.id} />;
-        })}
+        {columns.map((item: IColumn) => (
+          <Column key={item.id} title={item.title} id={item.id} order={item.order} />
+        ))}
       </ColumnWrapper>
     </BoardWrapper>
   );
