@@ -16,7 +16,7 @@ import { createTask } from './../../utils/api/tasks';
 
 const TaskModal = ({ id, isModal, closeModal }: ITaskOptions) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
-  const { userData } = useAppSelector((state) => state.authSlice);
+  const { userData, token } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
 
   const [description, setDescription] = useState('');
@@ -24,27 +24,24 @@ const TaskModal = ({ id, isModal, closeModal }: ITaskOptions) => {
 
   const addTask = async () => {
     closeModal();
-    const taskOptions = {
-      url: {
-        boardId: selectedBoardId,
-        columnId: id,
-      },
-      body: {
-        title: title,
-        description: description,
-        userId: userData.userId,
-      },
-    };
-    const result = await dispatch(createTask(taskOptions));
+    if (token) {
+      const taskOptions = {
+        url: {
+          boardId: selectedBoardId,
+          columnId: id,
+        },
+        body: {
+          title: title,
+          description: description,
+          userId: userData.userId,
+        },
+        token,
+      };
+      console.log('taskOptions >', taskOptions);
+      const result = await dispatch(createTask(taskOptions));
 
-    console.log('result', result);
-
-    // console.log('columnId >', id);
-    // console.log('columnOrder >', order);
-    // console.log('selectedBoardId >', selectedBoardId);
-    // console.log('description >', description);
-    // console.log('title >', title);
-    // console.log('user data >', userData.userId);
+      console.log('result', result);
+    }
   };
 
   return (

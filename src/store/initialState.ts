@@ -27,7 +27,7 @@ const initialState: InitialState = {
 
 export default initialState;
 
-interface IBoards {
+export interface IBoards {
   id: string;
   title: string;
   description: string;
