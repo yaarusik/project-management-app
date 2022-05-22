@@ -24,6 +24,7 @@ export const addNewBoard = createAsyncThunk(
     const response = await fetch(`${BASE_URL}/boards`, {
       method: 'POST',
       body: JSON.stringify({ title, description }),
+
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

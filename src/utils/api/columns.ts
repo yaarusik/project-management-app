@@ -5,7 +5,6 @@ import { IAddColumn, IDeleteColumn, IGetColumns, IUpdateColumn } from './types';
 export const getColumns = createAsyncThunk(
   'columns/getColumns',
   async ({ selectedBoardId, token }: IGetColumns) => {
-    // debugger;
     const res = await fetch(`${BASE_URL}/boards/${selectedBoardId}/columns`, {
       method: 'GET',
       headers: {

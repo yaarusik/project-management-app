@@ -15,10 +15,12 @@ export const registration = createAsyncThunk(
   'root/registration',
   async (data: ISubmit, { rejectWithValue }) => {
     try {
-      await fetch(`${BASE_URL}/signup`, {
+      const res = await fetch(`${BASE_URL}/signup`, {
         ...fetchOptions,
         body: JSON.stringify(data),
       });
+      const userData = await res.json();
+      return userData;
     } catch (err) {
       return rejectWithValue((err as TypeError).message);
     }

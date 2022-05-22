@@ -17,30 +17,31 @@ export const schema = yup.object().shape({
     .matches(/^[a-z][a-z0-9]*$/i, 'Логин содержить только английские буквы и цифры')
     .min(3, 'Минимальная длина логина 3 буквы')
     .max(15, 'Максимальная длина логина 15 букв')
-    .required('Введите логин')
-    .test('проверка логина', 'Данный логин уже существует', function () {
-      return new Promise((resolve) => {
-        fetch(`${BASE_URL}/signup`, {
-          ...fetchOptions,
-          body: JSON.stringify({
-            login: this.parent.login,
-            password: this.parent.password,
-            name: this.parent.name,
-          }),
-        })
-          .then((res) => {
-            if (res.status === 409) {
-              throw new Error('Пользователь с таким логином уже существует');
-            } else {
-              resolve(true);
-            }
-          })
-          .catch(() => resolve(false));
-      });
-    }),
+    .required('Введите логин'),
   password: yup
     .string()
     .min(8, 'Пароль должен быть больше чем 8 символов')
     .max(15, 'Максимальная длина пароль 15 символов')
     .required('Введите пароль'),
 });
+
+// .test('проверка логина', 'Данный логин уже существует', function () {
+//   return new Promise((resolve) => {
+//     fetch(`${BASE_URL}/signup`, {
+//       ...fetchOptions,
+//       body: JSON.stringify({
+//         login: this.parent.login,
+//         password: this.parent.password,
+//         name: this.parent.name,
+//       }),
+//     })
+//       .then((res) => {
+//         if (res.status === 409) {
+//           resolve(true);
+//         } else {
+//           resolve(true);
+//         }
+//       })
+//       .catch(() => resolve(true));
+//   });
+// }),

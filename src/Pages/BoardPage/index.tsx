@@ -19,7 +19,6 @@ const BoardPage = () => {
 
   useEffect(() => {
     if (token) {
-      console.log('sfsdf');
       if (!selectedBoardId) {
         dispatch(getColumns({ selectedBoardId, token }));
       } else dispatch(getColumns({ selectedBoardId, token }));

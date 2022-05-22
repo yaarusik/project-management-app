@@ -15,6 +15,9 @@ export const authSlice = createSlice({
     setToken(state, action: PayloadAction<string | null>) {
       state.token = action.payload;
     },
+    setUserData(state, action) {
+      state.userData = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registration.pending, (state) => {
