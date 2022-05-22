@@ -14,6 +14,15 @@ export type ICreateTask = {
   token: string;
 };
 
+export type IDeleteTask = {
+  url: {
+    boardId: string;
+    columnId: string;
+    taskId: string;
+  };
+  token: string;
+};
+
 export type IGetTasks = Pick<ICreateTask, 'url' | 'token'>;
 
 export const createTask = createAsyncThunk(
@@ -61,5 +70,32 @@ export const getTasks = createAsyncThunk(
     } catch (err) {
       return rejectWithValue((err as TypeError).message);
     }
+  }
+);
+
+export const deleteTask = createAsyncThunk(
+  'root/deleteTask',
+  async ({ url, token }: IDeleteTask, { rejectWithValue }) => {
+    try {
+      const { boardId, columnId, taskId } = url;
+      const res = await fetch(`${BASE_URL}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error('Произошла ошибка при удалении задачи');
+      }
+    } catch (err) {
+      return rejectWithValue((err as TypeError).message);
+    }
+    // await fetch(`${BASE_URL}/boards/${boardId}/columns/${columnId}`, {
+    //   method: 'DELETE',
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
   }
 );

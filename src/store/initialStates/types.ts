@@ -1,10 +1,11 @@
-import { IBoards } from '../initialState';
-
 export interface ITaskInitialState {
   tasks: ITask[];
 }
 
-export interface ITask extends IBoards {
+export interface ITask {
+  id: string;
+  title: string;
+  description: string;
   order: number;
   userId: string;
 }

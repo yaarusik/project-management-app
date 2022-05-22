@@ -24,6 +24,8 @@ export const Column = ({ title, id, order }: IColumn) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const { token } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
+  // заглушка
+  const columnId = id;
 
   const [isChangeTitle, setIsChangeTitle] = useState(false);
   const [tasks, setTasks] = useState<ITask[]>([]);
@@ -107,7 +109,14 @@ export const Column = ({ title, id, order }: IColumn) => {
         </Box>
         <TasksWrapper>
           {tasks.map(({ title, id, userId }: ITask) => (
-            <Task key={id} title={title} author={userId} />
+            <Task
+              key={id}
+              title={title}
+              author={userId}
+              id={id}
+              columnId={columnId}
+              updateTask={(tasks: ITask[]) => setTasks(tasks)}
+            />
           ))}
         </TasksWrapper>
       </ColumnWrapper>
