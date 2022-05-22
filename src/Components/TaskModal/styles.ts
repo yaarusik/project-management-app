@@ -18,5 +18,10 @@ export const ModalBody = styled(Box)`
 `;
 
 export const DescriptionArea = styled(TextareaAutosize)`
+  padding: 10px;
   width: 400px;
+  max-width: 100%;
+  max-height: 200px;
+  min-width: 50%;
+  min-height: 40px;
 `;

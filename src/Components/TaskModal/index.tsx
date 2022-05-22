@@ -14,7 +14,7 @@ import { ModalBody, DescriptionArea } from './styles';
 import { ITaskOptions } from './types';
 import { createTask } from './../../utils/api/tasks';
 
-const TaskModal = ({ id, isModal, closeModal }: ITaskOptions) => {
+const TaskModal = ({ id, isModal, closeModal, addTask }: ITaskOptions) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const { userData, token } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
@@ -22,7 +22,7 @@ const TaskModal = ({ id, isModal, closeModal }: ITaskOptions) => {
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
 
-  const addTask = async () => {
+  const TaskFetch = async () => {
     closeModal();
     if (token) {
       const taskOptions = {
@@ -37,10 +37,10 @@ const TaskModal = ({ id, isModal, closeModal }: ITaskOptions) => {
         },
         token,
       };
-      console.log('taskOptions >', taskOptions);
-      const result = await dispatch(createTask(taskOptions));
-
-      console.log('result', result);
+      const { meta, payload } = await dispatch(createTask(taskOptions));
+      if (meta.requestStatus === 'fulfilled') {
+        addTask(payload);
+      }
     }
   };
 
@@ -48,7 +48,6 @@ const TaskModal = ({ id, isModal, closeModal }: ITaskOptions) => {
     <div>
       {isModal && (
         <Modal
-          sx={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
           open={isModal}
@@ -73,22 +72,14 @@ const TaskModal = ({ id, isModal, closeModal }: ITaskOptions) => {
                 <Typography variant="h6" component="h2">
                   Task title
                 </Typography>
-                <Input onChange={(e) => setTitle(e.target.value)} />
+                <Input inputProps={{ maxLength: 15 }} onChange={(e) => setTitle(e.target.value)} />
               </Stack>
               <DescriptionArea
-                maxRows={4}
-                minRows={3}
-                aria-label="maximum height"
-                placeholder="describe"
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '300px',
-                  minWidth: '50%',
-                  minHeight: '40px',
-                }}
+                placeholder="Describe"
+                maxLength={50}
                 onChange={(e) => setDescription(e.target.value)}
               />
-              <Submit onClick={addTask}>Add task</Submit>
+              <Submit onClick={TaskFetch}>Add task</Submit>
             </ModalBody>
           </Fade>
         </Modal>

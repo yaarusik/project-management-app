@@ -15,19 +15,20 @@ import { getTasks } from '../../utils/api/tasks';
 import { TasksWrapper } from '../Task/style';
 
 export const Column = ({ title, id, order }: IColumn) => {
-  const [isModal, setIsModal] = useState(false);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const { token } = useAppSelector((state) => state.authSlice);
-  const { tasks } = useAppSelector((state) => state.taskSlice);
   const dispatch = useAppDispatch();
+
   const [isChangeTitle, setIsChangeTitle] = useState(false);
+  const [tasks, setTasks] = useState<ITask[]>([]);
+  const [isModal, setIsModal] = useState(false);
 
   const onClickTitle = () => {
     setIsChangeTitle(true);
     dispatch(setCurrentColumnId(id));
     dispatch(setCurrentColumnOrder(order));
   };
-  // получаем таски
+
   useEffect(() => {
     if (token) {
       const fetchTasks = async () => {
@@ -38,12 +39,15 @@ export const Column = ({ title, id, order }: IColumn) => {
           },
           token,
         };
-        // получили таски
-        await dispatch(getTasks(taskOptions));
+
+        const { meta, payload } = await dispatch(getTasks(taskOptions));
+        if (meta.requestStatus === 'fulfilled') {
+          setTasks(payload);
+        }
       };
       fetchTasks();
     } else {
-      // произошла ошибка
+      // вы не авторизованы
     }
   }, []);
 
@@ -51,17 +55,15 @@ export const Column = ({ title, id, order }: IColumn) => {
     setIsChangeTitle(param);
   };
 
-  const addTask = () => {
-    openModal();
-  };
-
   const openModal = () => setIsModal(true);
   const closeModal = () => setIsModal(false);
+  const addTask = (task: ITask) => setTasks((prev) => [...prev, task]);
 
   const modalOptions = {
     id,
     isModal,
     closeModal: closeModal,
+    addTask: addTask,
   };
 
   return (
@@ -75,7 +77,7 @@ export const Column = ({ title, id, order }: IColumn) => {
             <TitleWrapper>
               <Title onClick={onClickTitle}>{title}</Title>
               <Box>
-                <IconButton onClick={addTask} aria-label="add">
+                <IconButton onClick={openModal} aria-label="add">
                   <AddIcon color="secondary" />
                 </IconButton>
                 <IconButton aria-label="delete">
