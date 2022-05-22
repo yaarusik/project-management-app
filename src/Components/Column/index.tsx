@@ -1,18 +1,24 @@
+import { useEffect, useState } from 'react';
+
 import { Box, IconButton } from '@mui/material';
-import { ColumnWrapper, Title, TitleWrapper } from './styles';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IColumn } from '../../store/initialState';
+
+import { ColumnWrapper, Title, TitleWrapper } from './styles';
+import { TasksWrapper } from '../Task/style';
+
 import { ITask } from '../../store/initialStates/types';
 
 import InputTitleColumn from '../InputTitleColumn';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { setCurrentColumnId, setCurrentColumnOrder } from '../../store/reducers/columnSlice';
-import TaskModal from './../TaskModal/index';
-import { useEffect, useState } from 'react';
-import Task from './../Task/index';
+import { IColumn } from '../../store/initialState';
+
+import TaskModal from './../TaskModal';
+import Task from './../Task';
+
 import { getTasks } from '../../utils/api/tasks';
-import { TasksWrapper } from '../Task/style';
+import { deleteColumn, getColumns } from '../../utils/api/columns';
 
 export const Column = ({ title, id, order }: IColumn) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
@@ -66,6 +72,18 @@ export const Column = ({ title, id, order }: IColumn) => {
     addTask: addTask,
   };
 
+  const removeColumn = async () => {
+    if (token) {
+      const data = {
+        boardId: selectedBoardId,
+        columnId: id,
+        token: token,
+      };
+      await dispatch(deleteColumn(data));
+      dispatch(getColumns({ selectedBoardId, token }));
+    }
+  };
+
   return (
     <>
       <TaskModal {...modalOptions} />
@@ -80,7 +98,7 @@ export const Column = ({ title, id, order }: IColumn) => {
                 <IconButton onClick={openModal} aria-label="add">
                   <AddIcon color="secondary" />
                 </IconButton>
-                <IconButton aria-label="delete">
+                <IconButton onClick={removeColumn} aria-label="delete">
                   <DeleteIcon color="secondary" />
                 </IconButton>
               </Box>

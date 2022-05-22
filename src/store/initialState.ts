@@ -13,7 +13,7 @@ const initialState: InitialState = {
   isPendingRegistration: false,
   isSnackbar: false,
   selectedBoardTitle: '',
-  selectedBoardId: '',
+  selectedBoardId: JSON.parse(window.localStorage.getItem('boardId') as string) || '',
   columns: [],
   token: null,
   userData: {

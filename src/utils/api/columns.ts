@@ -1,6 +1,6 @@
 import { BASE_URL } from '../../constants';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IAddColumn, IGetColumns, IUpdateColumn } from './types';
+import { IAddColumn, IDeleteColumn, IGetColumns, IUpdateColumn } from './types';
 
 export const getColumns = createAsyncThunk(
   'columns/getColumns',
@@ -48,5 +48,18 @@ export const updateColumn = createAsyncThunk(
     });
     const data = await response.json();
     return data;
+  }
+);
+
+export const deleteColumn = createAsyncThunk(
+  'columns/deleteColumn',
+  async ({ boardId, columnId, token }: IDeleteColumn) => {
+    console.log(boardId, columnId, token);
+    await fetch(`${BASE_URL}/boards/${boardId}/columns/${columnId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 );

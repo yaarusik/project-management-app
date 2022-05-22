@@ -20,7 +20,6 @@ const BoardPage = () => {
   useEffect(() => {
     if (token) {
       if (!selectedBoardId) {
-        const selectedBoardId = JSON.parse(window.localStorage.getItem('boardId') as string);
         dispatch(getColumns({ selectedBoardId, token }));
       } else dispatch(getColumns({ selectedBoardId, token }));
     } else {
