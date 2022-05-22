@@ -31,3 +31,9 @@ export interface IGetColumns {
   selectedBoardId: string;
   token: string | null;
 }
+
+export type IDeleteColumn = {
+  boardId: string;
+  columnId: string;
+  token: string;
+};

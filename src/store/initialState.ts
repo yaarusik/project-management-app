@@ -14,7 +14,7 @@ const initialState: InitialState = {
   isSnackbar: false,
   isTaskModal: false,
   selectedBoardTitle: '',
-  selectedBoardId: '',
+  selectedBoardId: JSON.parse(window.localStorage.getItem('boardId') as string) || '',
   columns: [],
   token: null,
   currentColumnId: '',
