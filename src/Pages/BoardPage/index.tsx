@@ -21,7 +21,6 @@ const BoardPage = () => {
     if (token) {
       console.log('sfsdf');
       if (!selectedBoardId) {
-        const selectedBoardId = JSON.parse(window.localStorage.getItem('boardId') as string);
         dispatch(getColumns({ selectedBoardId, token }));
       } else dispatch(getColumns({ selectedBoardId, token }));
     } else {

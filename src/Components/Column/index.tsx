@@ -39,9 +39,7 @@ export const Column = ({ title, id, order }: IColumn) => {
         columnId: id,
         token: token,
       };
-      console.log('removeColumn');
       await dispatch(deleteColumn(data));
-      console.log(selectedBoardId);
       dispatch(getColumns({ selectedBoardId, token }));
     }
   };
