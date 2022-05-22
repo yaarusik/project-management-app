@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://deploy-kanban-manager-v3.herokuapp.com';
+export const BASE_URL = 'https://deploy-kanban-manager.herokuapp.com';
 export const iconArray = [
   'images/1.png',
   'images/2.png',
