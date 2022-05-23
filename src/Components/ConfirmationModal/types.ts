@@ -3,6 +3,7 @@ export type ConfirmationModalType = {
   title?: string;
   cbClose?: () => void;
   cbOpen?: () => void;
+  cbHandler?: () => void;
   body?: string;
   agree?: string;
   disagree?: string;
