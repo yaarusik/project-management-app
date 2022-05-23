@@ -1,15 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import initialState from '../initialState';
+import { createSlice } from '@reduxjs/toolkit';
+
+import { TaskInitialState as initialState } from './../initialStates/taskInitialState';
 
 export const taskSlice = createSlice({
   name: 'task',
   initialState,
-  reducers: {
-    setTaskModal: (state, action: PayloadAction<boolean>) => {
-      state.isTaskModal = action.payload;
-    },
-  },
-  extraReducers: {},
+  reducers: {},
 });
 
 export default taskSlice.reducer;

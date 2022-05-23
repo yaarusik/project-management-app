@@ -33,7 +33,7 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 const Header = () => {
   const { isAuth } = useAppSelector((state) => state.authSlice);
-  const { setAuthUser, setToken } = authSlice.actions;
+  const { setAuthUser, setToken, setUserData } = authSlice.actions;
 
   const location = useLocation();
   const isWelcomePage = location.pathname === '/';
@@ -50,8 +50,8 @@ const Header = () => {
     Cookies.remove('user');
     dispatch(setAuthUser(false));
     dispatch(setToken(null));
+    dispatch(setUserData({}));
     navigation('/');
-    console.log(isAuth);
   };
 
   return (

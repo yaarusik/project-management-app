@@ -1,5 +1,6 @@
 export interface IAddBoard {
   title: string;
+  description: string;
   token: string;
 }
 
@@ -9,17 +10,30 @@ export interface IDeleteBoard {
 }
 
 export type IColumnData = {
-  title: string;
+  title: string | undefined;
   order: number | undefined;
 };
 
 export type IAddColumn = {
   boardId: string;
-  columnData: IColumnData;
+  title: string;
   token: string;
+};
+
+export type IUpdateColumn = {
+  boardId: string;
+  columnId: string;
+  columnData: IColumnData;
+  token: string | null;
 };
 
 export interface IGetColumns {
   selectedBoardId: string;
-  token: string;
+  token: string | null;
 }
+
+export type IDeleteColumn = {
+  boardId: string;
+  columnId: string;
+  token: string;
+};
