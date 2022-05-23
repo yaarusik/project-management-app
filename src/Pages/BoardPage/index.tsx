@@ -11,11 +11,29 @@ import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { IFetchColumn } from './types';
 import { IColumn } from '../../store/initialState';
 
+export const dndTypes = {
+  COLUMN: 'column',
+};
+
+export interface Item {
+  id: string;
+  title: string;
+  order: number;
+}
+
 const BoardPage = () => {
   const { isModalNewColumn, columns } = useAppSelector((state) => state.columnSlice);
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardTitle, selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const dispatch = useAppDispatch();
+
+  // const [{ isOver }, drop] = useDrop({
+  //   accept: dndTypes.COLUMN,
+  //   drop: (item, monitor) => console.log(item, monitor.isOver()),
+  //   collect: (monitor) => ({
+  //     isOver: !!monitor.isOver(),
+  //   }),
+  // });
 
   useEffect(() => {
     if (token) {
