@@ -1,14 +1,16 @@
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { TaskBody, TaskTitle, TaskHeader } from './style';
+import { TaskBody, TaskTitle, TaskHeader, TaskAuthor } from './style';
 import { ITaskProps } from './types';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { deleteTask, getTasks } from '../../utils/api/tasks';
+import { taskSlice } from './../../store/reducers/taskSlice';
 
-const Task = ({ title, author, id, columnId, updateTask }: ITaskProps) => {
+const Task = ({ title, userId, id, columnId, updateTask, description }: ITaskProps) => {
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
+  const { setTaskDecription } = taskSlice.actions;
   const dispatch = useAppDispatch();
 
   const removeTask = async () => {
@@ -31,15 +33,23 @@ const Task = ({ title, author, id, columnId, updateTask }: ITaskProps) => {
       // вы не авторизованы
     }
   };
+
+  const openTaskInner = () => {
+    const taskOptions = { userId, title, description };
+    dispatch(setTaskDecription(taskOptions));
+    console.log(description);
+  };
   return (
     <TaskBody justifyContent="space-between">
       <TaskHeader direction="row" alignItems="center" justifyContent="space-between">
-        <TaskTitle variant="subtitle1">{title}</TaskTitle>
+        <TaskTitle onClick={openTaskInner} variant="subtitle1">
+          {title}
+        </TaskTitle>
         <IconButton onClick={removeTask} aria-label="delete">
           <DeleteIcon color="primary" />
         </IconButton>
       </TaskHeader>
-      <TaskTitle variant="body2">opened by {author}</TaskTitle>
+      <TaskAuthor variant="body2">opened by {userId}</TaskAuthor>
     </TaskBody>
   );
 };

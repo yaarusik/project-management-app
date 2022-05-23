@@ -1,5 +1,7 @@
 export interface ITaskInitialState {
   tasks: ITask[];
+  taskDescription: ITaskDescription;
+  isBar: boolean;
 }
 
 export interface ITask {
@@ -8,4 +10,10 @@ export interface ITask {
   description: string;
   order: number;
   userId: string;
+}
+
+export interface ITaskDescription {
+  userId: string;
+  title: string;
+  description: string;
 }
