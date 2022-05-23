@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { TaskInitialState as initialState } from '../initialStates/taskInitialState';
+import { TaskInitialState as initialState } from './../initialStates/taskInitialState';
 
 export const taskSlice = createSlice({
   name: 'task',
