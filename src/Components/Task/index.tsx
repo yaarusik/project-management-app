@@ -6,11 +6,12 @@ import { ITaskProps } from './types';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { deleteTask, getTasks } from '../../utils/api/tasks';
 import { taskSlice } from './../../store/reducers/taskSlice';
+import { useEffect } from 'react';
 
 const Task = ({ title, userId, id, columnId, updateTask, description }: ITaskProps) => {
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
-  const { setTaskDecription } = taskSlice.actions;
+  const { setTaskDecription, setIsBar } = taskSlice.actions;
   const dispatch = useAppDispatch();
 
   const removeTask = async () => {
@@ -28,16 +29,23 @@ const Task = ({ title, userId, id, columnId, updateTask, description }: ITaskPro
       const { meta, payload } = await dispatch(getTasks(taskOptions));
       if (meta.requestStatus === 'fulfilled') {
         updateTask(payload);
+        dispatch(setIsBar(false));
       }
     } else {
       // вы не авторизованы
     }
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(setIsBar(false));
+    };
+  });
+
   const openTaskInner = () => {
     const taskOptions = { userId, title, description };
     dispatch(setTaskDecription(taskOptions));
-    console.log(description);
+    dispatch(setIsBar(true));
   };
   return (
     <TaskBody justifyContent="space-between">
