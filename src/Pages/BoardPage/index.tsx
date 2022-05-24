@@ -27,14 +27,6 @@ const BoardPage = () => {
   const { selectedBoardTitle, selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const dispatch = useAppDispatch();
 
-  // const [{ isOver }, drop] = useDrop({
-  //   accept: dndTypes.COLUMN,
-  //   drop: (item, monitor) => console.log(item, monitor.isOver()),
-  //   collect: (monitor) => ({
-  //     isOver: !!monitor.isOver(),
-  //   }),
-  // });
-
   useEffect(() => {
     if (token) {
       if (!selectedBoardId) {
