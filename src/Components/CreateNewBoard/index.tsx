@@ -12,7 +12,11 @@ import { useAppDispatch } from '../../store/redux/redux';
 import { ITitle } from './types';
 
 const CreateNewBoard = ({ titleName, submitFunc }: ITitle) => {
-  const { register, handleSubmit } = useForm<IFetchBoard>();
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<IFetchBoard>();
   const dispatch = useAppDispatch();
 
   const onClicWin = (e: React.FormEvent) => {
@@ -37,7 +41,7 @@ const CreateNewBoard = ({ titleName, submitFunc }: ITitle) => {
         <Title>Create new {titleName}</Title>
         <TextField
           InputProps={{
-            ...register('title'),
+            ...register('title', { required: true }),
           }}
           label="Title"
           variant="outlined"
@@ -48,7 +52,7 @@ const CreateNewBoard = ({ titleName, submitFunc }: ITitle) => {
         {titleName === 'board' && (
           <TextField
             InputProps={{
-              ...register('description'),
+              ...register('description', { required: true }),
             }}
             label="Description"
             variant="outlined"
