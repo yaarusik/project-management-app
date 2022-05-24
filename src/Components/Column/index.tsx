@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDrag, DragSourceMonitor, useDrop } from 'react-dnd';
+import type { Identifier } from 'dnd-core';
 
 import { Box, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -8,6 +10,7 @@ import { ColumnWrapper, Title, TitleWrapper } from './styles';
 import { TasksWrapper } from '../Task/style';
 
 import { ITask } from '../../store/initialStates/types';
+import { dndTypes } from '../../Pages/BoardPage';
 
 import InputTitleColumn from '../InputTitleColumn';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
@@ -18,7 +21,7 @@ import TaskModal from './../TaskModal';
 import Task from './../Task';
 
 import { getTasks } from '../../utils/api/tasks';
-import { deleteColumn, getColumns } from '../../utils/api/columns';
+import { deleteColumn, getColumns, updateColumn } from '../../utils/api/columns';
 
 export const Column = ({ title, id, order }: IColumn) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
@@ -30,6 +33,47 @@ export const Column = ({ title, id, order }: IColumn) => {
   const [isChangeTitle, setIsChangeTitle] = useState(false);
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [isModal, setIsModal] = useState(false);
+  const [hoverOrder, setHoverOrder] = useState(1);
+
+  const ref = useRef<HTMLDivElement>(null);
+  const [{ handlerId }, drop] = useDrop<IColumn, void, { handlerId: Identifier | null }>({
+    accept: dndTypes.COLUMN,
+    hover(item: IColumn, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.order;
+      const hoverIndex = order;
+
+      setHoverOrder(dragIndex);
+
+      item.order = hoverIndex as number;
+    },
+    drop(item: IColumn) {
+      const columnData = {
+        boardId: selectedBoardId,
+        columnId: item.id,
+        columnData: { title: item.title, order: hoverOrder },
+        token: token,
+      };
+      dispatch(updateColumn(columnData)).then(() =>
+        dispatch(getColumns({ selectedBoardId, token }))
+      );
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: dndTypes.COLUMN,
+    item: () => {
+      return { id, title, order };
+    },
+    collect: (monitor: DragSourceMonitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const opacity = isDragging ? 0 : 1;
+  drag(drop(ref));
 
   const onClickTitle = () => {
     setIsChangeTitle(true);
@@ -89,7 +133,11 @@ export const Column = ({ title, id, order }: IColumn) => {
   return (
     <>
       <TaskModal {...modalOptions} />
-      <ColumnWrapper>
+      <ColumnWrapper
+        ref={ref}
+        style={{ opacity: opacity, cursor: 'move' }}
+        data-handler-id={handlerId}
+      >
         <Box>
           {isChangeTitle ? (
             <InputTitleColumn setFlagChangeTitle={setFlagChangeTitle} />
