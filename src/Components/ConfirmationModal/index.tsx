@@ -7,9 +7,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { green } from '@mui/material/colors';
 import { red } from '@mui/material/colors';
+import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 
 import { ConfirmationModalType } from './types';
-import { useLocation } from 'react-router-dom';
 
 const ConfirmationModal = ({
   flag,
@@ -21,9 +21,6 @@ const ConfirmationModal = ({
   disagree = 'No',
   agree = 'Yes',
 }: ConfirmationModalType) => {
-  const location = useLocation();
-  const isMainPage = location.pathname === '/mainPage';
-
   const agreeHandler = () => {
     cbHandler?.();
     cbClose?.();
@@ -37,23 +34,23 @@ const ConfirmationModal = ({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" sx={{ alignItems: 'center', display: 'flex' }}>
+          <CrisisAlertIcon sx={{ marginRight: '5px', color: red[500] }} /> {title}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">{body}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          {isMainPage && (
-            <Button
-              onClick={cbClose}
-              sx={{ bgcolor: red[500], color: '#fff', '&:hover': { bgcolor: red[800] } }}
-            >
-              {disagree}
-            </Button>
-          )}
+          <Button
+            onClick={cbClose}
+            sx={{ bgcolor: green[600], color: '#fff', '&:hover': { bgcolor: green[800] } }}
+          >
+            {disagree}
+          </Button>
           <Button
             onClick={agreeHandler}
             autoFocus
-            sx={{ bgcolor: green[600], color: '#fff', '&:hover': { bgcolor: green[800] } }}
+            sx={{ bgcolor: red[500], color: '#fff', '&:hover': { bgcolor: red[800] } }}
           >
             {agree}
           </Button>

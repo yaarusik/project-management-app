@@ -19,6 +19,7 @@ import Task from './../Task';
 
 import { getTasks } from '../../utils/api/tasks';
 import { deleteColumn, getColumns } from '../../utils/api/columns';
+import ConfirmationModal from '../ConfirmationModal';
 
 export const Column = ({ title, id, order }: IColumn) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
@@ -30,6 +31,15 @@ export const Column = ({ title, id, order }: IColumn) => {
   const [isChangeTitle, setIsChangeTitle] = useState(false);
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [isModal, setIsModal] = useState(false);
+
+  const [isOpen, setOpen] = useState(false);
+  const changeOnOpen = () => {
+    setOpen(true);
+  };
+
+  const changeOnClose = () => {
+    setOpen(false);
+  };
 
   const onClickTitle = () => {
     setIsChangeTitle(true);
@@ -100,7 +110,7 @@ export const Column = ({ title, id, order }: IColumn) => {
                 <IconButton onClick={openModal} aria-label="add">
                   <AddIcon color="secondary" />
                 </IconButton>
-                <IconButton onClick={removeColumn} aria-label="delete">
+                <IconButton onClick={changeOnOpen} aria-label="delete">
                   <DeleteIcon color="secondary" />
                 </IconButton>
               </Box>
@@ -120,6 +130,14 @@ export const Column = ({ title, id, order }: IColumn) => {
           ))}
         </TasksWrapper>
       </ColumnWrapper>
+      <ConfirmationModal
+        flag={isOpen}
+        cbClose={changeOnClose}
+        cbOpen={changeOnOpen}
+        cbHandler={removeColumn}
+        body="Do you really want to remove this column?"
+        title="Remove Column"
+      />
     </>
   );
 };

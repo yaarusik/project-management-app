@@ -74,10 +74,12 @@ const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
           </CardContent>
         </CardActionArea>
         <Button
-          onClick={onClickDelete}
+          onClick={changeOnOpen}
           variant="text"
           sx={{ top: '-30px', left: '370px', color: 'rgba(255, 0, 0, 0.5)' }}
-        />
+        >
+          Delete
+        </Button>
         <CardActionArea
           onClick={onClickSelect}
           component={Link}
@@ -97,21 +99,14 @@ const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
             </Typography>
           </CardContent>
         </CardActionArea>
-        <Button
-          onClick={changeOnOpen}
-          variant="text"
-          sx={{ top: '-30px', left: '370px', color: 'rgba(255, 0, 0, 0.5)' }}
-        >
-          Delete board
-        </Button>
       </Card>
       <ConfirmationModal
         flag={isOpen}
         cbClose={changeOnClose}
         cbOpen={changeOnOpen}
         cbHandler={onClickDelete}
-        body="Confirmation body title"
-        title="Confirmation modal title"
+        body="Do you really want to remove this board?"
+        title="Remove Board"
       />
     </>
   );
