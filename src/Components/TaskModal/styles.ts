@@ -1,7 +1,6 @@
-import { styled, TextareaAutosize } from '@mui/material';
-import Box from '@mui/material/Box';
+import styled from 'styled-components';
 
-export const ModalBody = styled(Box)`
+export const ModalBody = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,7 +16,7 @@ export const ModalBody = styled(Box)`
   padding: 10px;
 `;
 
-export const DescriptionArea = styled(TextareaAutosize)`
+export const DescriptionArea = styled.textarea`
   padding: 10px;
   width: 400px;
   max-width: 100%;

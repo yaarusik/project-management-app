@@ -1,8 +1,8 @@
-import { Box, Typography, Stack } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import styled from 'styled-components';
 
 type BarActive = {
-  toggle: boolean;
+  toggle: string;
 };
 
 export const BarWrapper = styled(Stack)`
@@ -22,7 +22,7 @@ export const BarWrapper = styled(Stack)`
   border-bottom-left-radius: 15px;
   transition: all 0.2s ease;
   ${({ toggle }: BarActive) => {
-    if (!toggle) {
+    if (toggle === 'false') {
       return `transform: translate(100%);`;
     } else {
       return `transform: translate(0%);`;

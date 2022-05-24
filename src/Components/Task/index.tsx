@@ -30,6 +30,7 @@ const Task = ({ title, userId, id, columnId, updateTask, description }: ITaskPro
       if (meta.requestStatus === 'fulfilled') {
         updateTask(payload);
         dispatch(setIsBar(false));
+        dispatch(setTaskDecription({}));
       }
     } else {
       // вы не авторизованы
@@ -39,6 +40,7 @@ const Task = ({ title, userId, id, columnId, updateTask, description }: ITaskPro
   useEffect(() => {
     return () => {
       dispatch(setIsBar(false));
+      dispatch(setTaskDecription({}));
     };
   });
 

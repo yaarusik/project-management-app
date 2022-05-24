@@ -9,20 +9,26 @@ import { useAppSelector, useAppDispatch } from './../../store/redux/redux';
 import { Button, Input, Stack } from '@mui/material';
 
 import { Submit } from '../../Pages/PageSignup/styles';
-import { useState } from 'react';
 import { ModalBody, DescriptionArea } from './styles';
-import { ITaskOptions } from './types';
+import { IModalParam, ITaskOptions } from './types';
 import { createTask } from './../../utils/api/tasks';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 const TaskModal = ({ id, isModal, closeModal, addTask }: ITaskOptions) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const { userData, token } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
 
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<IModalParam>({
+    mode: 'all',
+    reValidateMode: 'onChange',
+  });
 
-  const TaskFetch = async () => {
+  const onSubmit: SubmitHandler<IModalParam> = async ({ title, textarea }) => {
     closeModal();
     if (token) {
       const taskOptions = {
@@ -32,7 +38,7 @@ const TaskModal = ({ id, isModal, closeModal, addTask }: ITaskOptions) => {
         },
         body: {
           title: title,
-          description: description,
+          description: textarea,
           userId: userData.userId,
         },
         token,
@@ -59,7 +65,7 @@ const TaskModal = ({ id, isModal, closeModal, addTask }: ITaskOptions) => {
           }}
         >
           <Fade in={isModal}>
-            <ModalBody>
+            <ModalBody onSubmit={handleSubmit(onSubmit)}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography id="transition-modal-title" variant="h5" component="h2">
                   Create new task
@@ -72,14 +78,26 @@ const TaskModal = ({ id, isModal, closeModal, addTask }: ITaskOptions) => {
                 <Typography variant="h6" component="h2">
                   Task title
                 </Typography>
-                <Input inputProps={{ maxLength: 15 }} onChange={(e) => setTitle(e.target.value)} />
+                <Input
+                  placeholder="Title is required"
+                  inputProps={{
+                    maxLength: 15,
+                    ...register('title', {
+                      required: true,
+                    }),
+                  }}
+                />
               </Stack>
               <DescriptionArea
-                placeholder="Describe"
-                maxLength={50}
-                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe is required"
+                {...register('textarea', {
+                  required: true,
+                })}
+                maxLength={100}
               />
-              <Submit onClick={TaskFetch}>Add task</Submit>
+              <Submit disabled={!isValid} type="submit">
+                Add task
+              </Submit>
             </ModalBody>
           </Fade>
         </Modal>

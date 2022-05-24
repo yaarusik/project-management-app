@@ -9,15 +9,16 @@ import { taskSlice } from '../../store/reducers/taskSlice';
 const TaskBar = () => {
   const { taskDescription, isBar } = useAppSelector((state) => state.taskSlice);
   const { userId, title, description } = taskDescription;
-  const { setIsBar } = taskSlice.actions;
+  const { setIsBar, setTaskDecription } = taskSlice.actions;
   const dispatch = useAppDispatch();
 
   const closeBar = () => {
     dispatch(setIsBar(false));
+    dispatch(setTaskDecription({}));
   };
 
   return (
-    <BarWrapper toggle={isBar} alignItems="center" justifyContent="center">
+    <BarWrapper toggle={isBar.toString()} alignItems="center" justifyContent="center">
       <Stack direction="row" spacing={2} alignItems="center">
         <TaskAltIcon fontSize="large" />
         <BarTitle variant="h4">{title}</BarTitle>
