@@ -13,6 +13,7 @@ import { IColumn } from '../../store/initialState';
 
 export const dndTypes = {
   COLUMN: 'column',
+  TASK: 'task',
 };
 
 export interface Item {

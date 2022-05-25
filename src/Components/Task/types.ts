@@ -5,5 +5,7 @@ export interface ITaskProps {
   author: string;
   id: string;
   columnId: string;
+  order: number;
+  description: string;
   updateTask: (tasks: ITask[]) => void;
 }

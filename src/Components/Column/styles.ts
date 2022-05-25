@@ -20,7 +20,7 @@ export const TitleWrapper = styled(Box)`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 15px;
+  padding: 15px 0;
   width: 250px;
   margin: 0 auto;
 `;
