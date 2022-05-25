@@ -11,13 +11,28 @@ import ParallelTasksIcon from '../../assets/welcomePageIcons/parallel-tasks.svg'
 import TasksIcon from '../../assets/welcomePageIcons/tasks.svg';
 import TasksStatusIcon from '../../assets/welcomePageIcons/task-status.svg';
 
+import ConfirmationModal from '../../Components/ConfirmationModal';
+import { useState } from 'react';
+import SomeComponent from '../../Components/SomeComponent';
+
 const WelcomePage = () => {
+  const [isOpen, setOpen] = useState(false);
+
+  const changeOnOpen = () => {
+    setOpen(true);
+  };
+
+  const changeOnClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Box component="section" sx={{ minHeight: '100vh' }}>
       <Container maxWidth="md">
         <Typography align="center" variant="h2" component="h1" mb={5} mt={5} fontWeight="500">
           Welcome!
         </Typography>
+        {/* <SomeComponent /> */}
         <Container maxWidth="md">
           <Typography align="center" variant="h5" component="h2" mb={5} mt={5} fontWeight="400">
             Task Manager is an application that helps an individual or a group of developers to
@@ -106,7 +121,13 @@ const WelcomePage = () => {
           >
             RSS REACT 2022 Q1
           </Button>
-          {/* <Preloader /> */}
+          <ConfirmationModal
+            flag={isOpen}
+            cbClose={changeOnClose}
+            cbOpen={changeOnOpen}
+            body="Confirmation body title"
+            title="Confirmation modal title"
+          />
         </Container>
       </Container>
     </Box>
