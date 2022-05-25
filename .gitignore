@@ -1,12 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# файлы для работы с редаксом, чуть попозже я их удалю отсюда и из проекта
-
-/src/store/reducers/testSlice.ts
-/src/store/initialStates/testInitialState.ts
-/src/utils/api/asyncTestRequest.ts
-/src/Components/SomeComponent
-
 # dependencies
 /node_modules
 /.pnp
