@@ -36,7 +36,7 @@ export interface IBoards {
 export interface IColumn {
   id: string;
   title: string;
-  order?: number;
+  order: number;
 }
 
 interface InitialState {
