@@ -1,7 +1,7 @@
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { TaskBody, TaskTitle, TaskHeader } from './style';
+import { TaskBody, TaskTitle, TaskHeader, TaskAuthor } from './style';
 import { ITaskProps } from './types';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { changeTask, deleteTask, getTasks } from '../../utils/api/tasks';
@@ -12,11 +12,16 @@ import { Identifier } from 'dnd-core';
 import { ITask } from '../../store/initialStates/types';
 import ConfirmationModal from '../ConfirmationModal';
 
-const Task = ({ title, author, id, columnId, order, description, updateTask }: ITaskProps) => {
+import { taskSlice } from './../../store/reducers/taskSlice';
+import { useEffect } from 'react';
+
+const Task = ({ title, userId, id, columnId, updateTask, description, order }: ITaskProps) => {
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
+  const { setTaskDecription, setIsBar } = taskSlice.actions;
   const dispatch = useAppDispatch();
   const [hoverOrder, setHoverOrder] = useState(1);
+  const [isOpen, setOpen] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<ITaskProps, void, { handlerId: Identifier | null }>({
@@ -43,7 +48,7 @@ const Task = ({ title, author, id, columnId, order, description, updateTask }: I
           title: item.title,
           order: hoverOrder,
           description: item.description,
-          userId: item.author,
+          userId: item.userId,
           boardId: selectedBoardId,
           columnId: columnId,
         },
@@ -67,7 +72,7 @@ const Task = ({ title, author, id, columnId, order, description, updateTask }: I
   const [{ isDragging }, drag] = useDrag({
     type: dndTypes.TASK,
     item: () => {
-      return { id, title, order, description, author };
+      return { id, title, order, description, userId };
     },
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
@@ -77,14 +82,8 @@ const Task = ({ title, author, id, columnId, order, description, updateTask }: I
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
-  const [isOpen, setOpen] = useState(false);
-  const changeOnOpen = () => {
-    setOpen(true);
-  };
-
-  const changeOnClose = () => {
-    setOpen(false);
-  };
+  const changeOnOpen = () => setOpen(true);
+  const changeOnClose = () => setOpen(false);
 
   const removeTask = async () => {
     if (token) {
@@ -101,10 +100,25 @@ const Task = ({ title, author, id, columnId, order, description, updateTask }: I
       const { meta, payload } = await dispatch(getTasks(taskOptions));
       if (meta.requestStatus === 'fulfilled') {
         updateTask(payload);
+        dispatch(setIsBar(false));
+        dispatch(setTaskDecription({}));
       }
     } else {
       // вы не авторизованы
     }
+  };
+
+  useEffect(() => {
+    return () => {
+      dispatch(setIsBar(false));
+      dispatch(setTaskDecription({}));
+    };
+  });
+
+  const openTaskInner = () => {
+    const taskOptions = { userId, title, description };
+    dispatch(setTaskDecription(taskOptions));
+    dispatch(setIsBar(true));
   };
   return (
     <>
@@ -115,12 +129,14 @@ const Task = ({ title, author, id, columnId, order, description, updateTask }: I
         data-handler-id={handlerId}
       >
         <TaskHeader direction="row" alignItems="center" justifyContent="space-between">
-          <TaskTitle variant="subtitle1">{title}</TaskTitle>
+          <TaskTitle onClick={openTaskInner} variant="subtitle1">
+            {title}
+          </TaskTitle>
           <IconButton onClick={changeOnOpen} aria-label="delete">
             <DeleteIcon color="primary" />
           </IconButton>
         </TaskHeader>
-        <TaskTitle variant="body2">opened by {author}</TaskTitle>
+        <TaskAuthor variant="body2">opened by {userId}</TaskAuthor>
       </TaskBody>
       <ConfirmationModal
         flag={isOpen}

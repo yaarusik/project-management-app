@@ -170,15 +170,11 @@ export const Column = ({ title, id, order }: IColumn) => {
           )}
         </Box>
         <TasksWrapper>
-          {tasks.map(({ id, title, description, order, userId }: ITask) => (
+          {tasks.map((task: ITask) => (
             <Task
-              key={id}
-              title={title}
-              author={userId}
-              id={id}
-              order={order}
+              key={task.id}
+              {...task}
               columnId={columnId}
-              description={description}
               updateTask={(tasks: ITask[]) => setTasks(tasks)}
             />
           ))}

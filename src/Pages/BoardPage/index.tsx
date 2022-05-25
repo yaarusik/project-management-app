@@ -10,6 +10,7 @@ import { getColumns, addNewColumn } from '../../utils/api/columns';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { IFetchColumn } from './types';
 import { IColumn } from '../../store/initialState';
+import TaskBar from '../../Components/TaskBar';
 
 export const dndTypes = {
   COLUMN: 'column',
@@ -57,27 +58,30 @@ const BoardPage = () => {
   };
 
   return (
-    <BoardWrapper>
-      <TitleBox component="div">
-        <IconButton
-          sx={{ position: 'absolute', left: '3%', top: '11%' }}
-          component={Link}
-          to="/mainPage"
-        >
-          <ArrowBackIcon fontSize="large" color="primary" />
-        </IconButton>
-        <Title variant="h4">{selectedBoardTitle}</Title>
-        <Button variant="outlined" onClick={newColumnHandler}>
-          New column
-        </Button>
-      </TitleBox>
-      {isModalNewColumn && <CreateNewBoard titleName={'column'} submitFunc={createColumn} />}
-      <ColumnWrapper>
-        {columns.map((item: IColumn) => (
-          <Column key={item.id} title={item.title} id={item.id} order={item.order} />
-        ))}
-      </ColumnWrapper>
-    </BoardWrapper>
+    <>
+      <BoardWrapper>
+        <TitleBox component="div">
+          <IconButton
+            sx={{ position: 'absolute', left: '3%', top: '11%' }}
+            component={Link}
+            to="/mainPage"
+          >
+            <ArrowBackIcon fontSize="large" color="primary" />
+          </IconButton>
+          <Title variant="h4">{selectedBoardTitle}</Title>
+          <Button variant="outlined" onClick={newColumnHandler}>
+            New column
+          </Button>
+        </TitleBox>
+        {isModalNewColumn && <CreateNewBoard titleName={'column'} submitFunc={createColumn} />}
+        <ColumnWrapper>
+          {columns.map((item: IColumn) => (
+            <Column key={item.id} title={item.title} id={item.id} order={item.order} />
+          ))}
+        </ColumnWrapper>
+      </BoardWrapper>
+      <TaskBar />
+    </>
   );
 };
 
