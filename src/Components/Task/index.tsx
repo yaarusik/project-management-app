@@ -41,15 +41,14 @@ const Task = ({ title, author, id, columnId, order, description, updateTask }: I
         body: {
           title: item.title,
           order: hoverOrder,
-          description: item.description, //проверить description при dnd
+          description: item.description,
           userId: item.author,
           boardId: selectedBoardId,
           columnId: columnId,
         },
         token: token,
       };
-      console.log(item);
-      console.log(description);
+
       const taskOptions = {
         url: {
           boardId: selectedBoardId,
