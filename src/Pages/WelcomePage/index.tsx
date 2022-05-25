@@ -11,7 +11,20 @@ import ParallelTasksIcon from '../../assets/welcomePageIcons/parallel-tasks.svg'
 import TasksIcon from '../../assets/welcomePageIcons/tasks.svg';
 import TasksStatusIcon from '../../assets/welcomePageIcons/task-status.svg';
 
+import ConfirmationModal from '../../Components/ConfirmationModal';
+import { useState } from 'react';
+
 const WelcomePage = () => {
+  const [isOpen, setOpen] = useState(false);
+
+  const changeOnOpen = () => {
+    setOpen(true);
+  };
+
+  const changeOnClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Box component="section" sx={{ minHeight: '100vh' }}>
       <Container maxWidth="md">
@@ -106,7 +119,13 @@ const WelcomePage = () => {
           >
             RSS REACT 2022 Q1
           </Button>
-          {/* <Preloader /> */}
+          <ConfirmationModal
+            flag={isOpen}
+            cbClose={changeOnClose}
+            cbOpen={changeOnOpen}
+            body="Confirmation body title"
+            title="Confirmation modal title"
+          />
         </Container>
       </Container>
     </Box>

@@ -12,6 +12,17 @@ import { IFetchColumn } from './types';
 import { IColumn } from '../../store/initialState';
 import TaskBar from '../../Components/TaskBar';
 
+export const dndTypes = {
+  COLUMN: 'column',
+  TASK: 'task',
+};
+
+export interface Item {
+  id: string;
+  title: string;
+  order: number;
+}
+
 const BoardPage = () => {
   const { isModalNewColumn, columns } = useAppSelector((state) => state.columnSlice);
   const { token } = useAppSelector((state) => state.authSlice);

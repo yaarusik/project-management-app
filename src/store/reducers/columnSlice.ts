@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getColumns, addNewColumn, updateColumn } from '../../utils/api/columns';
-import initialState from '../initialState';
+import initialState, { IColumn } from '../initialState';
 
 export const columnSlice = createSlice({
   name: 'column',
@@ -18,7 +18,7 @@ export const columnSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getColumns.fulfilled, (state, action) => {
-      state.columns = action.payload;
+      state.columns = action.payload.sort((a: IColumn, b: IColumn) => a.order - b.order);
     });
     builder.addCase(addNewColumn.fulfilled, (state, action) => {
       state.columns = [...state.columns, action.payload];

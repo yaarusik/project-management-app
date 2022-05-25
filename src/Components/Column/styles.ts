@@ -6,7 +6,6 @@ export const ColumnWrapper = styled.div`
   height: calc(100vh - 250px);
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(156, 39, 176, 0.5);
-  overflow: auto;
 `;
 
 export const Title = styled(Typography)`
@@ -21,7 +20,7 @@ export const TitleWrapper = styled(Box)`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 15px;
+  padding: 15px 0;
   width: 250px;
   margin: 0 auto;
 `;

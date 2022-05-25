@@ -19,10 +19,10 @@ const TaskBar = () => {
 
   return (
     <BarWrapper toggle={isBar.toString()} alignItems="center" justifyContent="center">
-      <Stack direction="row" spacing={2} alignItems="center">
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
         <TaskAltIcon fontSize="large" />
         <BarTitle variant="h4">{title}</BarTitle>
-        <Button onClick={closeBar}>
+        <Button sx={{ position: 'absolute', right: 10, top: 16 }} onClick={closeBar}>
           <CloseIcon fontSize="large" />
         </Button>
       </Stack>
