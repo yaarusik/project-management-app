@@ -5,6 +5,7 @@ import type { Identifier } from 'dnd-core';
 import { Box, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { ColumnWrapper, Title, TitleWrapper } from './styles';
 import { TasksWrapper } from '../Task/style';
@@ -143,8 +144,11 @@ export const Column = ({ title, id, order }: IColumn) => {
             <InputTitleColumn setFlagChangeTitle={setFlagChangeTitle} />
           ) : (
             <TitleWrapper>
-              <Title onClick={onClickTitle}>{title}</Title>
+              <Title>{title}</Title>
               <Box>
+                <IconButton onClick={onClickTitle} aria-label="edit">
+                  <EditIcon color="secondary" />
+                </IconButton>
                 <IconButton onClick={openModal} aria-label="add">
                   <AddIcon color="secondary" />
                 </IconButton>
