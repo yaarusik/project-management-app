@@ -10,6 +10,7 @@ import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { dndTypes } from '../../Pages/BoardPage';
 import { Identifier } from 'dnd-core';
 import { ITask } from '../../store/initialStates/types';
+import ConfirmationModal from '../ConfirmationModal';
 
 const Task = ({ title, author, id, columnId, order, description, updateTask }: ITaskProps) => {
   const { token } = useAppSelector((state) => state.authSlice);
@@ -20,7 +21,7 @@ const Task = ({ title, author, id, columnId, order, description, updateTask }: I
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<ITaskProps, void, { handlerId: Identifier | null }>({
     accept: dndTypes.TASK,
-    hover(item: ITaskProps, monitor) {
+    hover(item: ITaskProps) {
       if (!ref.current) {
         return;
       }
@@ -76,6 +77,15 @@ const Task = ({ title, author, id, columnId, order, description, updateTask }: I
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
+  const [isOpen, setOpen] = useState(false);
+  const changeOnOpen = () => {
+    setOpen(true);
+  };
+
+  const changeOnClose = () => {
+    setOpen(false);
+  };
+
   const removeTask = async () => {
     if (token) {
       const taskOptions = {
@@ -97,20 +107,30 @@ const Task = ({ title, author, id, columnId, order, description, updateTask }: I
     }
   };
   return (
-    <TaskBody
-      justifyContent="space-between"
-      ref={ref}
-      style={{ opacity: opacity, cursor: 'move' }}
-      data-handler-id={handlerId}
-    >
-      <TaskHeader direction="row" alignItems="center" justifyContent="space-between">
-        <TaskTitle variant="subtitle1">{title}</TaskTitle>
-        <IconButton onClick={removeTask} aria-label="delete">
-          <DeleteIcon color="primary" />
-        </IconButton>
-      </TaskHeader>
-      <TaskTitle variant="body2">opened by {author}</TaskTitle>
-    </TaskBody>
+    <>
+      <TaskBody
+        justifyContent="space-between"
+        ref={ref}
+        style={{ opacity: opacity, cursor: 'move' }}
+        data-handler-id={handlerId}
+      >
+        <TaskHeader direction="row" alignItems="center" justifyContent="space-between">
+          <TaskTitle variant="subtitle1">{title}</TaskTitle>
+          <IconButton onClick={changeOnOpen} aria-label="delete">
+            <DeleteIcon color="primary" />
+          </IconButton>
+        </TaskHeader>
+        <TaskTitle variant="body2">opened by {author}</TaskTitle>
+      </TaskBody>
+      <ConfirmationModal
+        flag={isOpen}
+        cbClose={changeOnClose}
+        cbOpen={changeOnOpen}
+        cbHandler={removeTask}
+        body="Do you really want to remove this task?"
+        title="Remove Task"
+      />
+    </>
   );
 };
 

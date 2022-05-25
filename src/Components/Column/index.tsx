@@ -22,6 +22,7 @@ import TaskModal from './../TaskModal';
 import Task from './../Task';
 
 import { getTasks } from '../../utils/api/tasks';
+import ConfirmationModal from '../ConfirmationModal';
 import { deleteColumn, getColumns, updateColumn } from '../../utils/api/columns';
 
 export const Column = ({ title, id, order }: IColumn) => {
@@ -39,7 +40,7 @@ export const Column = ({ title, id, order }: IColumn) => {
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<IColumn, void, { handlerId: Identifier | null }>({
     accept: dndTypes.COLUMN,
-    hover(item: IColumn, monitor) {
+    hover(item: IColumn) {
       if (!ref.current) {
         return;
       }
@@ -75,6 +76,15 @@ export const Column = ({ title, id, order }: IColumn) => {
 
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
+
+  const [isOpen, setOpen] = useState(false);
+  const changeOnOpen = () => {
+    setOpen(true);
+  };
+
+  const changeOnClose = () => {
+    setOpen(false);
+  };
 
   const onClickTitle = () => {
     setIsChangeTitle(true);
@@ -152,7 +162,7 @@ export const Column = ({ title, id, order }: IColumn) => {
                 <IconButton onClick={openModal} aria-label="add">
                   <AddIcon color="secondary" />
                 </IconButton>
-                <IconButton onClick={removeColumn} aria-label="delete">
+                <IconButton onClick={changeOnOpen} aria-label="delete">
                   <DeleteIcon color="secondary" />
                 </IconButton>
               </Box>
@@ -174,6 +184,14 @@ export const Column = ({ title, id, order }: IColumn) => {
           ))}
         </TasksWrapper>
       </ColumnWrapper>
+      <ConfirmationModal
+        flag={isOpen}
+        cbClose={changeOnClose}
+        cbOpen={changeOnOpen}
+        cbHandler={removeColumn}
+        body="Do you really want to remove this column?"
+        title="Remove Column"
+      />
     </>
   );
 };
