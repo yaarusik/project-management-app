@@ -27,6 +27,7 @@ import { deleteColumn, getColumns, updateColumn } from '../../utils/api/columns'
 
 export const Column = ({ title, id, order }: IColumn) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
+  const { columns } = useAppSelector((state) => state.columnSlice);
   const { token } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
   // заглушка
@@ -112,7 +113,7 @@ export const Column = ({ title, id, order }: IColumn) => {
     } else {
       // вы не авторизованы
     }
-  }, []);
+  }, [columns]);
 
   const setFlagChangeTitle = (param: boolean) => {
     setIsChangeTitle(param);

@@ -14,6 +14,8 @@ import ConfirmationModal from '../ConfirmationModal';
 
 import { taskSlice } from './../../store/reducers/taskSlice';
 import { useEffect } from 'react';
+import { getBoardById } from '../../utils/api/boards';
+import { getColumns } from '../../utils/api/columns';
 
 const Task = ({ title, userId, id, columnId, updateTask, description, order }: ITaskProps) => {
   const { token } = useAppSelector((state) => state.authSlice);
@@ -21,6 +23,8 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
   const { setTaskDecription, setIsBar } = taskSlice.actions;
   const dispatch = useAppDispatch();
   const [hoverOrder, setHoverOrder] = useState(1);
+  const [hoverColumnId, setHoverColumnId] = useState('');
+  const [dragColumnId, setDragColumnId] = useState('');
   const [isOpen, setOpen] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -33,15 +37,24 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       const dragIndex = item.order;
       const hoverIndex = order;
 
+      const dragId = item.columnId;
+      const hoverId = columnId;
+
+      if (dragId != hoverId) {
+        setDragColumnId(dragId);
+      }
+
       setHoverOrder(dragIndex);
+      setHoverColumnId(hoverId);
 
       item.order = hoverIndex as number;
+      item.columnId = hoverId as string;
     },
     drop(item: ITaskProps) {
       const updateTaskOptions = {
         url: {
           boardId: selectedBoardId,
-          columnId: columnId,
+          columnId: dragColumnId ? dragColumnId : hoverColumnId,
           taskId: item.id,
         },
         body: {
@@ -50,22 +63,28 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
           description: item.description,
           userId: item.userId,
           boardId: selectedBoardId,
-          columnId: columnId,
+          columnId: hoverColumnId,
         },
         token: token,
       };
+      console.log(updateTaskOptions);
 
-      const taskOptions = {
+      const newTaskOptions = {
         url: {
           boardId: selectedBoardId,
           columnId: columnId,
         },
         token,
       };
-      dispatch(changeTask(updateTaskOptions)).then(async () => {
-        const { payload } = await dispatch(getTasks(taskOptions));
-        updateTask(payload.sort((a: ITask, b: ITask) => a.order - b.order));
-      });
+
+      dispatch(changeTask(updateTaskOptions))
+        .then(async () => {
+          const { payload } = await dispatch(getTasks(newTaskOptions));
+          updateTask(payload.sort((a: ITask, b: ITask) => a.order - b.order));
+        })
+        .then(() => {
+          if (dragColumnId) dispatch(getColumns({ selectedBoardId, token }));
+        });
     },
   });
 

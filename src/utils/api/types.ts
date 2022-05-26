@@ -37,3 +37,8 @@ export type IDeleteColumn = {
   columnId: string;
   token: string;
 };
+
+export type IGetBoardById = {
+  selectedBoardId: string;
+  token: string | null;
+};

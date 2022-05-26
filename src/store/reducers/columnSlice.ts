@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getBoardById } from '../../utils/api/boards';
 import { getColumns, addNewColumn, updateColumn } from '../../utils/api/columns';
 import initialState, { IColumn } from '../initialState';
 
@@ -25,6 +26,9 @@ export const columnSlice = createSlice({
     });
     builder.addCase(updateColumn.fulfilled, (state, action) => {
       state.updateColumn = action.payload;
+    });
+    builder.addCase(getBoardById.fulfilled, (state, action) => {
+      state.columns = action.payload.columns;
     });
   },
 });
