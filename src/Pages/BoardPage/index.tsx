@@ -10,7 +10,7 @@ import { getColumns, addNewColumn } from '../../utils/api/columns';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { IFetchColumn } from './types';
 import { IColumn } from '../../store/initialState';
-import TaskBar from '../../Components/TaskBar';
+import TaskBar from './../../Components/TaskBar/index';
 
 export const dndTypes = {
   COLUMN: 'column',
@@ -53,7 +53,6 @@ const BoardPage = () => {
 
       dispatch(addNewColumn(addColumnData));
       dispatch(setIsModalNewColumn(false));
-      console.log(selectedBoardId);
     }
   };
 
@@ -80,7 +79,7 @@ const BoardPage = () => {
           ))}
         </ColumnWrapper>
       </BoardWrapper>
-      <TaskBar />
+      <TaskBar updateTasks={() => {}} />
     </>
   );
 };

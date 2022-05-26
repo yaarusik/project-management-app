@@ -9,13 +9,13 @@ import { useRef, useState } from 'react';
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { dndTypes } from '../../Pages/BoardPage';
 import { Identifier } from 'dnd-core';
-import { ITask } from '../../store/initialStates/types';
 import ConfirmationModal from '../ConfirmationModal';
 
 import { taskSlice } from './../../store/reducers/taskSlice';
 import { useEffect } from 'react';
+import { sortTask } from './../../utils/sort/task';
 
-const Task = ({ title, userId, id, columnId, updateTask, description, order }: ITaskProps) => {
+const Task = ({ title, userId, id, columnId, updateTasks, description, order }: ITaskProps) => {
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const { setTaskDecription, setIsBar } = taskSlice.actions;
@@ -64,7 +64,7 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       };
       dispatch(changeTask(updateTaskOptions)).then(async () => {
         const { payload } = await dispatch(getTasks(taskOptions));
-        updateTask(payload.sort((a: ITask, b: ITask) => a.order - b.order));
+        updateTasks(sortTask(payload));
       });
     },
   });
@@ -99,12 +99,10 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       await dispatch(deleteTask(taskOptions));
       const { meta, payload } = await dispatch(getTasks(taskOptions));
       if (meta.requestStatus === 'fulfilled') {
-        updateTask(payload);
+        updateTasks(payload);
         dispatch(setIsBar(false));
         dispatch(setTaskDecription({}));
       }
-    } else {
-      // вы не авторизованы
     }
   };
 
@@ -113,10 +111,12 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       dispatch(setIsBar(false));
       dispatch(setTaskDecription({}));
     };
-  });
+  }, []);
 
   const openTaskInner = () => {
-    const taskOptions = { userId, title, description };
+    console.log(columnId);
+    const taskOptions = { userId, title, description, columnId, order, id };
+    console.log('taskOptions', taskOptions);
     dispatch(setTaskDecription(taskOptions));
     dispatch(setIsBar(true));
   };

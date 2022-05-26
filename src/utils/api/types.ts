@@ -37,3 +37,42 @@ export type IDeleteColumn = {
   columnId: string;
   token: string;
 };
+
+export type ICreateTask = {
+  url: {
+    boardId: string;
+    columnId: string;
+  };
+  body: {
+    title: string;
+    description: string;
+    userId: string;
+  };
+  token: string | null;
+};
+
+export type IUpdateTask = {
+  url: {
+    boardId: string;
+    columnId: string;
+    taskId: string;
+  };
+  body: {
+    title: string;
+    order: number;
+    description: string;
+    userId: string;
+    boardId: string;
+    columnId: string;
+  };
+  token: string | null;
+};
+
+export type IDeleteTask = {
+  url: {
+    boardId: string;
+    columnId: string;
+    taskId: string;
+  };
+  token: string;
+};

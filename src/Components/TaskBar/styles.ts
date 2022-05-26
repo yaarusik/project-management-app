@@ -14,7 +14,7 @@ export const BarWrapper = styled(Stack)`
   right: 0;
   top: 60px;
   height: inherit;
-  width: 40%;
+  width: 400px;
   background-color: #fff;
   color: rgba(2, 129, 237, 0.7);
   box-shadow: 0 0 10px rgba(156, 39, 176, 0.5);
@@ -42,8 +42,8 @@ export const BarDescription = styled(Typography)`
   align-items: center;
   border: 2px solid rgba(156, 39, 176, 0.5);
   border-radius: 15px;
-  width: 70%;
-  min-height: 80px;
+  width: 360px;
+  // height: calc(100%-102px);
   padding: 10px;
   word-break: break-all;
 `;
