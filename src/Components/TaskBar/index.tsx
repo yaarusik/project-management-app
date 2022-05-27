@@ -13,7 +13,7 @@ const TaskBar = () => {
   const { taskDescription, isBar, isEditTitle, isEditDescription } = useAppSelector(
     (state) => state.taskSlice
   );
-  const { userId, title, description } = taskDescription;
+  const { title, description } = taskDescription;
   const { setIsBar, setTaskDecription, setIsEditTitle, setIsEditDescription } = taskSlice.actions;
   const dispatch = useAppDispatch();
 
@@ -45,6 +45,7 @@ const TaskBar = () => {
           <CloseIcon fontSize="large" />
         </Button>
       </Stack>
+      <Box sx={{ fontSize: 30 }}>Description</Box>
       {isEditDescription ? (
         <TaskBarTextarea closeTextarea={closeTextareaField} />
       ) : (
@@ -57,9 +58,6 @@ const TaskBar = () => {
           </BarDescription>
         </>
       )}
-      <BarTitle variant="h5" alignSelf="left">
-        Author: {userId}
-      </BarTitle>
     </BarWrapper>
   );
 };

@@ -13,13 +13,14 @@ export const BarWrapper = styled(Stack)`
   z-index: 100;
   right: 0;
   top: 60px;
-  height: inherit;
+  height: calc(100% - 102px);
   width: 400px;
   background-color: #fff;
   color: rgba(2, 129, 237, 0.7);
   box-shadow: 0 0 10px rgba(156, 39, 176, 0.5);
   border: 1px solid rgba(156, 39, 176, 0.5);
   border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
   transition: all 0.2s ease;
   ${({ toggle }: BarActive) => {
     if (toggle === 'false') {
