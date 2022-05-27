@@ -92,3 +92,31 @@ export const changeTask = createAsyncThunk(
     return data;
   }
 );
+
+interface IGetUser {
+  token: string;
+  userId: string;
+}
+
+export const getUser = createAsyncThunk(
+  'root/getUser',
+  async ({ userId, token }: IGetUser, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${BASE_URL}/users/${userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error('Произошла ошибка при получении пользователя');
+      }
+
+      const user = await res.json();
+      return user;
+    } catch (err) {
+      return rejectWithValue((err as TypeError).message);
+    }
+  }
+);

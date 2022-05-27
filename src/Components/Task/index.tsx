@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { TaskBody, TaskTitle, TaskHeader, TaskAuthor } from './style';
 import { ITaskProps } from './types';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
-import { changeTask, deleteTask, getTasks } from '../../utils/api/tasks';
+import { changeTask, deleteTask, getTasks, getUser } from '../../utils/api/tasks';
 import { useRef, useState } from 'react';
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { dndTypes } from '../../Pages/BoardPage';
@@ -22,6 +22,7 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
   const dispatch = useAppDispatch();
   const [hoverOrder, setHoverOrder] = useState(1);
   const [isOpen, setOpen] = useState(false);
+  const [authorName, setAuthorName] = useState('Неизвестный');
 
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<ITaskProps, void, { handlerId: Identifier | null }>({
@@ -107,6 +108,13 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
   };
 
   useEffect(() => {
+    const getUserData = async () => {
+      if (token) {
+        const { payload } = await dispatch(getUser({ userId, token }));
+        setAuthorName(payload.name);
+      }
+    };
+    getUserData();
     return () => {
       dispatch(setIsBar(false));
       dispatch(setTaskDecription({}));
@@ -136,7 +144,7 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
             <DeleteIcon color="primary" />
           </IconButton>
         </TaskHeader>
-        <TaskAuthor variant="body2">opened by {userId}</TaskAuthor>
+        <TaskAuthor variant="body2">opened by {authorName}</TaskAuthor>
       </TaskBody>
       <ConfirmationModal
         flag={isOpen}
