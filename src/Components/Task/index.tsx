@@ -67,7 +67,6 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
         },
         token: token,
       };
-      console.log(updateTaskOptions);
 
       const newTaskOptions = {
         url: {
@@ -90,9 +89,7 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
 
   const [{ isDragging }, drag] = useDrag({
     type: dndTypes.TASK,
-    item: () => {
-      return { id, title, order, description, userId };
-    },
+    item: { title, userId, id, columnId, description, order, updateTask },
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),

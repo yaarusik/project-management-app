@@ -21,9 +21,10 @@ import { IColumn } from '../../store/initialState';
 import TaskModal from './../TaskModal';
 import Task from './../Task';
 
-import { getTasks } from '../../utils/api/tasks';
+import { changeTask, getTasks } from '../../utils/api/tasks';
 import ConfirmationModal from '../ConfirmationModal';
 import { deleteColumn, getColumns, updateColumn } from '../../utils/api/columns';
+import { ITaskProps } from '../Task/types';
 
 export const Column = ({ title, id, order }: IColumn) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
@@ -40,7 +41,7 @@ export const Column = ({ title, id, order }: IColumn) => {
 
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<IColumn, void, { handlerId: Identifier | null }>({
-    accept: dndTypes.COLUMN,
+    accept: [dndTypes.COLUMN, dndTypes.TASK],
     hover(item: IColumn) {
       if (!ref.current) {
         return;
@@ -52,16 +53,58 @@ export const Column = ({ title, id, order }: IColumn) => {
 
       item.order = hoverIndex as number;
     },
-    drop(item: IColumn) {
-      const columnData = {
-        boardId: selectedBoardId,
-        columnId: item.id,
-        columnData: { title: item.title, order: hoverOrder },
-        token: token,
-      };
-      dispatch(updateColumn(columnData)).then(() =>
-        dispatch(getColumns({ selectedBoardId, token }))
-      );
+    drop(item: IColumn | ITaskProps) {
+      console.log('columnId', columnId);
+      if ((item as ITaskProps).description) {
+        const dragId = (item as ITaskProps).columnId;
+
+        const updateTaskOptions = {
+          url: {
+            boardId: selectedBoardId,
+            columnId: dragId,
+            taskId: item.id,
+          },
+          body: {
+            title: item.title,
+            order: 1,
+            description: (item as ITaskProps).description,
+            userId: (item as ITaskProps).userId,
+            boardId: selectedBoardId,
+            columnId: columnId,
+          },
+          token: token,
+        };
+        console.log('updateTaskOptions', updateTaskOptions);
+        const newTaskOptions = {
+          url: {
+            boardId: selectedBoardId,
+            columnId: dragId,
+          },
+          token,
+        };
+
+        dispatch(changeTask(updateTaskOptions))
+          .then(async () => {
+            const { payload } = await dispatch(getTasks(newTaskOptions));
+            console.log('payload', payload);
+            (item as ITaskProps).updateTask(
+              payload.sort((a: ITask, b: ITask) => a.order - b.order)
+            );
+          })
+          .then(() => {
+            dispatch(getColumns({ selectedBoardId, token }));
+          });
+      } else {
+        const columnData = {
+          boardId: selectedBoardId,
+          columnId: item.id,
+          columnData: { title: item.title, order: hoverOrder },
+          token: token,
+        };
+        dispatch(updateColumn(columnData)).then(() =>
+          dispatch(getColumns({ selectedBoardId, token }))
+        );
+      }
     },
   });
 

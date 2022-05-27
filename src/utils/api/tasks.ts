@@ -83,7 +83,6 @@ export const getTasks = createAsyncThunk(
       }
 
       const task = await res.json();
-      console.log('task', task);
       return task;
     } catch (err) {
       return rejectWithValue((err as TypeError).message);

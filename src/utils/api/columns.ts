@@ -14,7 +14,6 @@ export const getColumns = createAsyncThunk(
     });
 
     const data = await res.json();
-    console.log('columns', data);
     return data;
   }
 );
