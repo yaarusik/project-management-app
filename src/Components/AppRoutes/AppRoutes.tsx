@@ -25,7 +25,14 @@ const AppRoutes = () => {
       <Route path="/login" element={<PageLogin />} />
       <Route path="/signup" element={<PageSignUp />} />
       <Route path="/" element={<WelcomePage />} />
-      <Route path="/edit-profile" element={<EditProfile />} />
+      <Route
+        path="/edit-profile"
+        element={
+          <RequireAuth>
+            <EditProfile />
+          </RequireAuth>
+        }
+      />
     </Routes>
   );
 };
