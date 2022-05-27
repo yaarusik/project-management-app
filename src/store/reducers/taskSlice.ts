@@ -12,6 +12,12 @@ export const taskSlice = createSlice({
     setIsBar: (state, action) => {
       state.isBar = action.payload;
     },
+    setIsEditTitle: (state, action) => {
+      state.isEditTitle = action.payload;
+    },
+    setIsEditDescription: (state, action) => {
+      state.isEditDescription = action.payload;
+    },
   },
 });
 

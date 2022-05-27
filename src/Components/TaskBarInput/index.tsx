@@ -1,26 +1,33 @@
-import { Box, Button, TextField } from '@mui/material';
-import { useState } from 'react';
+import { Button, TextField } from '@mui/material';
 import { useAppSelector } from '../../store/redux/redux';
-import { sortTask } from '../../utils/sort/task';
 import { useAppDispatch } from './../../store/redux/redux';
 import { changeTask, getTasks } from './../../utils/api/tasks';
 import { IFunc } from './types';
 import { getColumns } from './../../utils/api/columns';
+import { taskSlice } from '../../store/reducers/taskSlice';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Form } from './styles';
+import { BarInput } from '../TaskBarInput/types';
 
-const TaskBarInput = ({ closeInput, updateTasks }: IFunc) => {
-  const { taskDescription, isBar } = useAppSelector((state) => state.taskSlice);
+const TaskBarInput = ({ closeInput }: IFunc) => {
+  const { taskDescription } = useAppSelector((state) => state.taskSlice);
   const { token } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
 
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const { order, description, userId, columnId, id } = taskDescription;
-  const [title, setTitle] = useState('');
+  const { setTaskDecription } = taskSlice.actions;
 
-  const changeTitle = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(target.value);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<BarInput>({
+    mode: 'all',
+    reValidateMode: 'onChange',
+  });
 
-  const onSave = async () => {
+  const onSave: SubmitHandler<BarInput> = async ({ title }) => {
     if (token) {
       const updateTaskOptions = {
         url: {
@@ -46,29 +53,46 @@ const TaskBarInput = ({ closeInput, updateTasks }: IFunc) => {
         token,
       };
       await dispatch(changeTask(updateTaskOptions));
-      const { meta, payload } = await dispatch(getTasks(taskOptions));
+      const { meta } = await dispatch(getTasks(taskOptions));
       if (meta.requestStatus === 'fulfilled') {
-        console.log('get task', payload);
         dispatch(getColumns({ selectedBoardId, token }));
-        // updateTasks(sortTask(payload));
+        dispatch(
+          setTaskDecription({
+            title,
+            order,
+            description,
+            userId,
+            columnId,
+            id,
+          })
+        );
         closeInput();
       }
+    } else {
     }
   };
 
-  const onCancel = () => {
-    closeInput();
-  };
+  const onCancel = () => closeInput();
+
   return (
-    <Box sx={{ padding: '10px', display: 'flex', flexDirection: 'row', width: '320px' }}>
-      <TextField variant="outlined" placeholder="Enter title" onChange={changeTitle} />
-      <Button variant="text" color="success" size="large" onClick={onSave}>
+    <Form onSubmit={handleSubmit(onSave)}>
+      <TextField
+        inputProps={{
+          maxLength: 15,
+          ...register('title', {
+            required: true,
+          }),
+        }}
+        variant="outlined"
+        placeholder="Enter title"
+      />
+      <Button disabled={!isValid} type="submit" variant="text" color="success" size="large">
         Save
       </Button>
       <Button variant="text" color="info" size="large" onClick={onCancel}>
         Cancel
       </Button>
-    </Box>
+    </Form>
   );
 };
 

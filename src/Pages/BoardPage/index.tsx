@@ -79,7 +79,7 @@ const BoardPage = () => {
           ))}
         </ColumnWrapper>
       </BoardWrapper>
-      <TaskBar updateTasks={() => {}} />
+      <TaskBar />
     </>
   );
 };

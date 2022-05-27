@@ -1,25 +1,32 @@
 import { Box, Button } from '@mui/material';
-import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
+import { getColumns } from '../../utils/api/columns';
 import { changeTask, getTasks } from '../../utils/api/tasks';
-import { sortTask } from '../../utils/sort/task';
-import { IFunc } from '../TaskBarInput/types';
-import { DescriptionArea } from './styles';
+
+import { DescriptionArea, DescriptionWrapper } from './styles';
+import { taskSlice } from './../../store/reducers/taskSlice';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { BarTextArea, IFunc } from './types';
 
 const TaskBarTextarea = ({ closeTextarea }: IFunc) => {
-  const { taskDescription, isBar } = useAppSelector((state) => state.taskSlice);
+  const { taskDescription } = useAppSelector((state) => state.taskSlice);
   const { token } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
 
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const { order, title, userId, columnId, id } = taskDescription;
-  const [description, setDescription] = useState('');
+  const { setTaskDecription } = taskSlice.actions;
 
-  const changeDescription = ({ target }: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(target.value);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<BarTextArea>({
+    mode: 'all',
+    reValidateMode: 'onChange',
+  });
 
-  const onSave = async () => {
+  const onSave: SubmitHandler<BarTextArea> = async ({ description }) => {
     if (token) {
       const updateTaskOptions = {
         url: {
@@ -44,11 +51,24 @@ const TaskBarTextarea = ({ closeTextarea }: IFunc) => {
         },
         token,
       };
+
       await dispatch(changeTask(updateTaskOptions));
-      const { meta, payload } = await dispatch(getTasks(taskOptions));
+      const { meta } = await dispatch(getTasks(taskOptions));
+
       if (meta.requestStatus === 'fulfilled') {
-        closeTextarea();
+        dispatch(getColumns({ selectedBoardId, token }));
+        dispatch(
+          setTaskDecription({
+            title,
+            order,
+            description,
+            userId,
+            columnId,
+            id,
+          })
+        );
       }
+      closeTextarea();
     }
   };
 
@@ -56,15 +76,23 @@ const TaskBarTextarea = ({ closeTextarea }: IFunc) => {
     closeTextarea();
   };
   return (
-    <Box sx={{ padding: '10px', display: 'flex', flexDirection: 'row', width: '320px' }}>
-      <DescriptionArea maxLength={80} onChange={changeDescription} />
-      <Button variant="text" color="success" size="large" onClick={onSave}>
-        Save
-      </Button>
-      <Button variant="text" color="info" size="large" onClick={onCancel}>
-        Cancel
-      </Button>
-    </Box>
+    <DescriptionWrapper onSubmit={handleSubmit(onSave)}>
+      <DescriptionArea
+        {...register('description', {
+          required: true,
+        })}
+        maxLength={80}
+        placeholder="Enter description"
+      />
+      <Box>
+        <Button disabled={!isValid} type="submit" variant="text" color="success" size="large">
+          Save
+        </Button>
+        <Button variant="text" color="info" size="large" onClick={onCancel}>
+          Cancel
+        </Button>
+      </Box>
+    </DescriptionWrapper>
   );
 };
 

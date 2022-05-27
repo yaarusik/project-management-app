@@ -9,4 +9,6 @@ export const TaskInitialState = {
     id: '',
   },
   isBar: false,
+  isEditTitle: false,
+  isEditDescription: false,
 };

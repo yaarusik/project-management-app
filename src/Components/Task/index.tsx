@@ -18,7 +18,7 @@ import { sortTask } from './../../utils/sort/task';
 const Task = ({ title, userId, id, columnId, updateTasks, description, order }: ITaskProps) => {
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
-  const { setTaskDecription, setIsBar } = taskSlice.actions;
+  const { setTaskDecription, setIsBar, setIsEditTitle, setIsEditDescription } = taskSlice.actions;
   const dispatch = useAppDispatch();
   const [hoverOrder, setHoverOrder] = useState(1);
   const [isOpen, setOpen] = useState(false);
@@ -114,9 +114,9 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
   }, []);
 
   const openTaskInner = () => {
-    console.log(columnId);
     const taskOptions = { userId, title, description, columnId, order, id };
-    console.log('taskOptions', taskOptions);
+    dispatch(setIsEditTitle(false));
+    dispatch(setIsEditDescription(false));
     dispatch(setTaskDecription(taskOptions));
     dispatch(setIsBar(true));
   };

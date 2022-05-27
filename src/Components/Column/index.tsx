@@ -121,10 +121,7 @@ export const Column = ({ title, id, order }: IColumn) => {
   const openModal = () => setIsModal(true);
   const closeModal = () => setIsModal(false);
   const addTask = (task: ITask) => setTasks((prev) => [...prev, task]);
-  const updateTasks = (tasks: ITask[]) => {
-    console.log('columnOrder', order);
-    setTasks(tasks);
-  };
+  const updateTasks = (tasks: ITask[]) => setTasks(tasks);
 
   const modalOptions = {
     id,

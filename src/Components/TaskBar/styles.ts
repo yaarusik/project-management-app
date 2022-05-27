@@ -38,12 +38,12 @@ export const BarTitle = styled(Typography)`
 
 export const BarDescription = styled(Typography)`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border: 2px solid rgba(156, 39, 176, 0.5);
   border-radius: 15px;
   width: 360px;
-  // height: calc(100%-102px);
   padding: 10px;
+  padding-left: 20px;
   word-break: break-all;
 `;
