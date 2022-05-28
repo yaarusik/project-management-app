@@ -1,21 +1,28 @@
+import { useState } from 'react';
+
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import Cookies from 'js-cookie';
+import { SnackbarProvider, VariantType, useSnackbar } from 'notistack';
 
 import PasswordIcon from '@mui/icons-material/Password';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FaceIcon from '@mui/icons-material/Face';
 import EditIcon from '@mui/icons-material/Edit';
-import { SnackbarProvider, VariantType, useSnackbar } from 'notistack';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { red } from '@mui/material/colors';
 
 import { EditProfileTitle } from './styles';
 import { FormBlock, FormWrapper, Title, InputField, Submit } from '../PageSignup/styles';
 
 import { IEditUserData } from '../../store/initialState';
-import { updateProfile } from '../../utils/api/editUser';
+import { deleteUserProfile, updateProfile } from '../../utils/api/editUser';
 
 import { ErrorMessage } from './styles';
 import { authSlice } from '../../store/reducers/authSlice';
+import ConfirmationModal from '../../Components/ConfirmationModal';
 
 export const EditProfile = () => {
   const { userId } = useAppSelector((state) => state.authSlice.userData);
@@ -24,9 +31,22 @@ export const EditProfile = () => {
 
   const token = Cookies.get('user');
 
+  const [isOpen, setOpen] = useState(false);
+  const changeOnOpen = () => {
+    setOpen(true);
+  };
+
+  const changeOnClose = () => {
+    setOpen(false);
+  };
+
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant: VariantType) => () => {
     enqueueSnackbar('Your profile has been successfully changed', { variant });
+  };
+
+  const handleClickDelete = (variant: VariantType) => () => {
+    enqueueSnackbar('Your profile was successfully deleted', { variant });
   };
 
   const {
@@ -40,6 +60,10 @@ export const EditProfile = () => {
     updateProfile({ userID: userId, token, userData: data });
     dispatch(setUserData(data));
     reset();
+  };
+
+  const handleDeleteProfile = () => {
+    deleteUserProfile({ userID: userId, token });
   };
 
   return (
@@ -104,7 +128,27 @@ export const EditProfile = () => {
         >
           Submit
         </Submit>
+
+        <Stack mt={2}>
+          <Button
+            onClick={changeOnOpen}
+            variant="contained"
+            startIcon={<DeleteIcon />}
+            sx={{ bgcolor: red[500], '&:hover': { bgcolor: red[800] } }}
+          >
+            Delete Current Profile
+          </Button>
+        </Stack>
       </FormBlock>
+      <ConfirmationModal
+        flag={isOpen}
+        cbClose={changeOnClose}
+        cbOpen={changeOnOpen}
+        cbHandler={handleDeleteProfile}
+        body="Do you really want to delete your profile? 
+        (After deleting you will be redirected to the Welcome Page)"
+        title="DELETE PROFILE"
+      />
     </FormWrapper>
   );
 };

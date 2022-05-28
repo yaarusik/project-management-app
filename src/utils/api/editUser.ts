@@ -31,3 +31,14 @@ export const updateProfile = async ({ userID, token, userData }: IEditUserApi) =
   const data = await response.json();
   return data;
 };
+
+export const deleteUserProfile = async ({ userID, token }: IEditUserApi) => {
+  const response = await fetch(`${BASE_URL}/users/${userID}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  // const data = await response.json();
+  // return data;
+};
