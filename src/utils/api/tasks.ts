@@ -133,6 +133,7 @@ export const changeTask = createAsyncThunk(
       }
     );
     const data = await response.json();
+    console.log('changeTask', data);
     return data;
   }
 );

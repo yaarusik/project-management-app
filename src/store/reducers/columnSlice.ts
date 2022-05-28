@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getBoardById } from '../../utils/api/boards';
 import { getColumns, addNewColumn, updateColumn } from '../../utils/api/columns';
 import initialState, { IColumn } from '../initialState';
 

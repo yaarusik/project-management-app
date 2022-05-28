@@ -1,5 +1,5 @@
 import { IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { TaskBody, TaskTitle, TaskHeader, TaskAuthor } from './style';
 import { ITaskProps } from './types';
@@ -14,7 +14,6 @@ import ConfirmationModal from '../ConfirmationModal';
 
 import { taskSlice } from './../../store/reducers/taskSlice';
 import { useEffect } from 'react';
-import { getBoardById } from '../../utils/api/boards';
 import { getColumns } from '../../utils/api/columns';
 
 const Task = ({ title, userId, id, columnId, updateTask, description, order }: ITaskProps) => {
@@ -37,6 +36,9 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       const dragIndex = item.order;
       const hoverIndex = order;
 
+      console.log('dragIndex', dragIndex);
+      console.log('hoverIndex', hoverIndex);
+
       const dragId = item.columnId;
       const hoverId = columnId;
 
@@ -44,9 +46,8 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
         setDragColumnId(dragId);
       }
 
-      setHoverOrder(dragIndex);
+      setHoverOrder(hoverIndex);
       setHoverColumnId(hoverId);
-
       item.order = hoverIndex as number;
       item.columnId = hoverId as string;
     },
@@ -67,7 +68,7 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
         },
         token: token,
       };
-
+      console.log('updateTaskOptions', updateTaskOptions);
       const newTaskOptions = {
         url: {
           boardId: selectedBoardId,
@@ -75,11 +76,11 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
         },
         token,
       };
-
       dispatch(changeTask(updateTaskOptions))
         .then(async () => {
           const { payload } = await dispatch(getTasks(newTaskOptions));
           updateTask(payload.sort((a: ITask, b: ITask) => a.order - b.order));
+          console.log('payload', payload);
         })
         .then(() => {
           if (dragColumnId) dispatch(getColumns({ selectedBoardId, token }));
@@ -149,7 +150,7 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
             {title}
           </TaskTitle>
           <IconButton onClick={changeOnOpen} aria-label="delete">
-            <DeleteIcon color="primary" />
+            <CloseIcon color="primary" />
           </IconButton>
         </TaskHeader>
         <TaskAuthor variant="body2">opened by {userId}</TaskAuthor>

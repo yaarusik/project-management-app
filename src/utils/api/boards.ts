@@ -43,19 +43,3 @@ export const deleteBoard = createAsyncThunk(
     });
   }
 );
-
-export const getBoardById = createAsyncThunk(
-  'root/getBoardById',
-  async ({ selectedBoardId, token }: IGetBoardById) => {
-    const res = await fetch(`${BASE_URL}/boards/${selectedBoardId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const data = await res.json();
-    return data;
-  }
-);

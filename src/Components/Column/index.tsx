@@ -53,9 +53,10 @@ export const Column = ({ title, id, order }: IColumn) => {
 
       item.order = hoverIndex as number;
     },
-    drop(item: IColumn | ITaskProps) {
-      console.log('columnId', columnId);
-      if ((item as ITaskProps).description) {
+    drop(item: IColumn | ITaskProps, monitor) {
+      if (!monitor.getDropResult()) {
+        console.log('ITaskProps');
+        console.log(monitor.getDropResult());
         const dragId = (item as ITaskProps).columnId;
 
         const updateTaskOptions = {
@@ -94,7 +95,9 @@ export const Column = ({ title, id, order }: IColumn) => {
           .then(() => {
             dispatch(getColumns({ selectedBoardId, token }));
           });
-      } else {
+      }
+      if (monitor.getItemType() === dndTypes.COLUMN) {
+        console.log('IColumnProps');
         const columnData = {
           boardId: selectedBoardId,
           columnId: item.id,
