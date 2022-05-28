@@ -19,8 +19,10 @@ import { registration } from '../../utils/api/auth';
 
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import Preloader from '../../Components/Preloader';
+import { useTranslation } from 'react-i18next';
 
 const PageSignUp = () => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -42,7 +44,6 @@ const PageSignUp = () => {
   };
 
   const onSubmit: SubmitHandler<ISubmit> = async (data) => {
-    // console.log('submit data >', JSON.stringify(data));
     try {
       const { meta } = await dispatch(registration(data));
 
@@ -61,7 +62,7 @@ const PageSignUp = () => {
           <Preloader />
         ) : (
           <>
-            <Title>Registration</Title>
+            <Title>{t('login.registration')}</Title>
 
             <InputField
               InputProps={{
@@ -73,8 +74,8 @@ const PageSignUp = () => {
                 ...register('name'),
               }}
               error={!!name}
-              label="Name"
-              helperText={!!name ? name.message : 'Please enter your name'}
+              label={t('login.name')}
+              helperText={!!name ? name.message : t('login.describe3')}
             />
 
             <InputField
@@ -82,8 +83,8 @@ const PageSignUp = () => {
                 ...register('login'),
               }}
               error={!!login}
-              label="Login"
-              helperText={!!login ? login.message : 'Please enter your login'}
+              label={t('login.login')}
+              helperText={!!login ? login.message : t('login.describe1')}
             />
 
             <InputField
@@ -99,18 +100,18 @@ const PageSignUp = () => {
                 ...register('password'),
               }}
               error={!!password}
-              label="Password"
-              helperText={!!password ? password.message : 'Please enter your password'}
+              label={t('login.password')}
+              helperText={!!password ? password.message : t('login.describe2')}
             />
 
             <Submit type="submit" color="success" variant="contained">
-              Submit
+              {t('login.submit')}
             </Submit>
 
             <Helper>
-              If you are already registered - click{' '}
+              {t('login.registermessage')}
               <Link component={RouterLink} to="/login" color="inherit">
-                here
+                {t('login.here')}
               </Link>
             </Helper>
           </>

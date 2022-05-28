@@ -24,6 +24,9 @@ i18n
     backend: {
       loadPath: '/assets/locales/{{lng}}/translation.json',
     },
+    interpolation: {
+      escapeValue: false,
+    },
   });
 
 const store = setupStore();

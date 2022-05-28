@@ -1,1 +1,49 @@
-{}
+{
+  "welcome": {
+    "title": "Welcome",
+    "part1": "Task Manager is an application that helps an individual or a group of developers to achieve their goals.",
+    "part2": "Our app helps you break down large tasks into smaller ones, thereby enabling you to successfully achieve your goals.",
+    "part3": "Team coordination. Allocate tasks within the team to each other thanks to the boards.",
+    "part4": " Keep track of what stage your project is at.",
+    "team": "Our team:",
+    "es": "ES",
+    "rv": "RV",
+    "ez": "EZ",
+    "elena": "Elena Shustova",
+    "ruslan": "Ruslan Vildanov",
+    "evgeniy": "Evgeniy Zhukov",
+    "rss": "RSS REACT 2022 Q1"
+  },
+  "header": {
+    "title": "Task manager",
+    "login": "Log in",
+    "signup": "Sigh up",
+    "gotomain": "Go to Main Page",
+    "createboard": "Create new board"
+  },
+  "main": {
+    "title": "My projects",
+    "deleteboard": "DELETE BOARD"
+  },
+  "board": {
+    "newcolumn": "NEW COLUMN"
+  },
+  "button": {
+    "save": "SAVE",
+    "cancel": "CANCEL"
+  },
+  "login": {
+    "login": "Login",
+    "registration": "Registration",
+    "name": "Name",
+    "password": "Password",
+    "submit": "Submit",
+    "signup": "Sigh up",
+    "helper": "Have no aacount yet? ",
+    "describe1": "Please, enter your login",
+    "describe2": "Please, enter your password",
+    "describe3": "Please, enter your name",
+    "registermessage": "If you are already registered - click ",
+    "here": "here"
+  }
+}

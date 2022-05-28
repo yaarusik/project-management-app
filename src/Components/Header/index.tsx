@@ -22,6 +22,7 @@ import { useAppSelector } from '../../store/redux/redux';
 import LangSwitcher from '../LangSwitcher';
 
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next';
 
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -32,6 +33,8 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 const Header = () => {
+  const { t } = useTranslation();
+
   const { isAuth } = useAppSelector((state) => state.authSlice);
   const { setAuthUser, setToken, setUserData } = authSlice.actions;
 
@@ -74,17 +77,17 @@ const Header = () => {
                   textDecoration: 'none',
                 }}
               >
-                Task manager
+                {t('header.title')}
               </Typography>
             </Stack>
             <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
               {!isAuth && isWelcomePage && (
                 <>
                   <Button component={Link} to="/login" color="success" variant="contained">
-                    Log in
+                    {t('header.login')}
                   </Button>
                   <Button component={Link} to="/signup" color="success" variant="contained">
-                    Sign up
+                    {t('header.signup')}
                   </Button>
                 </>
               )}
@@ -100,7 +103,7 @@ const Header = () => {
                       '&:hover': { backgroundColor: purple[700] },
                     }}
                   >
-                    Go to Main Page
+                    {t('header.gomain')}
                   </Button>
                   <LangSwitcher />
                   <IconButton aria-label="edit-profile">
@@ -115,7 +118,7 @@ const Header = () => {
               {isAuth && !isWelcomePage && !isBoardPage && (
                 <>
                   <ColorButton onClick={createNewBoardHandler} variant="contained">
-                    Create new board
+                    {t('header.createboard')}
                   </ColorButton>
                   <LangSwitcher />
                   <IconButton aria-label="edit-profile">
