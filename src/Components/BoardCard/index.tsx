@@ -78,7 +78,7 @@ const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
           variant="text"
           sx={{ top: '-30px', left: '370px', color: 'rgba(255, 0, 0, 0.5)' }}
         >
-          Delete
+          Delete board
         </Button>
         <CardActionArea
           onClick={onClickSelect}

@@ -3,12 +3,14 @@ import boardSlice from './reducers/boardSlice';
 import authSlice from './reducers/authSlice';
 import columnSlice from './reducers/columnSlice';
 import editProfileSilce from './reducers/editProfileSilce';
+import taskSlice from './reducers/taskSlice';
 
 const rootReducer = combineReducers({
   boardSlice,
   columnSlice,
   authSlice,
   editProfileSilce,
+  taskSlice,
 });
 
 export const setupStore = () => {

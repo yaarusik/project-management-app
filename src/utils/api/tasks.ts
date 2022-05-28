@@ -11,7 +11,24 @@ export type ICreateTask = {
     description: string;
     userId: string;
   };
-  token: string;
+  token: string | null;
+};
+
+export type IUpdateTask = {
+  url: {
+    boardId: string;
+    columnId: string;
+    taskId: string;
+  };
+  body: {
+    title: string;
+    order: number;
+    description: string;
+    userId: string;
+    boardId: string;
+    columnId: string;
+  };
+  token: string | null;
 };
 
 export type IDeleteTask = {
@@ -97,5 +114,25 @@ export const deleteTask = createAsyncThunk(
     //     Authorization: `Bearer ${token}`,
     //   },
     // });
+  }
+);
+
+export const changeTask = createAsyncThunk(
+  'root/updateTask',
+  async ({ url, body, token }: IUpdateTask) => {
+    const { boardId, columnId, taskId } = url;
+    const response = await fetch(
+      `${BASE_URL}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    return data;
   }
 );

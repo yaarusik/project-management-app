@@ -6,3 +6,8 @@ export interface ITaskOptions {
   closeModal: () => void;
   addTask: (task: ITask) => void;
 }
+
+export interface IModalParam {
+  title: string;
+  textarea: string;
+}
