@@ -1,3 +1,5 @@
+import { IEditUserData } from '../../store/initialState';
+
 export interface IAddBoard {
   title: string;
   description: string;
@@ -37,3 +39,9 @@ export type IDeleteColumn = {
   columnId: string;
   token: string;
 };
+
+export interface IEditUserApi {
+  userID?: string | undefined | null;
+  token?: string;
+  userData?: IEditUserData;
+}
