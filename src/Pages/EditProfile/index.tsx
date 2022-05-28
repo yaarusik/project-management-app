@@ -45,10 +45,6 @@ export const EditProfile = () => {
     enqueueSnackbar('Your profile has been successfully changed', { variant });
   };
 
-  const handleClickDelete = (variant: VariantType) => () => {
-    enqueueSnackbar('Your profile was successfully deleted', { variant });
-  };
-
   const {
     register,
     handleSubmit,
@@ -58,7 +54,6 @@ export const EditProfile = () => {
 
   const onSubmit: SubmitHandler<IEditUserData> = (data) => {
     updateProfile({ userID: userId, token, userData: data });
-    dispatch(setUserData(data));
     reset();
   };
 
