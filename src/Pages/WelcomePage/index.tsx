@@ -14,7 +14,10 @@ import TasksStatusIcon from '../../assets/welcomePageIcons/task-status.svg';
 import ConfirmationModal from '../../Components/ConfirmationModal';
 import { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 const WelcomePage = () => {
+  const { t } = useTranslation();
   const [isOpen, setOpen] = useState(false);
 
   const changeOnOpen = () => {
