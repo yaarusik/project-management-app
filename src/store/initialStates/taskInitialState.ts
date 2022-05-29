@@ -4,6 +4,11 @@ export const TaskInitialState = {
     userId: '',
     description: '',
     title: '',
+    order: 1,
+    columnId: '',
+    id: '',
   },
   isBar: false,
+  isEditTitle: false,
+  isEditDescription: false,
 };
