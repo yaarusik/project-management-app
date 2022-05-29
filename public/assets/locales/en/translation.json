@@ -26,7 +26,14 @@
     "deleteboard": "DELETE BOARD"
   },
   "board": {
-    "newcolumn": "NEW COLUMN"
+    "newcolumn": "NEW COLUMN",
+    "newboard": "Create new {{titleName}}",
+    "board": "board",
+    "column": "column",
+    "title": "Please, enter your title",
+    "description": "Please, enter your description board",
+    "placeholder1": "Title",
+    "placeholder2": "Description"
   },
   "button": {
     "save": "SAVE",
@@ -45,5 +52,25 @@
     "describe3": "Please, enter your name",
     "registermessage": "If you are already registered - click ",
     "here": "here"
+  },
+  "validation": {
+    "name": {
+      "message": "The name can contain only Russian or English letters, without numbers",
+      "min": "The minimum length of the name is 2 letters",
+      "max": "The maximum length of the name is 15 letters",
+      "required": "Enter name"
+    },
+    "login": {
+      "message": "Login contains only English letters and numbers",
+      "min": "The minimum length of the name is 3 letters",
+      "max": "The maximum length of the name is 15 letters",
+      "required": "Enter login",
+      "check": "This login already exists"
+    },
+    "password": {
+      "min": "The password must be more than 8 characters",
+      "max": "The maximum password length is 15 characters",
+      "required": "Enter password"
+    }
   }
 }

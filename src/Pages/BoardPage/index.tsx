@@ -75,7 +75,9 @@ const BoardPage = () => {
             {t('board.newcolumn')}
           </Button>
         </TitleBox>
-        {isModalNewColumn && <CreateNewBoard titleName={'column'} submitFunc={createColumn} />}
+        {isModalNewColumn && (
+          <CreateNewBoard titleName={t('board.column')} submitFunc={createColumn} />
+        )}
         <ColumnWrapper>
           {columns.map((item: IColumn) => (
             <Column key={item.id} title={item.title} id={item.id} order={item.order} />

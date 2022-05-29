@@ -79,7 +79,9 @@ const MainPage = () => {
                 />
               );
             })}
-            {isModalNewBoard && <CreateNewBoard titleName={'board'} submitFunc={createBoard} />}
+            {isModalNewBoard && (
+              <CreateNewBoard titleName={t('board.board')} submitFunc={createBoard} />
+            )}
           </>
         </Box>
       </Box>
