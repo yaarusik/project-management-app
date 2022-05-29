@@ -13,14 +13,21 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route
-        path="/mainPage"
+        path="/main"
         element={
           <RequireAuth>
             <MainPage />
           </RequireAuth>
         }
       />
-      <Route path="/board" element={<BoardPage />} />
+      <Route
+        path="/board"
+        element={
+          <RequireAuth>
+            <BoardPage />
+          </RequireAuth>
+        }
+      />
       <Route path="*" element={<PageNotFound />} />
       <Route path="/login" element={<PageLogin />} />
       <Route path="/signup" element={<PageSignUp />} />
