@@ -71,6 +71,8 @@
       "min": "The password must be more than 8 characters",
       "max": "The maximum password length is 15 characters",
       "required": "Enter password"
-    }
+    },
+    "correctdata": "Check that your username or password is correct",
+    "isExists": "This login already exists"
   }
 }

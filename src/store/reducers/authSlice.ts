@@ -9,9 +9,6 @@ export const authSlice = createSlice({
     setAuthUser(state, action: PayloadAction<boolean>) {
       state.isAuth = action.payload;
     },
-    setSnackBar(state, action: PayloadAction<boolean>) {
-      state.isSnackbar = action.payload;
-    },
     setToken(state, action: PayloadAction<string | null>) {
       state.token = action.payload;
     },
@@ -24,20 +21,24 @@ export const authSlice = createSlice({
       state.isPendingRegistration = true;
     });
     builder.addCase(registration.fulfilled, (state) => {
+      state.isLoginExist = true;
       state.isPendingRegistration = false;
     });
     builder.addCase(registration.rejected, (state) => {
       state.isPendingRegistration = false;
+      state.isLoginExist = false;
     });
     builder.addCase(authorization.pending, (state) => {
       state.isPendingAuth = true;
     });
     builder.addCase(authorization.fulfilled, (state) => {
       state.isAuth = true;
-      state.isPendingAuth = false;
+      state.isPendingAuth = true;
+      state.isCorrectData = true;
     });
     builder.addCase(authorization.rejected, (state) => {
       state.isPendingAuth = false;
+      state.isCorrectData = false;
     });
   },
 });

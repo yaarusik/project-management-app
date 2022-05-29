@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { IconButton, InputAdornment, Link } from '@mui/material';
@@ -13,7 +13,7 @@ import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 import { ISubmit } from './types';
 
 import { FormBlock, InputField, Submit, Title, Helper, FormWrapper } from './styles';
-import { schema } from './validation';
+import { registrationShema } from './validation';
 
 import { registration } from '../../utils/api/auth';
 
@@ -21,12 +21,16 @@ import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import Preloader from '../../Components/Preloader';
 import { useTranslation } from 'react-i18next';
 
+import SimpleSnackbar from '../../Components/Snackbar';
+
 const PageSignUp = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const schema = useMemo(() => registrationShema(), [i18n.language]);
+
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const { isPendingRegistration } = useAppSelector((state) => state.authSlice);
+  const { isPendingRegistration, isLoginExist } = useAppSelector((state) => state.authSlice);
 
   const dispatch = useAppDispatch();
   const {
@@ -44,14 +48,10 @@ const PageSignUp = () => {
   };
 
   const onSubmit: SubmitHandler<ISubmit> = async (data) => {
-    try {
-      const { meta } = await dispatch(registration(data));
+    const { meta } = await dispatch(registration(data));
 
-      if (meta.requestStatus === 'fulfilled') {
-        navigate('/login');
-      }
-    } catch (e) {
-      console.log('error >', e);
+    if (meta.requestStatus === 'fulfilled') {
+      navigate('/login');
     }
   };
 
@@ -107,7 +107,7 @@ const PageSignUp = () => {
             <Submit type="submit" color="success" variant="contained">
               {t('login.submit')}
             </Submit>
-
+            {!isLoginExist && <SimpleSnackbar errorMessage={'Данный логин уже существует'} />}
             <Helper>
               {t('login.registermessage')}
               <Link component={RouterLink} to="/login" color="inherit">
