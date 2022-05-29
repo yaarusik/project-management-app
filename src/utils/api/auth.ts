@@ -19,6 +19,9 @@ export const registration = createAsyncThunk(
         ...fetchOptions,
         body: JSON.stringify(data),
       });
+      if (res.status === 409) {
+        throw new Error('Данный логин уже существует');
+      }
       const userData = await res.json();
       return userData;
     } catch (err) {

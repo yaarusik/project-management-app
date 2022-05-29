@@ -1,31 +1,29 @@
 import { Alert, Snackbar } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
-import { authSlice } from './../../store/reducers/authSlice';
+import { useState } from 'react';
 
-const SimpleSnackbar = () => {
-  const { isSnackbar } = useAppSelector((state) => state.authSlice);
-  const { setSnackBar } = authSlice.actions;
-  const dispatch = useAppDispatch();
-  const vertical = 'top';
+const SimpleSnackbar = ({ errorMessage }: { errorMessage: string }) => {
+  const [isSnackbar, setIsSnackbar] = useState(true);
+
+  const vertical = 'bottom';
   const horizontal = 'center';
 
-  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+  const handleClose = (e: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    dispatch(setSnackBar(false));
+    setIsSnackbar(false);
   };
 
   return (
     <Snackbar
       open={isSnackbar}
       anchorOrigin={{ vertical, horizontal }}
-      autoHideDuration={3000}
+      autoHideDuration={2000}
       onClose={handleClose}
     >
       <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-        Проверьте корректность логина или пароля
+        {errorMessage}
       </Alert>
     </Snackbar>
   );

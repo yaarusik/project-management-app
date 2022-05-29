@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
@@ -19,12 +19,16 @@ import SimpleSnackbar from './../../Components/Snackbar';
 import Preloader from '../../Components/Preloader';
 import jwtDecode from 'jwt-decode';
 import { useTranslation } from 'react-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { authSchema } from './validation';
 
 const PageLogin = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const schema = useMemo(() => authSchema(), [i18n.language]);
+
   const dispatch = useAppDispatch();
-  const { setSnackBar, setToken, setUserData } = authSlice.actions;
-  const { isPendingAuth, isAuth } = useAppSelector((state) => state.authSlice);
+  const { setToken, setUserData } = authSlice.actions;
+  const { isPendingAuth, isAuth, isCorrectData } = useAppSelector((state) => state.authSlice);
 
   const navigate = useNavigate();
 
@@ -35,29 +39,23 @@ const PageLogin = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IAuthorization>({
-    reValidateMode: 'onSubmit',
+    resolver: yupResolver(schema),
   });
 
   const { login, password } = errors;
 
   const onSubmit: SubmitHandler<IAuthorization> = async (data) => {
-    try {
-      const { meta, payload } = await dispatch(authorization(data));
+    const { meta, payload } = await dispatch(authorization(data));
 
-      if (meta.requestStatus === 'fulfilled') {
-        const { token } = payload;
-        Cookies.set('user', token);
-        dispatch(setToken(token));
+    if (meta.requestStatus === 'fulfilled') {
+      const { token } = payload;
+      Cookies.set('user', token);
+      dispatch(setToken(token));
 
-        const parseToken = jwtDecode(token);
-        dispatch(setUserData(parseToken));
+      const parseToken = jwtDecode(token);
+      dispatch(setUserData(parseToken));
 
-        navigate('/mainPage');
-      } else {
-        dispatch(setSnackBar(true));
-      }
-    } catch (e) {
-      console.log('error >', e);
+      navigate('/mainPage');
     }
   };
 
@@ -109,7 +107,9 @@ const PageLogin = () => {
                 {t('login.signup')}
               </Link>
             </Helper>
-            <SimpleSnackbar />
+            {!isCorrectData && (
+              <SimpleSnackbar errorMessage={'Проверьте корректность логина или пароля'} />
+            )}
           </>
         )}
       </FormBlock>

@@ -9,11 +9,12 @@ const initialState: InitialState = {
     },
   ],
   isAuth: false,
+  isLoginExist: true,
+  isCorrectData: true,
   isPendingAuth: false,
   isPendingRegistration: false,
-  isSnackbar: false,
   selectedBoardTitle: '',
-  selectedBoardId: JSON.parse(window.localStorage.getItem('boardId') as string) || '',
+  selectedBoardId: JSON.parse(localStorage.getItem('boardId') as string) || '',
   columns: [],
   token: null,
   userData: {
@@ -58,9 +59,10 @@ interface InitialState {
   selectedBoardTitle: string;
   selectedBoardId: string;
   isAuth: boolean;
+  isLoginExist: boolean;
+  isCorrectData: boolean;
   isPendingAuth: boolean;
   isPendingRegistration: boolean;
-  isSnackbar: boolean;
   token: null | string;
   userData: {
     userId: string;
