@@ -56,7 +56,6 @@ const BoardPage = () => {
 
       dispatch(addNewColumn(addColumnData));
       dispatch(setIsModalNewColumn(false));
-      console.log(selectedBoardId);
     }
   };
 

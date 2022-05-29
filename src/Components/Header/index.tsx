@@ -41,6 +41,7 @@ const Header = () => {
   const location = useLocation();
   const isWelcomePage = location.pathname === '/';
   const isBoardPage = location.pathname === '/board';
+  const isEditProfile = location.pathname === '/edit-profile';
 
   const navigation = useNavigate();
   const dispatch = useDispatch();
@@ -106,7 +107,7 @@ const Header = () => {
                     {t('header.gomain')}
                   </Button>
                   <LangSwitcher />
-                  <IconButton aria-label="edit-profile">
+                  <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
                     <PersonIcon />
                   </IconButton>
                   <IconButton aria-label="logout">
@@ -115,13 +116,13 @@ const Header = () => {
                 </>
               )}
 
-              {isAuth && !isWelcomePage && !isBoardPage && (
+              {isAuth && !isWelcomePage && !isBoardPage && !isEditProfile && (
                 <>
                   <ColorButton onClick={createNewBoardHandler} variant="contained">
                     {t('header.createboard')}
                   </ColorButton>
                   <LangSwitcher />
-                  <IconButton aria-label="edit-profile">
+                  <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
                     <PersonIcon />
                   </IconButton>
                   <IconButton onClick={signOutHundler} aria-label="logout">
@@ -133,7 +134,19 @@ const Header = () => {
               {isAuth && isBoardPage && (
                 <>
                   <LangSwitcher />
-                  <IconButton aria-label="edit-profile">
+                  <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
+                    <PersonIcon />
+                  </IconButton>
+                  <IconButton onClick={signOutHundler} aria-label="logout">
+                    <LogoutIcon />
+                  </IconButton>
+                </>
+              )}
+
+              {isAuth && isEditProfile && (
+                <>
+                  <LangSwitcher />
+                  <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
                     <PersonIcon />
                   </IconButton>
                   <IconButton onClick={signOutHundler} aria-label="logout">

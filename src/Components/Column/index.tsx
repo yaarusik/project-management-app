@@ -24,9 +24,11 @@ import Task from './../Task';
 import { getTasks } from '../../utils/api/tasks';
 import ConfirmationModal from '../ConfirmationModal';
 import { deleteColumn, getColumns, updateColumn } from '../../utils/api/columns';
+import { sortTask } from '../../utils/sort/task';
 
 export const Column = ({ title, id, order }: IColumn) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
+  const { columns } = useAppSelector((state) => state.columnSlice);
   const { token } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
   // заглушка
@@ -105,14 +107,12 @@ export const Column = ({ title, id, order }: IColumn) => {
 
         const { meta, payload } = await dispatch(getTasks(taskOptions));
         if (meta.requestStatus === 'fulfilled') {
-          setTasks(payload);
+          setTasks(sortTask(payload));
         }
       };
       fetchTasks();
-    } else {
-      // вы не авторизованы
     }
-  }, []);
+  }, [columns]);
 
   const setFlagChangeTitle = (param: boolean) => {
     setIsChangeTitle(param);
@@ -121,6 +121,7 @@ export const Column = ({ title, id, order }: IColumn) => {
   const openModal = () => setIsModal(true);
   const closeModal = () => setIsModal(false);
   const addTask = (task: ITask) => setTasks((prev) => [...prev, task]);
+  const updateTasks = (tasks: ITask[]) => setTasks(tasks);
 
   const modalOptions = {
     id,
@@ -171,15 +172,11 @@ export const Column = ({ title, id, order }: IColumn) => {
         </Box>
         <TasksWrapper>
           {tasks.map((task: ITask) => (
-            <Task
-              key={task.id}
-              {...task}
-              columnId={columnId}
-              updateTask={(tasks: ITask[]) => setTasks(tasks)}
-            />
+            <Task key={task.id} {...task} columnId={columnId} updateTasks={updateTasks} />
           ))}
         </TasksWrapper>
       </ColumnWrapper>
+
       <ConfirmationModal
         flag={isOpen}
         cbClose={changeOnClose}

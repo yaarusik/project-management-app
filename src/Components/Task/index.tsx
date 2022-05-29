@@ -4,24 +4,25 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { TaskBody, TaskTitle, TaskHeader, TaskAuthor } from './style';
 import { ITaskProps } from './types';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
-import { changeTask, deleteTask, getTasks } from '../../utils/api/tasks';
+import { changeTask, deleteTask, getTasks, getUser } from '../../utils/api/tasks';
 import { useRef, useState } from 'react';
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { dndTypes } from '../../Pages/BoardPage';
 import { Identifier } from 'dnd-core';
-import { ITask } from '../../store/initialStates/types';
 import ConfirmationModal from '../ConfirmationModal';
 
 import { taskSlice } from './../../store/reducers/taskSlice';
 import { useEffect } from 'react';
+import { sortTask } from './../../utils/sort/task';
 
-const Task = ({ title, userId, id, columnId, updateTask, description, order }: ITaskProps) => {
+const Task = ({ title, userId, id, columnId, updateTasks, description, order }: ITaskProps) => {
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
-  const { setTaskDecription, setIsBar } = taskSlice.actions;
+  const { setTaskDecription, setIsBar, setIsEditTitle, setIsEditDescription } = taskSlice.actions;
   const dispatch = useAppDispatch();
   const [hoverOrder, setHoverOrder] = useState(1);
   const [isOpen, setOpen] = useState(false);
+  const [authorName, setAuthorName] = useState('Неизвестный');
 
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<ITaskProps, void, { handlerId: Identifier | null }>({
@@ -64,7 +65,7 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       };
       dispatch(changeTask(updateTaskOptions)).then(async () => {
         const { payload } = await dispatch(getTasks(taskOptions));
-        updateTask(payload.sort((a: ITask, b: ITask) => a.order - b.order));
+        updateTasks(sortTask(payload));
       });
     },
   });
@@ -99,24 +100,31 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       await dispatch(deleteTask(taskOptions));
       const { meta, payload } = await dispatch(getTasks(taskOptions));
       if (meta.requestStatus === 'fulfilled') {
-        updateTask(payload);
+        updateTasks(payload);
         dispatch(setIsBar(false));
         dispatch(setTaskDecription({}));
       }
-    } else {
-      // вы не авторизованы
     }
   };
 
   useEffect(() => {
+    const getUserData = async () => {
+      if (token) {
+        const { payload } = await dispatch(getUser({ userId, token }));
+        setAuthorName(payload.name);
+      }
+    };
+    getUserData();
     return () => {
       dispatch(setIsBar(false));
       dispatch(setTaskDecription({}));
     };
-  });
+  }, []);
 
   const openTaskInner = () => {
-    const taskOptions = { userId, title, description };
+    const taskOptions = { userId, title, description, columnId, order, id };
+    dispatch(setIsEditTitle(false));
+    dispatch(setIsEditDescription(false));
     dispatch(setTaskDecription(taskOptions));
     dispatch(setIsBar(true));
   };
@@ -136,7 +144,7 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
             <DeleteIcon color="primary" />
           </IconButton>
         </TaskHeader>
-        <TaskAuthor variant="body2">opened by {userId}</TaskAuthor>
+        <TaskAuthor variant="body2">opened by {authorName}</TaskAuthor>
       </TaskBody>
       <ConfirmationModal
         flag={isOpen}
