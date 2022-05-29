@@ -20,6 +20,11 @@ const initialState: InitialState = {
     userId: '',
     login: '',
   },
+  userUpdateData: {
+    password: '',
+    login: '',
+    name: '',
+  },
   currentColumnId: '',
   currentColumnOrder: 0,
   updateColumn: [],
@@ -39,6 +44,12 @@ export interface IColumn {
   order: number;
 }
 
+export interface IEditUserData {
+  password: string;
+  login: string;
+  name: string;
+}
+
 interface InitialState {
   isModalNewBoard: boolean;
   isModalNewColumn: boolean;
@@ -56,6 +67,7 @@ interface InitialState {
     login: string;
     iat?: null | number;
   };
+  userUpdateData: IEditUserData;
   currentColumnId: string;
   currentColumnOrder: number;
   updateColumn: IColumn[];
