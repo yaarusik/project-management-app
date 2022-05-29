@@ -23,7 +23,7 @@ import Task from './../Task';
 
 import { changeTask, getTasks } from '../../utils/api/tasks';
 import ConfirmationModal from '../ConfirmationModal';
-import { deleteColumn, getColumns, updateColumn } from '../../utils/api/columns';
+import { deleteColumn, getColumnById, getColumns, updateColumn } from '../../utils/api/columns';
 import { ITaskProps } from '../Task/types';
 
 export const Column = ({ title, id, order }: IColumn) => {
@@ -56,44 +56,51 @@ export const Column = ({ title, id, order }: IColumn) => {
     drop(item: IColumn | ITaskProps, monitor) {
       if (!monitor.getDropResult()) {
         console.log('ITaskProps');
-        console.log(monitor.getDropResult());
         const dragId = (item as ITaskProps).columnId;
-
-        const updateTaskOptions = {
-          url: {
-            boardId: selectedBoardId,
-            columnId: dragId,
-            taskId: item.id,
-          },
-          body: {
-            title: item.title,
-            order: 1,
-            description: (item as ITaskProps).description,
-            userId: (item as ITaskProps).userId,
-            boardId: selectedBoardId,
-            columnId: columnId,
-          },
-          token: token,
-        };
-        console.log('updateTaskOptions', updateTaskOptions);
-        const newTaskOptions = {
-          url: {
-            boardId: selectedBoardId,
-            columnId: dragId,
-          },
-          token,
-        };
-
-        dispatch(changeTask(updateTaskOptions))
-          .then(async () => {
-            const { payload } = await dispatch(getTasks(newTaskOptions));
-            console.log('payload', payload);
-            (item as ITaskProps).updateTask(
-              payload.sort((a: ITask, b: ITask) => a.order - b.order)
-            );
+        dispatch(getColumnById({ selectedBoardId, columnId, token }))
+          .then(async (res) => {
+            const data = await res;
+            return data.payload.tasks;
           })
-          .then(() => {
-            dispatch(getColumns({ selectedBoardId, token }));
+          .then((result) => {
+            if (result.length === 0) {
+              const updateTaskOptions = {
+                url: {
+                  boardId: selectedBoardId,
+                  columnId: dragId,
+                  taskId: item.id,
+                },
+                body: {
+                  title: item.title,
+                  order: 1,
+                  description: (item as ITaskProps).description,
+                  userId: (item as ITaskProps).userId,
+                  boardId: selectedBoardId,
+                  columnId: columnId,
+                },
+                token: token,
+              };
+              console.log('updateTaskOptions', updateTaskOptions);
+              const newTaskOptions = {
+                url: {
+                  boardId: selectedBoardId,
+                  columnId: dragId,
+                },
+                token,
+              };
+
+              dispatch(changeTask(updateTaskOptions))
+                .then(async () => {
+                  const { payload } = await dispatch(getTasks(newTaskOptions));
+                  console.log('payload', payload);
+                  (item as ITaskProps).updateTask(
+                    payload.sort((a: ITask, b: ITask) => a.order - b.order)
+                  );
+                })
+                .then(() => {
+                  dispatch(getColumns({ selectedBoardId, token }));
+                });
+            }
           });
       }
       if (monitor.getItemType() === dndTypes.COLUMN) {
@@ -152,7 +159,7 @@ export const Column = ({ title, id, order }: IColumn) => {
 
         const { meta, payload } = await dispatch(getTasks(taskOptions));
         if (meta.requestStatus === 'fulfilled') {
-          setTasks(payload);
+          setTasks(payload.sort((a: ITask, b: ITask) => a.order - b.order));
         }
       };
       fetchTasks();

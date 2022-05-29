@@ -132,6 +132,9 @@ export const changeTask = createAsyncThunk(
         },
       }
     );
+    if (response.status === 404) {
+      console.log('taskId', taskId);
+    }
     const data = await response.json();
     console.log('changeTask', data);
     return data;

@@ -36,22 +36,28 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       const dragIndex = item.order;
       const hoverIndex = order;
 
-      console.log('dragIndex', dragIndex);
-      console.log('hoverIndex', hoverIndex);
+      // console.log('dragIndex', dragIndex);
+      // console.log('hoverIndex', hoverIndex);
 
       const dragId = item.columnId;
       const hoverId = columnId;
+
+      // console.log('hoverId', hoverId);
+      // console.log('dragId', dragId);
 
       if (dragId != hoverId) {
         setDragColumnId(dragId);
       }
 
-      setHoverOrder(hoverIndex);
       setHoverColumnId(hoverId);
+      setHoverOrder(hoverIndex);
+
       item.order = hoverIndex as number;
       item.columnId = hoverId as string;
     },
     drop(item: ITaskProps) {
+      console.log('dragColumnId', dragColumnId);
+      console.log('hoverColumnId', hoverColumnId);
       const updateTaskOptions = {
         url: {
           boardId: selectedBoardId,
@@ -68,7 +74,7 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
         },
         token: token,
       };
-      console.log('updateTaskOptions', updateTaskOptions);
+      console.log('TaskOptions', updateTaskOptions);
       const newTaskOptions = {
         url: {
           boardId: selectedBoardId,
@@ -76,15 +82,18 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
         },
         token,
       };
+
       dispatch(changeTask(updateTaskOptions))
         .then(async () => {
           const { payload } = await dispatch(getTasks(newTaskOptions));
           updateTask(payload.sort((a: ITask, b: ITask) => a.order - b.order));
-          console.log('payload', payload);
+          console.log('getTasks', payload);
         })
-        .then(() => {
-          if (dragColumnId) dispatch(getColumns({ selectedBoardId, token }));
+        .then(async () => {
+          const { payload } = await dispatch(getColumns({ selectedBoardId, token }));
+          console.log('getColumns', payload);
         });
+      setDragColumnId('');
     },
   });
 
