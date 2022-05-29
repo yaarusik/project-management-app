@@ -14,7 +14,10 @@ import { addNewBoard } from '../../utils/api/boards';
 import { setIsModalNewBoard } from '../../store/reducers/boardSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 
+import { useTranslation } from 'react-i18next';
+
 const MainPage = () => {
+  const { t } = useTranslation();
   const { token } = useSelector((state: RootState) => state.authSlice);
   const { boards, isModalNewBoard } = useAppSelector((state) => state.boardSlice);
   const dispatch = useAppDispatch();
@@ -53,7 +56,7 @@ const MainPage = () => {
             fontWeight: '500',
           }}
         >
-          My projects
+          {t('main.title')}
         </Typography>
         <Box
           component="div"
@@ -76,7 +79,9 @@ const MainPage = () => {
                 />
               );
             })}
-            {isModalNewBoard && <CreateNewBoard titleName={'board'} submitFunc={createBoard} />}
+            {isModalNewBoard && (
+              <CreateNewBoard titleName={t('board.board')} submitFunc={createBoard} />
+            )}
           </>
         </Box>
       </Box>

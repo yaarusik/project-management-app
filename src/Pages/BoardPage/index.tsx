@@ -10,7 +10,8 @@ import { getColumns, addNewColumn } from '../../utils/api/columns';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { IFetchColumn } from './types';
 import { IColumn } from '../../store/initialState';
-import TaskBar from './../../Components/TaskBar/index';
+import TaskBar from '../../Components/TaskBar';
+import { useTranslation } from 'react-i18next';
 
 export const dndTypes = {
   COLUMN: 'column',
@@ -24,6 +25,8 @@ export interface Item {
 }
 
 const BoardPage = () => {
+  const { t } = useTranslation();
+
   const { isModalNewColumn, columns } = useAppSelector((state) => state.columnSlice);
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardTitle, selectedBoardId } = useAppSelector((state) => state.boardSlice);
@@ -69,10 +72,12 @@ const BoardPage = () => {
           </IconButton>
           <Title variant="h4">{selectedBoardTitle}</Title>
           <Button variant="outlined" onClick={newColumnHandler}>
-            New column
+            {t('board.newcolumn')}
           </Button>
         </TitleBox>
-        {isModalNewColumn && <CreateNewBoard titleName={'column'} submitFunc={createColumn} />}
+        {isModalNewColumn && (
+          <CreateNewBoard titleName={t('board.column')} submitFunc={createColumn} />
+        )}
         <ColumnWrapper>
           {columns.map((item: IColumn) => (
             <Column key={item.id} title={item.title} id={item.id} order={item.order} />

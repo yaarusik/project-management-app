@@ -14,7 +14,10 @@ import TasksStatusIcon from '../../assets/welcomePageIcons/task-status.svg';
 import ConfirmationModal from '../../Components/ConfirmationModal';
 import { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 const WelcomePage = () => {
+  const { t } = useTranslation();
   const [isOpen, setOpen] = useState(false);
 
   const changeOnOpen = () => {
@@ -29,12 +32,11 @@ const WelcomePage = () => {
     <Box component="section" sx={{ minHeight: '100vh' }}>
       <Container maxWidth="md">
         <Typography align="center" variant="h2" component="h1" mb={5} mt={5} fontWeight="500">
-          Welcome!
+          {t('welcome.title')}
         </Typography>
         <Container maxWidth="md">
           <Typography align="center" variant="h5" component="h2" mb={5} mt={5} fontWeight="400">
-            Task Manager is an application that helps an individual or a group of developers to
-            achieve their goals.
+            {t('welcome.part1')}
           </Typography>
 
           <Grid container alignItems="center" justifyContent="space-between">
@@ -49,8 +51,7 @@ const WelcomePage = () => {
                 lineHeight={1.5}
                 letterSpacing={0.8}
               >
-                Our app helps you break down large tasks into smaller ones, thereby enabling you to
-                successfully achieve your goals.
+                {t('welcome.part2')}
               </Typography>
             </Grid>
             <Grid item xs={8}>
@@ -61,8 +62,7 @@ const WelcomePage = () => {
                 lineHeight={1.5}
                 letterSpacing={0.8}
               >
-                Team coordination. Allocate tasks within the team to each other thanks to the
-                boards.
+                {t('welcome.part3')}
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -80,28 +80,28 @@ const WelcomePage = () => {
                 letterSpacing={0.8}
                 ml={5}
               >
-                Keep track of what stage your project is at.
+                {t('welcome.part4')}
               </Typography>
             </Grid>
           </Grid>
         </Container>
         <Container>
           <Typography align="center" variant="h3" component="h3" mb={3}>
-            Our team:
+            {t('welcome.team')}
           </Typography>
           <Stack direction="row" spacing={2} alignItems="center" justifyContent="center" mb={4}>
             <Avatar alt="Elena Shustova" sx={{ bgcolor: lightBlue[600] }}>
-              ES
+              {t('welcome.es')}
             </Avatar>
-            <Typography fontSize="1.5rem">Elena Shustova</Typography>
+            <Typography fontSize="1.5rem">{t('welcome.elena')}</Typography>
             <Avatar alt="Ruslan Vildanov" sx={{ bgcolor: lightBlue[600] }}>
-              RV
+              {t('welcome.rv')}
             </Avatar>
-            <Typography fontSize="1.5rem">Ruslan Vildanov</Typography>
+            <Typography fontSize="1.5rem">{t('welcome.ruslan')}</Typography>
             <Avatar alt="Evgeniy Zhukov" sx={{ bgcolor: lightBlue[600] }}>
-              EZ
+              {t('welcome.ez')}
             </Avatar>
-            <Typography fontSize="1.5rem">Evgeniy Zhukov</Typography>
+            <Typography fontSize="1.5rem">{t('welcome.evgeniy')}</Typography>
           </Stack>
           <Button
             variant="contained"
@@ -117,7 +117,7 @@ const WelcomePage = () => {
             href="https://rs.school/react/"
             target="_blank"
           >
-            RSS REACT 2022 Q1
+            {t('welcome.rss')}
           </Button>
           <ConfirmationModal
             flag={isOpen}

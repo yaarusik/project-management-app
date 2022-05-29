@@ -40,7 +40,6 @@ export type IDeleteColumn = {
   token: string;
 };
 
-<<<<<<< HEAD
 export type ICreateTask = {
   url: {
     boardId: string;
@@ -79,10 +78,8 @@ export type IDeleteTask = {
   };
   token: string;
 };
-=======
 export interface IEditUserApi {
   userID?: string | undefined | null;
   token?: string;
   userData?: IEditUserData;
 }
->>>>>>> develop

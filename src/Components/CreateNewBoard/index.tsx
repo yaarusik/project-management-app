@@ -10,8 +10,10 @@ import { IFetchBoard } from '../../Pages/MainPage/types';
 import { setIsModalNewColumn } from '../../store/reducers/columnSlice';
 import { useAppDispatch } from '../../store/redux/redux';
 import { ITitle } from './types';
+import { useTranslation } from 'react-i18next';
 
 const CreateNewBoard = ({ titleName, submitFunc }: ITitle) => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -28,6 +30,10 @@ const CreateNewBoard = ({ titleName, submitFunc }: ITitle) => {
     dispatch(setIsModalNewColumn(false));
   };
 
+  const compareTitle = () => {
+    return titleName === 'board' || titleName === 'доску';
+  };
+
   return (
     <Overlay>
       <ModalWin onClick={onClicWin} onSubmit={handleSubmit(submitFunc)}>
@@ -38,31 +44,31 @@ const CreateNewBoard = ({ titleName, submitFunc }: ITitle) => {
         >
           <CloseIcon />
         </IconButton>
-        <Title>Create new {titleName}</Title>
+        <Title>{t('board.newboard', { titleName: titleName })}</Title>
         <TextField
           InputProps={{
             ...register('title', { required: true }),
           }}
-          label="Title"
+          label={t('board.placeholder1')}
           variant="outlined"
           color="secondary"
           fullWidth
-          helperText="Please enter your title board"
+          helperText={t('board.title')}
         />
-        {titleName === 'board' && (
+        {compareTitle() && (
           <TextField
             InputProps={{
               ...register('description', { required: true }),
             }}
-            label="Description"
+            label={t('board.placeholder2')}
             variant="outlined"
             color="secondary"
             fullWidth
-            helperText="Please enter your description board"
+            helperText={t('board.description')}
           />
         )}
         <Submit type="submit" variant="outlined" color="secondary">
-          Create new {titleName}
+          {t('board.newboard', { titleName: titleName })}
         </Submit>
       </ModalWin>
     </Overlay>

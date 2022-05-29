@@ -18,8 +18,10 @@ import { authSlice } from './../../store/reducers/authSlice';
 import SimpleSnackbar from './../../Components/Snackbar';
 import Preloader from '../../Components/Preloader';
 import jwtDecode from 'jwt-decode';
+import { useTranslation } from 'react-i18next';
 
 const PageLogin = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { setSnackBar, setToken, setUserData } = authSlice.actions;
   const { isPendingAuth, isAuth } = useAppSelector((state) => state.authSlice);
@@ -70,15 +72,15 @@ const PageLogin = () => {
           <Preloader />
         ) : (
           <>
-            <Title>Log in</Title>
+            <Title>{t('header.login')}</Title>
 
             <InputField
               InputProps={{
                 ...register('login'),
               }}
               error={!!login}
-              label="Login"
-              helperText={!!login ? login.message : 'Please enter your login'}
+              label={t('login.login')}
+              helperText={!!login ? login.message : t('login.describe1')}
             />
 
             <InputField
@@ -94,17 +96,17 @@ const PageLogin = () => {
                 ...register('password'),
               }}
               error={!!password}
-              label="Password"
-              helperText={!!password ? password.message : 'Please enter your password'}
+              label={t('login.password')}
+              helperText={!!password ? password.message : t('login.describe2')}
             />
 
             <Submit type="submit" color="success" variant="contained">
-              Submit
+              {t('login.submit')}
             </Submit>
             <Helper>
-              Have no aacount yet?{' '}
+              {t('login.helper')}
               <Link component={RouterLink} to="/signup" color="inherit">
-                Sign up
+                {t('login.signup')}
               </Link>
             </Helper>
             <SimpleSnackbar />
