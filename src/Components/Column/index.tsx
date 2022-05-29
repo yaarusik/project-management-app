@@ -25,12 +25,14 @@ import { getTasks } from '../../utils/api/tasks';
 import ConfirmationModal from '../ConfirmationModal';
 import { deleteColumn, getColumns, updateColumn } from '../../utils/api/columns';
 import { sortTask } from '../../utils/sort/task';
+import Preloader from '../Preloader';
 
 export const Column = ({ title, id, order }: IColumn) => {
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const { columns } = useAppSelector((state) => state.columnSlice);
   const { token } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
+  const [isPreloader, setIsPreloader] = useState(true);
   // заглушка
   const columnId = id;
 
@@ -108,6 +110,7 @@ export const Column = ({ title, id, order }: IColumn) => {
         const { meta, payload } = await dispatch(getTasks(taskOptions));
         if (meta.requestStatus === 'fulfilled') {
           setTasks(sortTask(payload));
+          setIsPreloader(false);
         }
       };
       fetchTasks();
@@ -171,9 +174,15 @@ export const Column = ({ title, id, order }: IColumn) => {
           )}
         </Box>
         <TasksWrapper>
-          {tasks.map((task: ITask) => (
-            <Task key={task.id} {...task} columnId={columnId} updateTasks={updateTasks} />
-          ))}
+          {isPreloader ? (
+            <Preloader />
+          ) : (
+            <>
+              {tasks.map((task: ITask) => (
+                <Task key={task.id} {...task} columnId={columnId} updateTasks={updateTasks} />
+              ))}
+            </>
+          )}
         </TasksWrapper>
       </ColumnWrapper>
 

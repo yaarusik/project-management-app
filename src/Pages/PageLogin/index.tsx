@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
@@ -28,7 +28,9 @@ const PageLogin = () => {
 
   const dispatch = useAppDispatch();
   const { setToken, setUserData } = authSlice.actions;
-  const { isPendingAuth, isAuth, isCorrectData } = useAppSelector((state) => state.authSlice);
+  const { isPendingAuth, isAuth, isCorrectData, token } = useAppSelector(
+    (state) => state.authSlice
+  );
 
   const navigate = useNavigate();
 
@@ -62,6 +64,12 @@ const PageLogin = () => {
   const hundlerShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate('/main');
+    }
+  }, []);
 
   return (
     <FormWrapper>

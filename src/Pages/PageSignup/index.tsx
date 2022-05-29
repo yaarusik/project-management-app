@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { IconButton, InputAdornment, Link } from '@mui/material';
@@ -30,7 +30,7 @@ const PageSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const { isPendingRegistration, isLoginExist } = useAppSelector((state) => state.authSlice);
+  const { isPendingRegistration, isLoginExist, token } = useAppSelector((state) => state.authSlice);
 
   const dispatch = useAppDispatch();
   const {
@@ -54,6 +54,12 @@ const PageSignUp = () => {
       navigate('/login');
     }
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate('/main');
+    }
+  }, []);
 
   return (
     <FormWrapper>

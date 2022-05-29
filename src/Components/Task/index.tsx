@@ -14,6 +14,8 @@ import ConfirmationModal from '../ConfirmationModal';
 import { taskSlice } from './../../store/reducers/taskSlice';
 import { useEffect } from 'react';
 import { sortTask } from './../../utils/sort/task';
+import PagePreloader from '../PagePreloader';
+import Preloader from '../Preloader';
 
 const Task = ({ title, userId, id, columnId, updateTasks, description, order }: ITaskProps) => {
   const { token } = useAppSelector((state) => state.authSlice);
@@ -22,7 +24,8 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
   const dispatch = useAppDispatch();
   const [hoverOrder, setHoverOrder] = useState(1);
   const [isOpen, setOpen] = useState(false);
-  const [authorName, setAuthorName] = useState('Неизвестный');
+  const [authorName, setAuthorName] = useState('somebody');
+  const [isPreloader, setIsPreloader] = useState(true);
 
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<ITaskProps, void, { handlerId: Identifier | null }>({
@@ -108,13 +111,12 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
   };
 
   useEffect(() => {
-    const getUserData = async () => {
-      if (token) {
-        const { payload } = await dispatch(getUser({ userId, token }));
-        setAuthorName(payload.name);
-      }
-    };
-    getUserData();
+    if (token) {
+      dispatch(getUser({ userId, token }))
+        .then(({ payload }) => setAuthorName(payload.name))
+        .then(() => setIsPreloader(false));
+    }
+
     return () => {
       dispatch(setIsBar(false));
       dispatch(setTaskDecription({}));
@@ -136,15 +138,21 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
         style={{ opacity: opacity, cursor: 'move' }}
         data-handler-id={handlerId}
       >
-        <TaskHeader direction="row" alignItems="center" justifyContent="space-between">
-          <TaskTitle onClick={openTaskInner} variant="subtitle1">
-            {title}
-          </TaskTitle>
-          <IconButton onClick={changeOnOpen} aria-label="delete">
-            <DeleteIcon color="primary" />
-          </IconButton>
-        </TaskHeader>
-        <TaskAuthor variant="body2">opened by {authorName}</TaskAuthor>
+        {isPreloader ? (
+          <Preloader />
+        ) : (
+          <>
+            <TaskHeader direction="row" alignItems="center" justifyContent="space-between">
+              <TaskTitle onClick={openTaskInner} variant="subtitle1">
+                {title}
+              </TaskTitle>
+              <IconButton onClick={changeOnOpen} aria-label="delete">
+                <DeleteIcon color="primary" />
+              </IconButton>
+            </TaskHeader>
+            <TaskAuthor variant="body2">opened by {authorName}</TaskAuthor>
+          </>
+        )}
       </TaskBody>
       <ConfirmationModal
         flag={isOpen}
