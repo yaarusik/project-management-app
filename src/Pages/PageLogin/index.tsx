@@ -57,7 +57,7 @@ const PageLogin = () => {
       const parseToken = jwtDecode(token);
       dispatch(setUserData(parseToken));
 
-      navigate('/mainPage');
+      navigate('/main');
     }
   };
 
