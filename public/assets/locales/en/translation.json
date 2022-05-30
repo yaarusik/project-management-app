@@ -18,7 +18,7 @@
     "title": "Task manager",
     "login": "Log in",
     "signup": "Sigh up",
-    "gotomain": "Go to Main Page",
+    "gomain": "Go to Main Page",
     "createboard": "Create new board"
   },
   "main": {
@@ -46,7 +46,7 @@
     "password": "Password",
     "submit": "Submit",
     "signup": "Sign up",
-    "helper": "Have no aacount yet? ",
+    "helper": "Have no account yet? ",
     "describe1": "Please, enter your login",
     "describe2": "Please, enter your password",
     "describe3": "Please, enter your name",
@@ -74,5 +74,27 @@
     },
     "correctdata": "Check that your username or password is correct",
     "isExists": "This login already exists"
+  },
+  "confirm": {
+    "task": {
+      "body": "Do you really want to remove this task?",
+      "title": "Remove Task"
+    },
+    "column": {
+      "body": "Do you really want to remove this column?",
+      "title": "Remove Column"
+    },
+    "board": {
+      "body": "Do you really want to remove this board?",
+      "title": "Remove Board"
+    },
+    "profile": {
+      "body": "Do you really want to delete your profile? (After deleting you will be redirected to the Welcome Page)",
+      "title": "Delete Profile"
+    }
+  },
+  "profile": {
+    "change": "Your profile has been successfully changed",
+    "delete": " Delete Current Profile"
   }
 }

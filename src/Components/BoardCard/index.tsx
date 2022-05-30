@@ -107,8 +107,8 @@ const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
         cbClose={changeOnClose}
         cbOpen={changeOnOpen}
         cbHandler={onClickDelete}
-        body="Do you really want to remove this board?"
-        title="Remove Board"
+        body={t('confirm.board.body')}
+        title={t('confirm.board.title')}
       />
     </>
   );
