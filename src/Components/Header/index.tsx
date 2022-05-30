@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import Button, { ButtonProps } from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Typography from '@mui/material/Typography';
@@ -73,10 +74,13 @@ const Header = () => {
 
   return (
     <AppBar position="sticky">
-      <HeaderBox
+      <Box
         component="header"
         sx={{
           bgcolor: bgColor,
+          height: '60px',
+          paddingTop: '5px',
+          transition: 'background 0.5s',
         }}
       >
         <CssBaseline />
@@ -175,7 +179,7 @@ const Header = () => {
             </Stack>
           </Stack>
         </Container>
-      </HeaderBox>
+      </Box>
     </AppBar>
   );
 };
