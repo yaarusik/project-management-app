@@ -20,7 +20,6 @@ import Preloader from '../Preloader';
 import { useTranslation } from 'react-i18next';
 import { ITask } from '../../store/initialStates/types';
 
-
 const Task = ({ title, userId, id, columnId, updateTasks, description, order }: ITaskProps) => {
   const { t } = useTranslation();
   const { token } = useAppSelector((state) => state.authSlice);
