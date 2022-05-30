@@ -13,6 +13,7 @@ import { deleteBoard, getBoards } from '../../utils/api/boards';
 import { setSelectedBoardTitle, setSelectedBoardId } from '../../store/reducers/boardSlice';
 import ConfirmationModal from '../ConfirmationModal';
 import { useTranslation } from 'react-i18next';
+import { DeleteButton } from './styles';
 
 const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
   const { t } = useTranslation();
@@ -21,13 +22,9 @@ const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
 
   const [isOpen, setOpen] = useState(false);
 
-  const changeOnOpen = () => {
-    setOpen(true);
-  };
+  const changeOnOpen = () => setOpen(true);
 
-  const changeOnClose = () => {
-    setOpen(false);
-  };
+  const changeOnClose = () => setOpen(false);
 
   const onClickDelete = async () => {
     if (token) {
@@ -39,7 +36,7 @@ const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
   const onClickSelect = async () => {
     dispatch(setSelectedBoardTitle(title));
     await dispatch(setSelectedBoardId(id));
-    window.localStorage.setItem('boardId', JSON.stringify(id));
+    localStorage.setItem('boardId', JSON.stringify(id));
   };
 
   return (
@@ -75,13 +72,9 @@ const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
             </Typography>
           </CardContent>
         </CardActionArea>
-        <Button
-          onClick={changeOnOpen}
-          variant="text"
-          sx={{ top: '-30px', left: '360px', color: 'rgba(255, 0, 0, 0.5)' }}
-        >
+        <DeleteButton onClick={changeOnOpen} variant="text">
           {t('main.deleteboard')}
-        </Button>
+        </DeleteButton>
         <CardActionArea
           onClick={onClickSelect}
           component={Link}

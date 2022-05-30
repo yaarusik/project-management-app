@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { Typography } from '@mui/material';
-import Box from '@mui/material/Box';
+
 import Container from '@mui/material/Container';
 import BoardCard from '../../Components/BoardCard';
 import CreateNewBoard from '../../Components/CreateNewBoard';
@@ -16,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 
 import { useTranslation } from 'react-i18next';
 import PagePreloader from '../../Components/PagePreloader';
+import { BoardsWrapper, MainBody, MainTitle, MainWrapper } from './styles';
 
 const MainPage = () => {
   const { t } = useTranslation();
@@ -42,54 +42,27 @@ const MainPage = () => {
       {isPreloader ? (
         <PagePreloader />
       ) : (
-        <Container sx={{ maxWidth: 'xl', minHeight: 'calc(100vh - 102px)' }}>
-          <Box
-            component="div"
-            sx={{
-              width: '100%',
-              padding: '20px',
-            }}
-          >
-            <Typography
-              variant="h4"
-              component="h4"
-              sx={{
-                textTransform: 'uppercase',
-                textAlign: 'center',
-                color: 'rgba(2,129,237,0.5)',
-                fontWeight: '500',
-              }}
-            >
-              {t('main.title')}
-            </Typography>
-            <Box
-              component="div"
-              sx={{
-                display: 'flex',
-                flexDirection: 'colomn',
-                width: '100%',
-                flexWrap: 'wrap',
-              }}
-            >
-              <>
-                {boards.map((item: IFetchBoard, i: number) => {
-                  return (
-                    <BoardCard
-                      imgSrc={iconArray[i % iconArray.length]}
-                      title={item.title}
-                      key={item.id}
-                      id={item.id}
-                      description={item.description}
-                    />
-                  );
-                })}
-                {isModalNewBoard && (
-                  <CreateNewBoard titleName={t('board.board')} submitFunc={createBoard} />
-                )}
-              </>
-            </Box>
-          </Box>
-        </Container>
+        <MainWrapper>
+          <MainBody>
+            <MainTitle variant="h4">{t('main.title')}</MainTitle>
+            <BoardsWrapper>
+              {boards.map((item: IFetchBoard, i: number) => {
+                return (
+                  <BoardCard
+                    imgSrc={iconArray[i % iconArray.length]}
+                    title={item.title}
+                    key={item.id}
+                    id={item.id}
+                    description={item.description}
+                  />
+                );
+              })}
+              {isModalNewBoard && (
+                <CreateNewBoard titleName={t('board.board')} submitFunc={createBoard} />
+              )}
+            </BoardsWrapper>
+          </MainBody>
+        </MainWrapper>
       )}
     </>
   );

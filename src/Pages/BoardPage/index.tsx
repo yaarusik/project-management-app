@@ -13,7 +13,7 @@ import { IColumn } from '../../store/initialState';
 import TaskBar from '../../Components/TaskBar';
 import { useTranslation } from 'react-i18next';
 import PagePreloader from './../../Components/PagePreloader';
-
+import { useMediaQuery } from '@mui/material';
 export const dndTypes = {
   COLUMN: 'column',
   TASK: 'task',
@@ -27,7 +27,7 @@ export interface Item {
 
 const BoardPage = () => {
   const { t } = useTranslation();
-
+  const isTitle = useMediaQuery('(min-width: 500px)');
   const { isModalNewColumn, columns } = useAppSelector((state) => state.columnSlice);
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardTitle, selectedBoardId } = useAppSelector((state) => state.boardSlice);
@@ -75,7 +75,7 @@ const BoardPage = () => {
               >
                 <ArrowBackIcon fontSize="large" color="primary" />
               </IconButton>
-              <Title variant="h4">{selectedBoardTitle}</Title>
+              {isTitle && <Title variant="h4">{selectedBoardTitle}</Title>}
               <Button variant="outlined" onClick={newColumnHandler}>
                 {t('board.newcolumn')}
               </Button>
