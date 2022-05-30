@@ -27,8 +27,10 @@ import { deleteColumn, getColumnById, getColumns, updateColumn } from '../../uti
 import { ITaskProps } from '../Task/types';
 import { sortTask } from '../../utils/sort/task';
 import Preloader from '../Preloader';
+import { useTranslation } from 'react-i18next';
 
 export const Column = ({ title, id, order }: IColumn) => {
+  const { t } = useTranslation();
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const { columns } = useAppSelector((state) => state.columnSlice);
   const { token } = useAppSelector((state) => state.authSlice);
@@ -240,8 +242,8 @@ export const Column = ({ title, id, order }: IColumn) => {
         cbClose={changeOnClose}
         cbOpen={changeOnOpen}
         cbHandler={removeColumn}
-        body="Do you really want to remove this column?"
-        title="Remove Column"
+        body={t('confirm.column.body')}
+        title={t('confirm.column.title')}
       />
     </>
   );

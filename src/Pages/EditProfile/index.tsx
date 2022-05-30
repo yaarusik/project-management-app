@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
+import { useAppSelector } from '../../store/redux/redux';
 import Cookies from 'js-cookie';
 import { SnackbarProvider, VariantType, useSnackbar } from 'notistack';
 
@@ -21,13 +21,12 @@ import { IEditUserData } from '../../store/initialState';
 import { deleteUserProfile, updateProfile } from '../../utils/api/editUser';
 
 import { ErrorMessage } from './styles';
-import { authSlice } from '../../store/reducers/authSlice';
 import ConfirmationModal from '../../Components/ConfirmationModal';
+import { useTranslation } from 'react-i18next';
 
 export const EditProfile = () => {
+  const { t } = useTranslation();
   const { userId } = useAppSelector((state) => state.authSlice.userData);
-  const dispatch = useAppDispatch();
-  const { setUserData } = authSlice.actions;
 
   const token = Cookies.get('user');
 
@@ -42,13 +41,13 @@ export const EditProfile = () => {
 
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant: VariantType) => () => {
-    enqueueSnackbar('Your profile has been successfully changed', { variant });
+    enqueueSnackbar(t('profile.change'), { variant });
   };
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful, isValid },
+    formState: { errors, isValid },
     reset,
   } = useForm<IEditUserData>({ mode: 'onChange' });
 
@@ -68,50 +67,50 @@ export const EditProfile = () => {
       </EditProfileTitle>
       <FormBlock onSubmit={handleSubmit(onSubmit)}>
         <Title>
-          <FaceIcon /> Name
+          <FaceIcon /> {t('login.name')}
         </Title>
         <InputField
           {...register('name', {
-            required: 'Введите корректное имя',
-            minLength: { value: 2, message: 'Минимальная длина имени 2 буквы' },
-            maxLength: { value: 15, message: 'Максимальная длина имени 15 букв' },
+            required: t('validation.name.required'),
+            minLength: { value: 2, message: t('validation.name.min') },
+            maxLength: { value: 15, message: t('validation.name.max') },
             pattern: {
               value: /^([а-яё\s]+|[a-z\s]+)$/gim,
-              message: 'Имя может содержать только русские или английские буквы, без цифр',
+              message: t('validation.name.message'),
             },
           })}
           type="text"
-          placeholder="name"
+          placeholder={t('login.name')}
         />
         {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         <Title>
-          <AccountCircleIcon /> Login
+          <AccountCircleIcon /> {t('login.login')}
         </Title>
         <InputField
           {...register('login', {
-            required: 'Введите логин',
-            minLength: { value: 3, message: 'Минимальная длина имени 3 буквы' },
-            maxLength: { value: 15, message: 'Максимальная длина имени 15 букв' },
+            required: t('validation.login.required'),
+            minLength: { value: 3, message: t('validation.login.min') },
+            maxLength: { value: 15, message: t('validation.login.max') },
             pattern: {
               value: /^[a-z][a-z0-9]*$/i,
-              message: 'Логин содержит только английские буквы и цифры',
+              message: t('validation.login.message'),
             },
           })}
           type="text"
-          placeholder="login"
+          placeholder={t('login.login')}
         />
         {errors.login && <ErrorMessage>{errors.login.message}</ErrorMessage>}
         <Title>
-          <PasswordIcon /> Password
+          <PasswordIcon /> {t('login.password')}
         </Title>
         <InputField
           {...register('password', {
-            required: 'Введите пароль',
-            minLength: { value: 8, message: 'Пароль должен быть больше чем 8 символов' },
-            maxLength: { value: 15, message: 'Максимальная длина пароль 15 символов' },
+            required: t('validation.password.required'),
+            minLength: { value: 8, message: t('validation.password.min') },
+            maxLength: { value: 15, message: t('validation.password.max') },
           })}
           type="password"
-          placeholder="password"
+          placeholder={t('login.password')}
         />
         {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
         <Submit
@@ -121,7 +120,7 @@ export const EditProfile = () => {
           variant="contained"
           disabled={!isValid}
         >
-          Submit
+          {t('login.submit')}
         </Submit>
 
         <Stack mt={2}>
@@ -131,7 +130,7 @@ export const EditProfile = () => {
             startIcon={<DeleteIcon />}
             sx={{ bgcolor: red[500], '&:hover': { bgcolor: red[800] } }}
           >
-            Delete Current Profile
+            {t('profile.delete')}
           </Button>
         </Stack>
       </FormBlock>
@@ -140,9 +139,8 @@ export const EditProfile = () => {
         cbClose={changeOnClose}
         cbOpen={changeOnOpen}
         cbHandler={handleDeleteProfile}
-        body="Do you really want to delete your profile? 
-        (After deleting you will be redirected to the Welcome Page)"
-        title="DELETE PROFILE"
+        body={t('confirm.profile.body')}
+        title={t('confirm.profile.title')}
       />
     </FormWrapper>
   );

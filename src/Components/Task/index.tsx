@@ -15,11 +15,14 @@ import { taskSlice } from './../../store/reducers/taskSlice';
 import { useEffect } from 'react';
 import { getColumns } from '../../utils/api/columns';
 import { sortTask } from './../../utils/sort/task';
-import PagePreloader from '../PagePreloader';
 import Preloader from '../Preloader';
+
+import { useTranslation } from 'react-i18next';
 import { ITask } from '../../store/initialStates/types';
 
+
 const Task = ({ title, userId, id, columnId, updateTasks, description, order }: ITaskProps) => {
+  const { t } = useTranslation();
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const { setTaskDecription, setIsBar, setIsEditTitle, setIsEditDescription } = taskSlice.actions;
@@ -175,8 +178,8 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
         cbClose={changeOnClose}
         cbOpen={changeOnOpen}
         cbHandler={removeTask}
-        body="Do you really want to remove this task?"
-        title="Remove Task"
+        body={t('confirm.task.body')}
+        title={t('confirm.task.title')}
       />
     </>
   );
