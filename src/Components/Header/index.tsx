@@ -8,7 +8,6 @@ import Stack from '@mui/material/Stack';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import { styled } from '@mui/material/styles';
@@ -23,7 +22,9 @@ import LangSwitcher from '../LangSwitcher';
 
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+
+import { HeaderBox } from './styles';
 
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -72,13 +73,10 @@ const Header = () => {
 
   return (
     <AppBar position="sticky">
-      <Box
+      <HeaderBox
         component="header"
         sx={{
           bgcolor: bgColor,
-          height: '60px',
-          paddingTop: '5px',
-          transition: 'background 0.5s',
         }}
       >
         <CssBaseline />
@@ -177,7 +175,7 @@ const Header = () => {
             </Stack>
           </Stack>
         </Container>
-      </Box>
+      </HeaderBox>
     </AppBar>
   );
 };
