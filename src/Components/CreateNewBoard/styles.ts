@@ -18,6 +18,7 @@ export const ModalWin = styled(FormBlock)`
   left: 35%;
   width: 30%;
   min-height: 270px;
+  min-width: 320px;
   padding: 30px;
   background-color: #fdfdfd;
   font-family: 'Times New Roman', Times, serif;
