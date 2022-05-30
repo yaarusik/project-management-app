@@ -8,7 +8,7 @@ const RequireAuth = ({ children }: { children: ReactElement }) => {
   const location = useLocation();
 
   if (!isAuth) {
-    return <Navigate to="/login" state={{ from: location }} />;
+    return <Navigate to="/" state={{ from: location }} />;
   }
 
   return children;
