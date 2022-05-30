@@ -34,12 +34,22 @@ export interface IGetColumns {
   token: string | null;
 }
 
+export interface IGetColumnsById {
+  selectedBoardId: string;
+  columnId: string;
+  token: string | null;
+}
+
 export type IDeleteColumn = {
   boardId: string;
   columnId: string;
   token: string;
 };
 
+export type IGetBoardById = {
+  selectedBoardId: string;
+  token: string | null;
+};
 export type ICreateTask = {
   url: {
     boardId: string;

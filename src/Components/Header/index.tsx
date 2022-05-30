@@ -68,7 +68,7 @@ const Header = () => {
               <img src="images/logo.png" alt="logo" width={50} height={50} />
               <Typography
                 component={Link}
-                to="/mainPage"
+                to="/main"
                 variant="h5"
                 sx={{
                   color: '#ffffff',
@@ -97,7 +97,7 @@ const Header = () => {
                 <>
                   <Button
                     component={Link}
-                    to="/mainPage"
+                    to="/main"
                     variant="contained"
                     sx={{
                       backgroundColor: purple[500],

@@ -70,7 +70,7 @@ const BoardPage = () => {
               <IconButton
                 sx={{ position: 'absolute', left: '3%', top: '11%' }}
                 component={Link}
-                to="/mainPage"
+                to="/main"
               >
                 <ArrowBackIcon fontSize="large" color="primary" />
               </IconButton>

@@ -21,9 +21,10 @@ import { IColumn } from '../../store/initialState';
 import TaskModal from './../TaskModal';
 import Task from './../Task';
 
-import { getTasks } from '../../utils/api/tasks';
+import { changeTask, getTasks } from '../../utils/api/tasks';
 import ConfirmationModal from '../ConfirmationModal';
-import { deleteColumn, getColumns, updateColumn } from '../../utils/api/columns';
+import { deleteColumn, getColumnById, getColumns, updateColumn } from '../../utils/api/columns';
+import { ITaskProps } from '../Task/types';
 import { sortTask } from '../../utils/sort/task';
 import Preloader from '../Preloader';
 
@@ -43,7 +44,7 @@ export const Column = ({ title, id, order }: IColumn) => {
 
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<IColumn, void, { handlerId: Identifier | null }>({
-    accept: dndTypes.COLUMN,
+    accept: [dndTypes.COLUMN, dndTypes.TASK],
     hover(item: IColumn) {
       if (!ref.current) {
         return;
@@ -55,16 +56,64 @@ export const Column = ({ title, id, order }: IColumn) => {
 
       item.order = hoverIndex as number;
     },
-    drop(item: IColumn) {
-      const columnData = {
-        boardId: selectedBoardId,
-        columnId: item.id,
-        columnData: { title: item.title, order: hoverOrder },
-        token: token,
-      };
-      dispatch(updateColumn(columnData)).then(() =>
-        dispatch(getColumns({ selectedBoardId, token }))
-      );
+    drop(item: IColumn | ITaskProps, monitor) {
+      if (!monitor.getDropResult()) {
+        const dragId = (item as ITaskProps).columnId;
+        dispatch(getColumnById({ selectedBoardId, columnId, token }))
+          .then(async (res) => {
+            const data = await res;
+            return data.payload.tasks;
+          })
+          .then((result) => {
+            if (result.length === 0) {
+              const updateTaskOptions = {
+                url: {
+                  boardId: selectedBoardId,
+                  columnId: dragId,
+                  taskId: item.id,
+                },
+                body: {
+                  title: item.title,
+                  order: 1,
+                  description: (item as ITaskProps).description,
+                  userId: (item as ITaskProps).userId,
+                  boardId: selectedBoardId,
+                  columnId: columnId,
+                },
+                token: token,
+              };
+              const newTaskOptions = {
+                url: {
+                  boardId: selectedBoardId,
+                  columnId: dragId,
+                },
+                token,
+              };
+
+              dispatch(changeTask(updateTaskOptions))
+                .then(async () => {
+                  const { payload } = await dispatch(getTasks(newTaskOptions));
+                  (item as ITaskProps).updateTasks(
+                    payload.sort((a: ITask, b: ITask) => a.order - b.order)
+                  );
+                })
+                .then(() => {
+                  dispatch(getColumns({ selectedBoardId, token }));
+                });
+            }
+          });
+      }
+      if (monitor.getItemType() === dndTypes.COLUMN) {
+        const columnData = {
+          boardId: selectedBoardId,
+          columnId: item.id,
+          columnData: { title: item.title, order: hoverOrder },
+          token: token,
+        };
+        dispatch(updateColumn(columnData)).then(() =>
+          dispatch(getColumns({ selectedBoardId, token }))
+        );
+      }
     },
   });
 

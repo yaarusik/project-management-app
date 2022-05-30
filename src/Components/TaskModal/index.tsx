@@ -22,6 +22,7 @@ const TaskModal = ({ id, isModal, closeModal, addTask }: ITaskOptions) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isValid },
   } = useForm<IModalParam>({
     mode: 'all',
@@ -48,6 +49,8 @@ const TaskModal = ({ id, isModal, closeModal, addTask }: ITaskOptions) => {
         addTask(payload);
       }
     }
+
+    reset();
   };
 
   return (
