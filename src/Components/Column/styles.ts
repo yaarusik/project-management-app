@@ -6,6 +6,10 @@ export const ColumnWrapper = styled.div`
   height: calc(100vh - 250px);
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(156, 39, 176, 0.5);
+  transition: border 0.2s;
+  &:hover {
+    box-shadow: 0 0 10px #1164b4;
+  }
 `;
 
 export const Title = styled(Typography)`
