@@ -93,15 +93,15 @@ const WelcomePage = () => {
             <Avatar alt="Elena Shustova" sx={{ bgcolor: lightBlue[600] }}>
               {t('welcome.es')}
             </Avatar>
-            <Typography fontSize="1.5rem">{t('welcome.elena')}</Typography>
+            <Typography fontSize="1rem">{t('welcome.elena')}</Typography>
             <Avatar alt="Ruslan Vildanov" sx={{ bgcolor: lightBlue[600] }}>
               {t('welcome.rv')}
             </Avatar>
-            <Typography fontSize="1.5rem">{t('welcome.ruslan')}</Typography>
+            <Typography fontSize="1rem">{t('welcome.ruslan')}</Typography>
             <Avatar alt="Evgeniy Zhukov" sx={{ bgcolor: lightBlue[600] }}>
               {t('welcome.ez')}
             </Avatar>
-            <Typography fontSize="1.5rem">{t('welcome.evgeniy')}</Typography>
+            <Typography fontSize="1rem">{t('welcome.evgeniy')}</Typography>
           </Stack>
           <Button
             variant="contained"
