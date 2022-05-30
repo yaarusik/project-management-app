@@ -25,8 +25,6 @@ import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
-import { HeaderBox } from './styles';
-
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
   backgroundColor: purple[500],
