@@ -14,6 +14,9 @@ import TaskBar from '../../Components/TaskBar';
 import { useTranslation } from 'react-i18next';
 import PagePreloader from './../../Components/PagePreloader';
 import { useMediaQuery } from '@mui/material';
+import { theme } from '../../Components/Header';
+import { ThemeProvider } from '@mui/material/styles';
+
 export const dndTypes = {
   COLUMN: 'column',
   TASK: 'task',
@@ -66,30 +69,28 @@ const BoardPage = () => {
         <PagePreloader />
       ) : (
         <>
-          <BoardWrapper>
-            <TitleBox component="div">
-              <IconButton
-                sx={{ position: 'absolute', left: '3%', top: '11%' }}
-                component={Link}
-                to="/main"
-              >
-                <ArrowBackIcon fontSize="large" color="primary" />
-              </IconButton>
-              {isTitle && <Title variant="h4">{selectedBoardTitle}</Title>}
-              <Button variant="outlined" onClick={newColumnHandler}>
-                {t('board.newcolumn')}
-              </Button>
-            </TitleBox>
-            {isModalNewColumn && (
-              <CreateNewBoard titleName={t('board.column')} submitFunc={createColumn} />
-            )}
-            <ColumnWrapper>
-              {columns.map((item: IColumn) => (
-                <Column key={item.id} title={item.title} id={item.id} order={item.order} />
-              ))}
-            </ColumnWrapper>
-          </BoardWrapper>
-          {isBar && <TaskBar />}
+          <ThemeProvider theme={theme}>
+            <BoardWrapper>
+              <TitleBox component="div">
+                <IconButton component={Link} to="/main">
+                  <ArrowBackIcon fontSize="large" color="primary" />
+                </IconButton>
+                {isTitle && <Title variant="h4">{selectedBoardTitle}</Title>}
+                <Button variant="outlined" onClick={newColumnHandler}>
+                  {t('board.newcolumn')}
+                </Button>
+              </TitleBox>
+              {isModalNewColumn && (
+                <CreateNewBoard titleName={t('board.column')} submitFunc={createColumn} />
+              )}
+              <ColumnWrapper>
+                {columns.map((item: IColumn) => (
+                  <Column key={item.id} title={item.title} id={item.id} order={item.order} />
+                ))}
+              </ColumnWrapper>
+            </BoardWrapper>
+            {isBar && <TaskBar />}
+          </ThemeProvider>
         </>
       )}
     </>
