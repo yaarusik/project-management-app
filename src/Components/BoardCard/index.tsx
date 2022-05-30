@@ -14,6 +14,8 @@ import { setSelectedBoardTitle, setSelectedBoardId } from '../../store/reducers/
 import ConfirmationModal from '../ConfirmationModal';
 import { useTranslation } from 'react-i18next';
 import { DeleteButton } from './styles';
+import { theme } from '../../Components/Header';
+import { ThemeProvider } from '@mui/material/styles';
 
 const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
   const { t } = useTranslation();
@@ -41,68 +43,83 @@ const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
 
   return (
     <>
-      <Card
-        sx={{
-          minWidth: 510,
-          height: 120,
-          padding: '10px',
-          margin: '15px 20px',
-          border: '2px solid rgba(2,129,237,0.2)',
-        }}
-      >
-        <CardActionArea
-          onClick={onClickSelect}
-          component={Link}
-          to="/board"
-          sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', gap: '20px' }}
+      <ThemeProvider theme={theme}>
+        <Card
+          sx={{
+            minWidth: 320,
+            width: 510,
+            height: 120,
+            padding: '10px',
+            margin: '15px 20px',
+            border: '2px solid rgba(2,129,237,0.2)',
+          }}
         >
-          <CardMedia
-            sx={{ width: 70 }}
-            component="img"
-            height="70"
-            image={imgSrc}
-            alt="board img"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {title}
-            </Typography>
-            <Typography variant="h6" component="div" sx={{ fontSize: '1rem', color: 'grey' }}>
-              {description}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <DeleteButton onClick={changeOnOpen} variant="text">
-          {t('main.deleteboard')}
-        </DeleteButton>
-        <CardActionArea
-          onClick={onClickSelect}
-          component={Link}
-          to="/board"
-          sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', gap: '20px' }}
-        >
-          <CardMedia
-            sx={{ width: 70 }}
-            component="img"
-            height="70"
-            image={imgSrc}
-            alt="board img"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {title}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-      <ConfirmationModal
-        flag={isOpen}
-        cbClose={changeOnClose}
-        cbOpen={changeOnOpen}
-        cbHandler={onClickDelete}
-        body={t('confirm.board.body')}
-        title={t('confirm.board.title')}
-      />
+          <CardActionArea
+            onClick={onClickSelect}
+            component={Link}
+            to="/board"
+            sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', gap: '20px' }}
+          >
+            <CardMedia
+              sx={{ width: 70 }}
+              component="img"
+              height="70"
+              image={imgSrc}
+              alt="board img"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {title}
+              </Typography>
+              <Typography variant="h6" component="div" sx={{ fontSize: '1rem', color: 'grey' }}>
+                {description}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+          <DeleteButton
+            onClick={changeOnOpen}
+            variant="text"
+            sx={{
+              left: {
+                xs: '180px',
+                sm: '360px',
+                md: '360px',
+                lg: '360px',
+                xl: '360px',
+              },
+            }}
+          >
+            {t('main.deleteboard')}
+          </DeleteButton>
+          <CardActionArea
+            onClick={onClickSelect}
+            component={Link}
+            to="/board"
+            sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', gap: '20px' }}
+          >
+            <CardMedia
+              sx={{ width: 70 }}
+              component="img"
+              height="70"
+              image={imgSrc}
+              alt="board img"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {title}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+        <ConfirmationModal
+          flag={isOpen}
+          cbClose={changeOnClose}
+          cbOpen={changeOnOpen}
+          cbHandler={onClickDelete}
+          body={t('confirm.board.body')}
+          title={t('confirm.board.title')}
+        />
+      </ThemeProvider>
     </>
   );
 };
