@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../store/redux/redux';
 import { updateColumn, getColumns } from '../../utils/api/columns';
 import { IInputTitleColumn } from './types';
+import { useTranslation } from 'react-i18next';
 
 const InputTitleColumn = ({ setFlagChangeTitle }: IInputTitleColumn) => {
+  const { t } = useTranslation();
   const { currentColumnOrder, currentColumnId } = useAppSelector((state) => state.columnSlice);
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
@@ -39,7 +41,14 @@ const InputTitleColumn = ({ setFlagChangeTitle }: IInputTitleColumn) => {
   };
 
   return (
-    <Box sx={{ padding: '10px', display: 'flex', flexDirection: 'row', width: '250px' }}>
+    <Box
+      sx={{
+        padding: '10px',
+        gap: '10px',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
       <TextField
         variant="outlined"
         size="small"
@@ -47,10 +56,10 @@ const InputTitleColumn = ({ setFlagChangeTitle }: IInputTitleColumn) => {
         onChange={(e) => handleChange(e)}
       />
       <Button variant="text" color="success" size="small" onClick={onSubmit}>
-        Submit
+        {t('button.save')}
       </Button>
       <Button variant="text" color="error" size="small" onClick={onCancel}>
-        Cancel
+        {t('button.cancel')}
       </Button>
     </Box>
   );

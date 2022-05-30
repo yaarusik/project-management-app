@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import styled from 'styled-components';
 
 export const TasksWrapper = styled(Box)`
-  height: 330px;
+  height: 350px;
   display: flex;
   flex-direction: column;
   row-gap: 8px;

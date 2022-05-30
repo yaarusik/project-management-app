@@ -22,6 +22,7 @@ import { useAppSelector } from '../../store/redux/redux';
 import LangSwitcher from '../LangSwitcher';
 
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next';
 
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -32,12 +33,15 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 const Header = () => {
+  const { t } = useTranslation();
+
   const { isAuth } = useAppSelector((state) => state.authSlice);
   const { setAuthUser, setToken, setUserData } = authSlice.actions;
 
   const location = useLocation();
   const isWelcomePage = location.pathname === '/';
   const isBoardPage = location.pathname === '/board';
+  const isEditProfile = location.pathname === '/edit-profile';
 
   const navigation = useNavigate();
   const dispatch = useDispatch();
@@ -64,7 +68,7 @@ const Header = () => {
               <img src="images/logo.png" alt="logo" width={50} height={50} />
               <Typography
                 component={Link}
-                to="/mainPage"
+                to="/main"
                 variant="h5"
                 sx={{
                   color: '#ffffff',
@@ -74,17 +78,17 @@ const Header = () => {
                   textDecoration: 'none',
                 }}
               >
-                Task manager
+                {t('header.title')}
               </Typography>
             </Stack>
             <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
               {!isAuth && isWelcomePage && (
                 <>
                   <Button component={Link} to="/login" color="success" variant="contained">
-                    Log in
+                    {t('header.login')}
                   </Button>
                   <Button component={Link} to="/signup" color="success" variant="contained">
-                    Sign up
+                    {t('header.signup')}
                   </Button>
                 </>
               )}
@@ -93,17 +97,17 @@ const Header = () => {
                 <>
                   <Button
                     component={Link}
-                    to="/mainPage"
+                    to="/main"
                     variant="contained"
                     sx={{
                       backgroundColor: purple[500],
                       '&:hover': { backgroundColor: purple[700] },
                     }}
                   >
-                    Go to Main Page
+                    {t('header.gomain')}
                   </Button>
                   <LangSwitcher />
-                  <IconButton aria-label="edit-profile">
+                  <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
                     <PersonIcon />
                   </IconButton>
                   <IconButton aria-label="logout">
@@ -112,13 +116,13 @@ const Header = () => {
                 </>
               )}
 
-              {isAuth && !isWelcomePage && !isBoardPage && (
+              {isAuth && !isWelcomePage && !isBoardPage && !isEditProfile && (
                 <>
                   <ColorButton onClick={createNewBoardHandler} variant="contained">
-                    Create new board
+                    {t('header.createboard')}
                   </ColorButton>
                   <LangSwitcher />
-                  <IconButton aria-label="edit-profile">
+                  <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
                     <PersonIcon />
                   </IconButton>
                   <IconButton onClick={signOutHundler} aria-label="logout">
@@ -130,7 +134,19 @@ const Header = () => {
               {isAuth && isBoardPage && (
                 <>
                   <LangSwitcher />
-                  <IconButton aria-label="edit-profile">
+                  <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
+                    <PersonIcon />
+                  </IconButton>
+                  <IconButton onClick={signOutHundler} aria-label="logout">
+                    <LogoutIcon />
+                  </IconButton>
+                </>
+              )}
+
+              {isAuth && isEditProfile && (
+                <>
+                  <LangSwitcher />
+                  <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
                     <PersonIcon />
                   </IconButton>
                   <IconButton onClick={signOutHundler} aria-label="logout">

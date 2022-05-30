@@ -69,7 +69,6 @@ export const updateColumn = createAsyncThunk(
 export const deleteColumn = createAsyncThunk(
   'columns/deleteColumn',
   async ({ boardId, columnId, token }: IDeleteColumn) => {
-    console.log(boardId, columnId, token);
     await fetch(`${BASE_URL}/boards/${boardId}/columns/${columnId}`, {
       method: 'DELETE',
       headers: {

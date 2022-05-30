@@ -4,5 +4,5 @@ export interface ITaskProps extends ITask {
   columnId: string;
   order: number;
   description: string;
-  updateTask: (tasks: ITask[]) => void;
+  updateTasks: (tasks: ITask[]) => void;
 }

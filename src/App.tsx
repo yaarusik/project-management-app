@@ -8,6 +8,7 @@ import { useAppDispatch } from './store/redux/redux';
 import { jwtDecode } from './utils/jwtDecode/jwtDecode';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Suspense } from 'react';
 
 function App() {
   const { setAuthUser, setToken, setUserData } = authSlice.actions;
@@ -23,13 +24,15 @@ function App() {
   }
 
   return (
-    <AppBox>
-      <DndProvider backend={HTML5Backend}>
-        <Header />
-        <AppRoutes />
-        <Footer />
-      </DndProvider>
-    </AppBox>
+    <Suspense fallback={null}>
+      <AppBox>
+        <DndProvider backend={HTML5Backend}>
+          <Header />
+          <AppRoutes />
+          <Footer />
+        </DndProvider>
+      </AppBox>
+    </Suspense>
   );
 }
 

@@ -4,27 +4,32 @@ import CloseIcon from '@mui/icons-material/Close';
 import { TaskBody, TaskTitle, TaskHeader, TaskAuthor } from './style';
 import { ITaskProps } from './types';
 import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
-import { changeTask, deleteTask, getTasks } from '../../utils/api/tasks';
+import { changeTask, deleteTask, getTasks, getUser } from '../../utils/api/tasks';
 import { useRef, useState } from 'react';
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { dndTypes } from '../../Pages/BoardPage';
 import { Identifier } from 'dnd-core';
-import { ITask } from '../../store/initialStates/types';
 import ConfirmationModal from '../ConfirmationModal';
 
 import { taskSlice } from './../../store/reducers/taskSlice';
 import { useEffect } from 'react';
 import { getColumns } from '../../utils/api/columns';
+import { sortTask } from './../../utils/sort/task';
+import PagePreloader from '../PagePreloader';
+import Preloader from '../Preloader';
+import { ITask } from '../../store/initialStates/types';
 
-const Task = ({ title, userId, id, columnId, updateTask, description, order }: ITaskProps) => {
+const Task = ({ title, userId, id, columnId, updateTasks, description, order }: ITaskProps) => {
   const { token } = useAppSelector((state) => state.authSlice);
   const { selectedBoardId } = useAppSelector((state) => state.boardSlice);
-  const { setTaskDecription, setIsBar } = taskSlice.actions;
+  const { setTaskDecription, setIsBar, setIsEditTitle, setIsEditDescription } = taskSlice.actions;
   const dispatch = useAppDispatch();
   const [hoverOrder, setHoverOrder] = useState(1);
   const [hoverColumnId, setHoverColumnId] = useState('');
   const [dragColumnId, setDragColumnId] = useState('');
   const [isOpen, setOpen] = useState(false);
+  const [authorName, setAuthorName] = useState('somebody');
+  const [isPreloader, setIsPreloader] = useState(true);
 
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<ITaskProps, void, { handlerId: Identifier | null }>({
@@ -36,14 +41,8 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       const dragIndex = item.order;
       const hoverIndex = order;
 
-      // console.log('dragIndex', dragIndex);
-      // console.log('hoverIndex', hoverIndex);
-
       const dragId = item.columnId;
       const hoverId = columnId;
-
-      // console.log('hoverId', hoverId);
-      // console.log('dragId', dragId);
 
       if (dragId != hoverId) {
         setDragColumnId(dragId);
@@ -56,8 +55,6 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       item.columnId = hoverId as string;
     },
     drop(item: ITaskProps) {
-      console.log('dragColumnId', dragColumnId);
-      console.log('hoverColumnId', hoverColumnId);
       const updateTaskOptions = {
         url: {
           boardId: selectedBoardId,
@@ -74,7 +71,6 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
         },
         token: token,
       };
-      console.log('TaskOptions', updateTaskOptions);
       const newTaskOptions = {
         url: {
           boardId: selectedBoardId,
@@ -86,12 +82,10 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       dispatch(changeTask(updateTaskOptions))
         .then(async () => {
           const { payload } = await dispatch(getTasks(newTaskOptions));
-          updateTask(payload.sort((a: ITask, b: ITask) => a.order - b.order));
-          console.log('getTasks', payload);
+          updateTasks(sortTask(payload));
         })
         .then(async () => {
           const { payload } = await dispatch(getColumns({ selectedBoardId, token }));
-          console.log('getColumns', payload);
         });
       setDragColumnId('');
     },
@@ -99,7 +93,7 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
 
   const [{ isDragging }, drag] = useDrag({
     type: dndTypes.TASK,
-    item: { title, userId, id, columnId, description, order, updateTask },
+    item: { title, userId, id, columnId, description, order, updateTasks },
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -125,24 +119,30 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
       await dispatch(deleteTask(taskOptions));
       const { meta, payload } = await dispatch(getTasks(taskOptions));
       if (meta.requestStatus === 'fulfilled') {
-        updateTask(payload);
+        updateTasks(payload);
         dispatch(setIsBar(false));
         dispatch(setTaskDecription({}));
       }
-    } else {
-      // вы не авторизованы
     }
   };
 
   useEffect(() => {
+    if (token) {
+      dispatch(getUser({ userId, token }))
+        .then(({ payload }) => setAuthorName(payload.name))
+        .then(() => setIsPreloader(false));
+    }
+
     return () => {
       dispatch(setIsBar(false));
       dispatch(setTaskDecription({}));
     };
-  });
+  }, []);
 
   const openTaskInner = () => {
-    const taskOptions = { userId, title, description };
+    const taskOptions = { userId, title, description, columnId, order, id };
+    dispatch(setIsEditTitle(false));
+    dispatch(setIsEditDescription(false));
     dispatch(setTaskDecription(taskOptions));
     dispatch(setIsBar(true));
   };
@@ -154,15 +154,21 @@ const Task = ({ title, userId, id, columnId, updateTask, description, order }: I
         style={{ opacity: opacity, cursor: 'move' }}
         data-handler-id={handlerId}
       >
-        <TaskHeader direction="row" alignItems="center" justifyContent="space-between">
-          <TaskTitle onClick={openTaskInner} variant="subtitle1">
-            {title}
-          </TaskTitle>
-          <IconButton onClick={changeOnOpen} aria-label="delete">
-            <CloseIcon color="primary" />
-          </IconButton>
-        </TaskHeader>
-        <TaskAuthor variant="body2">opened by {userId}</TaskAuthor>
+        {isPreloader ? (
+          <Preloader />
+        ) : (
+          <>
+            <TaskHeader direction="row" alignItems="center" justifyContent="space-between">
+              <TaskTitle onClick={openTaskInner} variant="subtitle1">
+                {title}
+              </TaskTitle>
+              <IconButton onClick={changeOnOpen} aria-label="delete">
+                <CloseIcon color="primary" />
+              </IconButton>
+            </TaskHeader>
+            <TaskAuthor variant="body2">opened by {authorName}</TaskAuthor>
+          </>
+        )}
       </TaskBody>
       <ConfirmationModal
         flag={isOpen}

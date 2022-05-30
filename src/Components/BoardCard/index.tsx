@@ -12,8 +12,10 @@ import { useAppDispatch, useAppSelector } from '../../store/redux/redux';
 import { deleteBoard, getBoards } from '../../utils/api/boards';
 import { setSelectedBoardTitle, setSelectedBoardId } from '../../store/reducers/boardSlice';
 import ConfirmationModal from '../ConfirmationModal';
+import { useTranslation } from 'react-i18next';
 
 const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { token } = useAppSelector((state) => state.authSlice);
 
@@ -76,9 +78,9 @@ const BoardCard = ({ imgSrc, title, id, description }: IBoardCard) => {
         <Button
           onClick={changeOnOpen}
           variant="text"
-          sx={{ top: '-30px', left: '370px', color: 'rgba(255, 0, 0, 0.5)' }}
+          sx={{ top: '-30px', left: '360px', color: 'rgba(255, 0, 0, 0.5)' }}
         >
-          Delete board
+          {t('main.deleteboard')}
         </Button>
         <CardActionArea
           onClick={onClickSelect}

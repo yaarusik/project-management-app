@@ -1,44 +1,6 @@
 import { BASE_URL } from '../../constants';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-export type ICreateTask = {
-  url: {
-    boardId: string;
-    columnId: string;
-  };
-  body: {
-    title: string;
-    description: string;
-    userId: string;
-  };
-  token: string | null;
-};
-
-export type IUpdateTask = {
-  url: {
-    boardId: string;
-    columnId: string;
-    taskId: string;
-  };
-  body: {
-    title: string;
-    order: number;
-    description: string;
-    userId: string;
-    boardId: string;
-    columnId: string;
-  };
-  token: string | null;
-};
-
-export type IDeleteTask = {
-  url: {
-    boardId: string;
-    columnId: string;
-    taskId: string;
-  };
-  token: string;
-};
+import { ICreateTask, IDeleteTask, IUpdateTask } from './types';
 
 export type IGetTasks = Pick<ICreateTask, 'url' | 'token'>;
 
@@ -108,12 +70,6 @@ export const deleteTask = createAsyncThunk(
     } catch (err) {
       return rejectWithValue((err as TypeError).message);
     }
-    // await fetch(`${BASE_URL}/boards/${boardId}/columns/${columnId}`, {
-    //   method: 'DELETE',
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
   }
 );
 
@@ -132,11 +88,35 @@ export const changeTask = createAsyncThunk(
         },
       }
     );
-    if (response.status === 404) {
-      console.log('taskId', taskId);
-    }
     const data = await response.json();
-    console.log('changeTask', data);
     return data;
+  }
+);
+
+interface IGetUser {
+  token: string;
+  userId: string;
+}
+
+export const getUser = createAsyncThunk(
+  'root/getUser',
+  async ({ userId, token }: IGetUser, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${BASE_URL}/users/${userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error('Произошла ошибка при получении пользователя');
+      }
+
+      const user = await res.json();
+      return user;
+    } catch (err) {
+      return rejectWithValue((err as TypeError).message);
+    }
   }
 );
