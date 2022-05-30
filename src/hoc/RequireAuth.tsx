@@ -5,7 +5,6 @@ import { useAppSelector } from '../store/redux/redux';
 
 const RequireAuth = ({ children }: { children: ReactElement }) => {
   const { isAuth } = useAppSelector((state) => state.authSlice);
-  // console.log('isAuth >', isAuth);
   const location = useLocation();
 
   if (!isAuth) {

@@ -8,7 +8,6 @@ export const TasksWrapper = styled(Box)`
   row-gap: 8px;
   padding: 0px 10px;
   color: rgba(2, 129, 237, 0.8);
-  overflow-y: auto;
 `;
 
 export const TaskBody = styled(Stack)`

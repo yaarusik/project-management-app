@@ -131,7 +131,7 @@ const Header = () => {
                   <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
                     <PersonIcon />
                   </IconButton>
-                  <IconButton aria-label="logout">
+                  <IconButton onClick={signOutHundler} aria-label="logout">
                     <LogoutIcon />
                   </IconButton>
                 </>
