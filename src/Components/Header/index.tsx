@@ -110,6 +110,7 @@ const Header = () => {
                   <Button component={Link} to="/signup" color="success" variant="contained">
                     {t('header.signup')}
                   </Button>
+                  <LangSwitcher />
                 </>
               )}
 
@@ -165,6 +166,17 @@ const Header = () => {
 
               {isAuth && isEditProfile && (
                 <>
+                  <Button
+                    component={Link}
+                    to="/main"
+                    variant="contained"
+                    sx={{
+                      backgroundColor: purple[500],
+                      '&:hover': { backgroundColor: purple[700] },
+                    }}
+                  >
+                    {t('header.gomain')}
+                  </Button>
                   <LangSwitcher />
                   <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
                     <PersonIcon />

@@ -62,7 +62,7 @@ export const EditProfile = () => {
   };
 
   return (
-    <FormWrapper>
+    <FormWrapper marginBottom={4}>
       <EditProfileTitle>
         <EditIcon fontSize="large" /> Edit Profile
       </EditProfileTitle>
