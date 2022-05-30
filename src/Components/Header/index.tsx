@@ -5,10 +5,10 @@ import { useDispatch } from 'react-redux';
 import Button, { ButtonProps } from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import { styled } from '@mui/material/styles';
@@ -23,6 +23,7 @@ import LangSwitcher from '../LangSwitcher';
 
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -37,6 +38,7 @@ const Header = () => {
 
   const { isAuth } = useAppSelector((state) => state.authSlice);
   const { setAuthUser, setToken, setUserData } = authSlice.actions;
+  const [isScroll, setIsScroll] = useState(false);
 
   const location = useLocation();
   const isWelcomePage = location.pathname === '/';
@@ -58,9 +60,27 @@ const Header = () => {
     navigation('/');
   };
 
+  window.onscroll = () => {
+    if (window.pageYOffset > 0) {
+      setIsScroll(true);
+    } else {
+      setIsScroll(false);
+    }
+  };
+
+  const bgColor = isScroll ? '#1164b4' : '#0281ed';
+
   return (
     <AppBar position="sticky">
-      <Box component="header" sx={{ bgcolor: '#0281ed', height: '60px', paddingTop: '5px' }}>
+      <Box
+        component="header"
+        sx={{
+          bgcolor: bgColor,
+          height: '60px',
+          paddingTop: '5px',
+          transition: 'background 0.5s',
+        }}
+      >
         <CssBaseline />
         <Container maxWidth="xl">
           <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
@@ -90,6 +110,7 @@ const Header = () => {
                   <Button component={Link} to="/signup" color="success" variant="contained">
                     {t('header.signup')}
                   </Button>
+                  <LangSwitcher />
                 </>
               )}
 
@@ -145,6 +166,17 @@ const Header = () => {
 
               {isAuth && isEditProfile && (
                 <>
+                  <Button
+                    component={Link}
+                    to="/main"
+                    variant="contained"
+                    sx={{
+                      backgroundColor: purple[500],
+                      '&:hover': { backgroundColor: purple[700] },
+                    }}
+                  >
+                    {t('header.gomain')}
+                  </Button>
                   <LangSwitcher />
                   <IconButton aria-label="edit-profile" component={Link} to="/edit-profile">
                     <PersonIcon />

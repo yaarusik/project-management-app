@@ -33,6 +33,7 @@ const BoardPage = () => {
   const { selectedBoardTitle, selectedBoardId } = useAppSelector((state) => state.boardSlice);
   const dispatch = useAppDispatch();
   const [isPreloader, setIsPreloader] = useState(true);
+  const { isBar } = useAppSelector((state) => state.taskSlice);
 
   useEffect(() => {
     if (token) {
@@ -88,7 +89,7 @@ const BoardPage = () => {
               ))}
             </ColumnWrapper>
           </BoardWrapper>
-          <TaskBar />
+          {isBar && <TaskBar />}
         </>
       )}
     </>

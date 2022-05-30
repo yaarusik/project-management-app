@@ -42,7 +42,7 @@ const MainPage = () => {
       {isPreloader ? (
         <PagePreloader />
       ) : (
-        <Container sx={{ maxWidth: 'xl', minHeight: 'calc(100vh - 100px)' }}>
+        <Container sx={{ maxWidth: 'xl', minHeight: 'calc(100vh - 102px)' }}>
           <Box
             component="div"
             sx={{

@@ -17,6 +17,9 @@ export const TaskBody = styled(Stack)`
   border-radius: 15px;
   padding: 0px 5px 5px;
   cursor: move;
+  &:hover {
+    background-color: rgba(2, 129, 237, 0.2);
+  }
 `;
 
 export const TaskTitle = styled(Typography)`

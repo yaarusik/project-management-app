@@ -1,6 +1,6 @@
 import { BASE_URL } from '../../constants';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IAddBoard, IDeleteBoard } from './types';
+import { IAddBoard, IDeleteBoard, IGetBoardById } from './types';
 
 export const getBoards = createAsyncThunk('root/getBoards', async (token: string) => {
   const res = await fetch(`${BASE_URL}/boards`, {
@@ -10,9 +10,6 @@ export const getBoards = createAsyncThunk('root/getBoards', async (token: string
       Authorization: `Bearer ${token}`,
     },
   });
-
-  // if (res.status === 401) {
-  // }
 
   const data = await res.json();
   return data;

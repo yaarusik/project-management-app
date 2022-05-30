@@ -1,5 +1,5 @@
 import { IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { TaskBody, TaskTitle, TaskHeader, TaskAuthor } from './style';
 import { ITaskProps } from './types';
@@ -13,9 +13,13 @@ import ConfirmationModal from '../ConfirmationModal';
 
 import { taskSlice } from './../../store/reducers/taskSlice';
 import { useEffect } from 'react';
+import { getColumns } from '../../utils/api/columns';
 import { sortTask } from './../../utils/sort/task';
 import Preloader from '../Preloader';
+
 import { useTranslation } from 'react-i18next';
+import { ITask } from '../../store/initialStates/types';
+
 
 const Task = ({ title, userId, id, columnId, updateTasks, description, order }: ITaskProps) => {
   const { t } = useTranslation();
@@ -24,6 +28,8 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
   const { setTaskDecription, setIsBar, setIsEditTitle, setIsEditDescription } = taskSlice.actions;
   const dispatch = useAppDispatch();
   const [hoverOrder, setHoverOrder] = useState(1);
+  const [hoverColumnId, setHoverColumnId] = useState('');
+  const [dragColumnId, setDragColumnId] = useState('');
   const [isOpen, setOpen] = useState(false);
   const [authorName, setAuthorName] = useState('somebody');
   const [isPreloader, setIsPreloader] = useState(true);
@@ -38,15 +44,24 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
       const dragIndex = item.order;
       const hoverIndex = order;
 
-      setHoverOrder(dragIndex);
+      const dragId = item.columnId;
+      const hoverId = columnId;
+
+      if (dragId != hoverId) {
+        setDragColumnId(dragId);
+      }
+
+      setHoverColumnId(hoverId);
+      setHoverOrder(hoverIndex);
 
       item.order = hoverIndex as number;
+      item.columnId = hoverId as string;
     },
     drop(item: ITaskProps) {
       const updateTaskOptions = {
         url: {
           boardId: selectedBoardId,
-          columnId: columnId,
+          columnId: dragColumnId ? dragColumnId : hoverColumnId,
           taskId: item.id,
         },
         body: {
@@ -55,30 +70,33 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
           description: item.description,
           userId: item.userId,
           boardId: selectedBoardId,
-          columnId: columnId,
+          columnId: hoverColumnId,
         },
         token: token,
       };
-
-      const taskOptions = {
+      const newTaskOptions = {
         url: {
           boardId: selectedBoardId,
           columnId: columnId,
         },
         token,
       };
-      dispatch(changeTask(updateTaskOptions)).then(async () => {
-        const { payload } = await dispatch(getTasks(taskOptions));
-        updateTasks(sortTask(payload));
-      });
+
+      dispatch(changeTask(updateTaskOptions))
+        .then(async () => {
+          const { payload } = await dispatch(getTasks(newTaskOptions));
+          updateTasks(sortTask(payload));
+        })
+        .then(async () => {
+          const { payload } = await dispatch(getColumns({ selectedBoardId, token }));
+        });
+      setDragColumnId('');
     },
   });
 
   const [{ isDragging }, drag] = useDrag({
     type: dndTypes.TASK,
-    item: () => {
-      return { id, title, order, description, userId };
-    },
+    item: { title, userId, id, columnId, description, order, updateTasks },
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -148,7 +166,7 @@ const Task = ({ title, userId, id, columnId, updateTasks, description, order }: 
                 {title}
               </TaskTitle>
               <IconButton onClick={changeOnOpen} aria-label="delete">
-                <DeleteIcon color="primary" />
+                <CloseIcon color="primary" />
               </IconButton>
             </TaskHeader>
             <TaskAuthor variant="body2">opened by {authorName}</TaskAuthor>
