@@ -11,7 +11,6 @@ const initialState: InitialState = {
   isAuth: false,
   isLoginExist: true,
   isCorrectData: true,
-  isPendingAuth: false,
   isPendingRegistration: false,
   selectedBoardTitle: '',
   selectedBoardId: JSON.parse(localStorage.getItem('boardId') as string) || '',
@@ -61,7 +60,6 @@ interface InitialState {
   isAuth: boolean;
   isLoginExist: boolean;
   isCorrectData: boolean;
-  isPendingAuth: boolean;
   isPendingRegistration: boolean;
   token: null | string;
   userData: {
