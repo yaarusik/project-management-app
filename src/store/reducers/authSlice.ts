@@ -29,15 +29,12 @@ export const authSlice = createSlice({
       state.isLoginExist = false;
     });
     builder.addCase(authorization.pending, (state) => {
-      state.isPendingAuth = true;
+      state.isCorrectData = true;
     });
     builder.addCase(authorization.fulfilled, (state) => {
       state.isAuth = true;
-      state.isPendingAuth = true;
-      state.isCorrectData = true;
     });
     builder.addCase(authorization.rejected, (state) => {
-      state.isPendingAuth = false;
       state.isCorrectData = false;
     });
   },

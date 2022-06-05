@@ -28,9 +28,8 @@ const PageLogin = () => {
 
   const dispatch = useAppDispatch();
   const { setToken, setUserData } = authSlice.actions;
-  const { isPendingAuth, isAuth, isCorrectData, token } = useAppSelector(
-    (state) => state.authSlice
-  );
+  const [isPreloader, setIsPreloader] = useState(true);
+  const { isCorrectData, token } = useAppSelector((state) => state.authSlice);
 
   const navigate = useNavigate();
 
@@ -50,14 +49,12 @@ const PageLogin = () => {
     const { meta, payload } = await dispatch(authorization(data));
 
     if (meta.requestStatus === 'fulfilled') {
+      navigate('/main');
       const { token } = payload;
       Cookies.set('user', token);
       dispatch(setToken(token));
-
       const parseToken = jwtDecode(token);
       dispatch(setUserData(parseToken));
-
-      navigate('/main');
     }
   };
 
@@ -69,12 +66,13 @@ const PageLogin = () => {
     if (token) {
       navigate('/main');
     }
+    setIsPreloader(false);
   }, []);
 
   return (
     <FormWrapper>
       <FormBlock onSubmit={handleSubmit(onSubmit)}>
-        {isPendingAuth && !isAuth ? (
+        {isPreloader ? (
           <Preloader />
         ) : (
           <>

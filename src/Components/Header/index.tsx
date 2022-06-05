@@ -115,7 +115,7 @@ const Header = () => {
                 <img src="images/logo.png" alt="logo" width={50} height={50} />
                 <Typography
                   component={Link}
-                  to="/main"
+                  to="/"
                   variant="h5"
                   sx={{
                     color: '#ffffff',
